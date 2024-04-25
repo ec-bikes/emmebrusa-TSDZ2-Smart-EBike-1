@@ -7,8 +7,10 @@ manuals/odt/.~*
 **/*.launch
 .vscode
 releases
-tools/Java_Configurator_Source/*
-!tools/Java_Configurator_Source/src
-!tools/Java_Configurator_Source/build_jar.sh
 src/controller/main.ihx
 src/controller/Result.log
+tools/Java_Configurator_Source/classes/
+tools/Java_Configurator_Source/dist/
+tools/Java_Configurator_Source/nbproject/private/
+tools/Java_Configurator_Source/nbbuild/
+tools/Java_Configurator_Source/nbdist/
