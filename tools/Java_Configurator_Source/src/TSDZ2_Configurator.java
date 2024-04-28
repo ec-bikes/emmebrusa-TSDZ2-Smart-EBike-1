@@ -16,7 +16,7 @@ Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  *
  * @author stancecoke
  */
-import util.CompileThread;
+import util.CompileWorker;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -46,10 +46,10 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     private File experimentalSettingsDir;
     private File lastSettingsFile = null;
 
-    DefaultListModel provenSettingsFilesModel = new DefaultListModel();
-    DefaultListModel experimentalSettingsFilesModel = new DefaultListModel();
-    JList experimentalSettingsList = new JList(experimentalSettingsFilesModel);
-    CompileThread compileWorker;
+    private DefaultListModel provenSettingsFilesModel = new DefaultListModel();
+    private DefaultListModel experimentalSettingsFilesModel = new DefaultListModel();
+    private JList experimentalSettingsList = new JList(experimentalSettingsFilesModel);
+    private CompileWorker compileWorker;
 
     public class FileContainer {
 
@@ -1297,7 +1297,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         BTN_COMPILE.setEnabled(false);
         BTN_CANCEL.setEnabled(true);
 
-        compileWorker = new CompileThread(TA_COMPILE_OUTPUT, fileName);
+        compileWorker = new CompileWorker(TA_COMPILE_OUTPUT, fileName);
         compileWorker.execute();
 
         compileWorker.addPropertyChangeListener(
