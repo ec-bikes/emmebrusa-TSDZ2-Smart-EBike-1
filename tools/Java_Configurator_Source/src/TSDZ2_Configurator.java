@@ -21,14 +21,21 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.ListSelectionModel;
+
 import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 import javax.swing.JList;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.DefaultListModel;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
@@ -38,13 +45,11 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class TSDZ2_Configurator extends javax.swing.JFrame {
-
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
+        // If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+        // For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -52,13 +57,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TSDZ2_Configurator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TSDZ2_Configurator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TSDZ2_Configurator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(TSDZ2_Configurator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
@@ -88,7 +87,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         public FileContainer(File file) {
             this.file = file;
         }
-        public File file;
+        public final File file;
 
         @Override
         public String toString() {
@@ -100,28 +99,26 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         }
     }
 
+    private enum DisplayType {
+        VLCD5, VLCD6, XH18, _850C("850C");
+        private final String displayName;
+        DisplayType() { this.displayName = name(); };
+        DisplayType(String displayName) { this.displayName = displayName; }
+        @Override
+        public String toString() { return displayName; }
+    }
+
     private static final String[] displayDataArray = {"motor temperature", "battery SOC rem. %", "battery voltage", "battery current", "motor power", "adc throttle 8b", "adc torque sensor 10b", "pedal cadence rpm", "human power", "adc pedal torque delta", "consumed Wh"};
     private static final String[] lightModeArray = {"<br>lights ON", "<br>lights FLASHING", "lights ON and BRAKE-FLASHING brak.", "lights FLASHING and ON when braking", "lights FLASHING BRAKE-FLASHING brak.", "lights ON and ON always braking", "lights ON and BRAKE-FLASHING alw.br.", "lights FLASHING and ON always braking", "lights FLASHING BRAKE-FLASHING alw.br.", "assist without pedal rotation", "assist with sensors error", "field weakening"};
 
     private static final int[] intAdcPedalTorqueAngleAdjArray = {160, 138, 120, 107, 96, 88, 80, 74, 70, 66, 63, 59, 56, 52, 50, 47, 44, 42, 39, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16};
 
-    public int intMaxSpeed;
-    public int intStreetSpeed;
-    public int intWalkSpeed1;
-    public int intWalkSpeed2;
-    public int intWalkSpeed3;
-    public int intWalkSpeed4;
-    public int intWalkSpeedLimit;
-    public int intCruiseSpeed;
-    public int intCruiseSpeed1;
-    public int intCruiseSpeed2;
-    public int intCruiseSpeed3;
-    public int intCruiseSpeed4;
-    public int intTorqueAdcStep;
-    public int intTorqueAdcStepCalc;
-    public int intTorqueAdcOffset;
-    public int intTorqueAdcMax;
-    public int intTorqueAdcOnWeight;
+    /** 0 is the street speed, 1 is the off-road max */
+    public int[] intMaxSpeed = new int[2];
+    /** 0 is the limit, 1-4 are values */
+    public int[] intWalkSpeed = new int[5];
+    /** 0 is the threshold, 1-4 are values */
+    public int[] intCruiseSpeed = new int[5];
     public int intTorqueOffsetAdj;
     public int intTorqueRangeAdj;
     public int intTorqueAngleAdj;
@@ -144,8 +141,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         TF_MOTOR_ACC.setText(in.readLine());
         CB_ASS_WITHOUT_PED.setSelected(Boolean.parseBoolean(in.readLine()));
         TF_ASS_WITHOUT_PED_THRES.setText(in.readLine());
-        intTorqueAdcStep = Integer.parseInt(in.readLine());
-        //TF_TORQ_PER_ADC_STEP.setText(in.readLine());
+        TF_TORQ_PER_ADC_STEP.setText(in.readLine());
         TF_TORQUE_ADC_MAX.setText(in.readLine());
         TF_BOOST_TORQUE_FACTOR.setText(in.readLine());
         TF_MOTOR_BLOCK_TIME.setText(in.readLine());
@@ -173,7 +169,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         TF_BAT_CELL_1_6.setText(in.readLine());
         TF_BAT_CELL_EMPTY.setText(in.readLine());
         TF_WHEEL_CIRCUMF.setText(in.readLine());
-        intMaxSpeed = Integer.parseInt(in.readLine());
+        intMaxSpeed[0] = Integer.parseInt(in.readLine());
         CB_LIGHTS.setSelected(Boolean.parseBoolean(in.readLine()));
         CB_WALK_ASSIST.setSelected(Boolean.parseBoolean(in.readLine()));
         CB_BRAKE_SENSOR.setSelected(Boolean.parseBoolean(in.readLine()));
@@ -195,7 +191,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         TF_LIGHT_MODE_3.setText(in.readLine());
         CB_STREET_POWER_LIM.setSelected(Boolean.parseBoolean(in.readLine()));
         TF_STREET_POWER_LIM.setText(in.readLine());
-        intStreetSpeed = Integer.parseInt(in.readLine());
+        intMaxSpeed[1] = Integer.parseInt(in.readLine());
         CB_STREET_THROTTLE.setSelected(Boolean.parseBoolean(in.readLine()));
         CB_STREET_CRUISE.setSelected(Boolean.parseBoolean(in.readLine()));
         TF_ADC_THROTTLE_MIN.setText(in.readLine());
@@ -203,9 +199,10 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         TF_TEMP_MIN_LIM.setText(in.readLine());
         TF_TEMP_MAX_LIM.setText(in.readLine());
         CB_TEMP_ERR_MIN_LIM.setSelected(Boolean.parseBoolean(in.readLine()));
-        RB_VLCD6.setSelected(Boolean.parseBoolean(in.readLine()));
-        RB_VLCD5.setSelected(Boolean.parseBoolean(in.readLine()));
-        RB_XH18.setSelected(Boolean.parseBoolean(in.readLine()));
+        DisplayType displayType = null;
+        displayType = Boolean.parseBoolean(in.readLine()) ? DisplayType.VLCD6 : displayType;
+        displayType = Boolean.parseBoolean(in.readLine()) ? DisplayType.VLCD5 : displayType;
+        displayType = Boolean.parseBoolean(in.readLine()) ? DisplayType.XH18 : displayType;
         RB_DISPLAY_WORK_ON.setSelected(Boolean.parseBoolean(in.readLine()));
         RB_DISPLAY_ALWAY_ON.setSelected(Boolean.parseBoolean(in.readLine()));
         CB_MAX_SPEED_DISPLAY.setSelected(Boolean.parseBoolean(in.readLine()));
@@ -242,23 +239,19 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         TF_EMTB_ASS_2.setText(in.readLine());
         TF_EMTB_ASS_3.setText(in.readLine());
         TF_EMTB_ASS_4.setText(in.readLine());
-        //TF_WALK_ASS_SPEED_1.setText(in.readLine());
-        //TF_WALK_ASS_SPEED_2.setText(in.readLine());
-        //TF_WALK_ASS_SPEED_3.setText(in.readLine());
-        //TF_WALK_ASS_SPEED_4.setText(in.readLine());
-        intWalkSpeed1 = Integer.parseInt(in.readLine());
-        intWalkSpeed2 = Integer.parseInt(in.readLine());
-        intWalkSpeed3 = Integer.parseInt(in.readLine());
-        intWalkSpeed4 = Integer.parseInt(in.readLine());
-        intWalkSpeedLimit = Integer.parseInt(in.readLine());
+        intWalkSpeed[1] = Integer.parseInt(in.readLine());
+        intWalkSpeed[2] = Integer.parseInt(in.readLine());
+        intWalkSpeed[3] = Integer.parseInt(in.readLine());
+        intWalkSpeed[4] = Integer.parseInt(in.readLine());
+        intWalkSpeed[0] = Integer.parseInt(in.readLine());
         CB_WALK_TIME_ENA.setSelected(Boolean.parseBoolean(in.readLine()));
         TF_WALK_ASS_TIME.setText(in.readLine());
-        intCruiseSpeed1 = Integer.parseInt(in.readLine());
-        intCruiseSpeed2 = Integer.parseInt(in.readLine());
-        intCruiseSpeed3 = Integer.parseInt(in.readLine());
-        intCruiseSpeed4 = Integer.parseInt(in.readLine());
+        intCruiseSpeed[1] = Integer.parseInt(in.readLine());
+        intCruiseSpeed[2] = Integer.parseInt(in.readLine());
+        intCruiseSpeed[3] = Integer.parseInt(in.readLine());
+        intCruiseSpeed[4] = Integer.parseInt(in.readLine());
         CB_CRUISE_WHITOUT_PED.setSelected(Boolean.parseBoolean(in.readLine()));
-        intCruiseSpeed = Integer.parseInt(in.readLine());
+        intCruiseSpeed[0] = Integer.parseInt(in.readLine());
         TF_TORQ_ADC_OFFSET.setText(in.readLine());
         TF_NUM_DATA_AUTO_DISPLAY.setText(in.readLine());
         RB_UNIT_KILOMETERS.setSelected(Boolean.parseBoolean(in.readLine()));
@@ -281,16 +274,30 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         CB_ADC_STEP_ESTIM.setSelected(Boolean.parseBoolean(in.readLine()));
         RB_BOOST_AT_ZERO_CADENCE.setSelected(Boolean.parseBoolean(in.readLine()));
         RB_BOOST_AT_ZERO_SPEED.setSelected(Boolean.parseBoolean(in.readLine()));
-        RB_850C.setSelected(Boolean.parseBoolean(in.readLine()));
+        displayType = Boolean.parseBoolean(in.readLine()) ? DisplayType._850C : displayType;
         CB_THROTTLE_LEGAL.setSelected(Boolean.parseBoolean(in.readLine()));
 
         in.close();
 
+        if (displayType == null) {
+            displayType = DisplayType.VLCD5;
+        }
+        CMB_DISPLAY_TYPE.setSelectedItem(displayType);
+        setBatteryFieldsEnabled(displayType);
+
+        setWalkAssistFieldsEnabled();
+        setLightsFieldsEnabled();
+        setMaxSpeedOffroadEnabled();
+        setStreetPowerLimitEnabled();
+        setAssistWithoutPedThresholdEnabled();
+        setAdcOptionFieldsEnabled();
+        setBrakeSensorFieldsEnabled();
+
+        updateTorqueCalibrationValues();
+
         if ((!RB_BOOST_AT_ZERO_CADENCE.isSelected()) && (!RB_BOOST_AT_ZERO_SPEED.isSelected())) {
             RB_BOOST_AT_ZERO_CADENCE.setSelected(true);
         }
-
-        TF_TORQ_PER_ADC_STEP.setText(String.valueOf(intTorqueAdcStep));
 
         if (strTorqueOffsetAdj != null) {
             intTorqueOffsetAdj = Integer.parseInt(strTorqueOffsetAdj);
@@ -344,55 +351,19 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         TF_MOTOR_BLOCK_CURR.setVisible(false);
         TF_MOTOR_BLOCK_ERPS.setVisible(false);
 
-        jLabelData1.setText("Data 1 - " + displayDataArray[Integer.parseInt(TF_DATA_1.getText())]);
-        jLabelData2.setText("Data 2 - " + displayDataArray[Integer.parseInt(TF_DATA_2.getText())]);
-        jLabelData3.setText("Data 3 - " + displayDataArray[Integer.parseInt(TF_DATA_3.getText())]);
-        jLabelData4.setText("Data 4 - " + displayDataArray[Integer.parseInt(TF_DATA_4.getText())]);
-        jLabelData5.setText("Data 5 - " + displayDataArray[Integer.parseInt(TF_DATA_5.getText())]);
-        jLabelData6.setText("Data 6 - " + displayDataArray[Integer.parseInt(TF_DATA_6.getText())]);
+        updateDataLabel(TF_DATA_1, jLabelData1, 1);
+        updateDataLabel(TF_DATA_2, jLabelData2, 2);
+        updateDataLabel(TF_DATA_3, jLabelData3, 3);
+        updateDataLabel(TF_DATA_4, jLabelData4, 4);
+        updateDataLabel(TF_DATA_5, jLabelData5, 5);
+        updateDataLabel(TF_DATA_6, jLabelData6, 6);
 
-        jLabel_LIGHT_MODE_ON_START.setText("<html>Lights mode on startup " + lightModeArray[Integer.parseInt(TF_LIGHT_MODE_ON_START.getText())] + "</html>");
-        jLabel_LIGHT_MODE_1.setText("<html>Mode 1 - " + lightModeArray[Integer.parseInt(TF_LIGHT_MODE_1.getText())] + "</html>");
-        jLabel_LIGHT_MODE_2.setText("<html>Mode 2 - " + lightModeArray[Integer.parseInt(TF_LIGHT_MODE_2.getText())] + "</html>");
-        jLabel_LIGHT_MODE_3.setText("<html>Mode 3 - " + lightModeArray[Integer.parseInt(TF_LIGHT_MODE_3.getText())] + "</html>");
+        updateLightsFieldLabel(TF_LIGHT_MODE_ON_START, jLabel_LIGHT_MODE_ON_START, 0);
+        updateLightsFieldLabel(TF_LIGHT_MODE_1, jLabel_LIGHT_MODE_1, 1);
+        updateLightsFieldLabel(TF_LIGHT_MODE_2, jLabel_LIGHT_MODE_2, 2);
+        updateLightsFieldLabel(TF_LIGHT_MODE_3, jLabel_LIGHT_MODE_3, 3);
 
-        if (RB_UNIT_KILOMETERS.isSelected()) {
-            jLabel_MAX_SPEED.setText("Max speed offroad mode (km/h)");
-            jLabel_STREET_SPEED_LIM.setText("Street speed limit (km/h)");
-            jLabelCruiseSpeedUnits.setText("km/h");
-            jLabelWalkSpeedUnits.setText("km/h x10");
-            TF_MAX_SPEED.setText(String.valueOf(intMaxSpeed));
-            TF_STREET_SPEED_LIM.setText(String.valueOf(intStreetSpeed));
-            TF_WALK_ASS_SPEED_1.setText(String.valueOf(intWalkSpeed1));
-            TF_WALK_ASS_SPEED_2.setText(String.valueOf(intWalkSpeed2));
-            TF_WALK_ASS_SPEED_3.setText(String.valueOf(intWalkSpeed3));
-            TF_WALK_ASS_SPEED_4.setText(String.valueOf(intWalkSpeed4));
-            TF_WALK_ASS_SPEED_LIMIT.setText(String.valueOf(intWalkSpeedLimit));
-            TF_CRUISE_SPEED_ENA.setText(String.valueOf(intCruiseSpeed));
-            TF_CRUISE_ASS_1.setText(String.valueOf(intCruiseSpeed1));
-            TF_CRUISE_ASS_2.setText(String.valueOf(intCruiseSpeed2));
-            TF_CRUISE_ASS_3.setText(String.valueOf(intCruiseSpeed3));
-            TF_CRUISE_ASS_4.setText(String.valueOf(intCruiseSpeed4));
-        }
-
-        if (RB_UNIT_MILES.isSelected()) {
-            jLabel_MAX_SPEED.setText("Max speed offroad mode (mph)");
-            jLabel_STREET_SPEED_LIM.setText("Street speed limit (mph)");
-            jLabelCruiseSpeedUnits.setText("mph");
-            jLabelWalkSpeedUnits.setText("mph x10");
-            TF_MAX_SPEED.setText(String.valueOf((intMaxSpeed * 10 + 5) / 16));
-            TF_STREET_SPEED_LIM.setText(String.valueOf((intStreetSpeed * 10 + 5) / 16));
-            TF_WALK_ASS_SPEED_1.setText(String.valueOf((intWalkSpeed1 * 10 + 5) / 16));
-            TF_WALK_ASS_SPEED_2.setText(String.valueOf((intWalkSpeed2 * 10 + 5) / 16));
-            TF_WALK_ASS_SPEED_3.setText(String.valueOf((intWalkSpeed3 * 10 + 5) / 16));
-            TF_WALK_ASS_SPEED_4.setText(String.valueOf((intWalkSpeed4 * 10 + 5) / 16));
-            TF_WALK_ASS_SPEED_LIMIT.setText(String.valueOf((intWalkSpeedLimit * 10 + 5) / 16));
-            TF_CRUISE_SPEED_ENA.setText(String.valueOf((intCruiseSpeed * 10 + 5) / 16));
-            TF_CRUISE_ASS_1.setText(String.valueOf((intCruiseSpeed1 * 10 + 5) / 16));
-            TF_CRUISE_ASS_2.setText(String.valueOf((intCruiseSpeed2 * 10 + 5) / 16));
-            TF_CRUISE_ASS_3.setText(String.valueOf((intCruiseSpeed3 * 10 + 5) / 16));
-            TF_CRUISE_ASS_4.setText(String.valueOf((intCruiseSpeed4 * 10 + 5) / 16));
-        }
+        updateUnits();
     }
 
     public void AddListItem(File newFile) {
@@ -517,799 +488,197 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         });
 
         BTN_COMPILE.addActionListener((ActionEvent arg0) -> {
-                BTN_COMPILE.setEnabled(false);
-
-                PrintWriter iWriter = null;
-                PrintWriter pWriter = null;
-
-                String newFileName = new SimpleDateFormat("yyyyMMdd-HHmmssz").format(new Date()) + ".ini";
-                String newFilePath = Paths.get(experimentalSettingsDir.getAbsolutePath(), newFileName).toString();
-                String configHPath = Paths.get(rootPath, CONFIG_H_FILE).toString();
-                TA_COMPILE_OUTPUT.setText("Writing settings to " + newFilePath + " and " + configHPath);
-
-                try {
-                    File newFile = new File(newFilePath);
-                    AddListItem(newFile);
-
-                    iWriter = new PrintWriter(new BufferedWriter(new FileWriter(newFile)));
-                    pWriter = new PrintWriter(new BufferedWriter(new FileWriter(configHPath)));
-                    pWriter.println("/*\r\n"
-                            + " * config.h\r\n"
-                            + " *\r\n"
-                            + " *  Automatically created by TSDS2 Parameter Configurator\r\n"
-                            + " *  Author: stancecoke\r\n"
-                            + " */\r\n"
-                            + "\r\n"
-                            + "#ifndef CONFIG_H_\r\n"
-                            + "#define CONFIG_H_\r\n");
-                    String text_to_save = "";
-
-                    if (RB_MOTOR_36V.isSelected()) {
-                        text_to_save = "#define MOTOR_TYPE 1";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_MOTOR_36V.isSelected());
-
-                    if (RB_MOTOR_48V.isSelected()) {
-                        text_to_save = "#define MOTOR_TYPE 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_MOTOR_48V.isSelected());
-
-                    if (CB_TORQUE_CALIBRATION.isSelected()) {
-                        text_to_save = "#define TORQUE_SENSOR_CALIBRATED 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define TORQUE_SENSOR_CALIBRATED 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(CB_TORQUE_CALIBRATION.isSelected());
-
-                    text_to_save = "#define MOTOR_ACCELERATION  " + TF_MOTOR_ACC.getText();
-                    iWriter.println(TF_MOTOR_ACC.getText());
-                    pWriter.println(text_to_save);
-
-                    if (CB_ASS_WITHOUT_PED.isSelected()) {
-                        text_to_save = "#define MOTOR_ASSISTANCE_WITHOUT_PEDAL_ROTATION 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define MOTOR_ASSISTANCE_WITHOUT_PEDAL_ROTATION 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(CB_ASS_WITHOUT_PED.isSelected());
-
-                    text_to_save = "#define ASSISTANCE_WITHOUT_PEDAL_ROTATION_THRESHOLD " + TF_ASS_WITHOUT_PED_THRES.getText();
-                    iWriter.println(TF_ASS_WITHOUT_PED_THRES.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define PEDAL_TORQUE_PER_10_BIT_ADC_STEP_X100 " + TF_TORQ_PER_ADC_STEP.getText();
-                    iWriter.println(TF_TORQ_PER_ADC_STEP.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define PEDAL_TORQUE_ADC_MAX " + TF_TORQUE_ADC_MAX.getText();
-                    iWriter.println(TF_TORQUE_ADC_MAX.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define STARTUP_BOOST_TORQUE_FACTOR " + TF_BOOST_TORQUE_FACTOR.getText();
-                    iWriter.println(TF_BOOST_TORQUE_FACTOR.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define MOTOR_BLOCKED_COUNTER_THRESHOLD " + TF_MOTOR_BLOCK_TIME.getText();
-                    iWriter.println(TF_MOTOR_BLOCK_TIME.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define MOTOR_BLOCKED_BATTERY_CURRENT_THRESHOLD_X10 " + TF_MOTOR_BLOCK_CURR.getText();
-                    iWriter.println(TF_MOTOR_BLOCK_CURR.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define MOTOR_BLOCKED_ERPS_THRESHOLD " + TF_MOTOR_BLOCK_ERPS.getText();
-                    iWriter.println(TF_MOTOR_BLOCK_ERPS.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define STARTUP_BOOST_CADENCE_STEP " + TF_BOOST_CADENCE_STEP.getText();
-                    iWriter.println(TF_BOOST_CADENCE_STEP.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define BATTERY_CURRENT_MAX " + TF_BAT_CUR_MAX.getText();
-                    iWriter.println(TF_BAT_CUR_MAX.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define TARGET_MAX_BATTERY_POWER " + TF_BATT_POW_MAX.getText();
-                    iWriter.println(TF_BATT_POW_MAX.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define TARGET_MAX_BATTERY_CAPACITY " + TF_BATT_CAPACITY.getText();
-                    iWriter.println(TF_BATT_CAPACITY.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define BATTERY_CELLS_NUMBER " + TF_BATT_NUM_CELLS.getText();
-                    iWriter.println(TF_BATT_NUM_CELLS.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define MOTOR_DECELERATION " + TF_MOTOR_DEC.getText();
-                    iWriter.println(TF_MOTOR_DEC.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define BATTERY_LOW_VOLTAGE_CUT_OFF " + TF_BATT_VOLT_CUT_OFF.getText();
-                    iWriter.println(TF_BATT_VOLT_CUT_OFF.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define ACTUAL_BATTERY_VOLTAGE_PERCENT " + TF_BATT_VOLT_CAL.getText();
-                    iWriter.println(TF_BATT_VOLT_CAL.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define ACTUAL_BATTERY_CAPACITY_PERCENT " + TF_BATT_CAPACITY_CAL.getText();
-                    iWriter.println(TF_BATT_CAPACITY_CAL.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define LI_ION_CELL_OVERVOLT " + TF_BAT_CELL_OVER.getText();
-                    iWriter.println(TF_BAT_CELL_OVER.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define LI_ION_CELL_RESET_SOC_PERCENT " + TF_BAT_CELL_SOC.getText();
-                    iWriter.println(TF_BAT_CELL_SOC.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define LI_ION_CELL_VOLTS_FULL " + TF_BAT_CELL_FULL.getText();
-                    iWriter.println(TF_BAT_CELL_FULL.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define LI_ION_CELL_VOLTS_3_OF_4 " + TF_BAT_CELL_3_4.getText();
-                    iWriter.println(TF_BAT_CELL_3_4.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define LI_ION_CELL_VOLTS_2_OF_4 " + TF_BAT_CELL_2_4.getText();
-                    iWriter.println(TF_BAT_CELL_2_4.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define LI_ION_CELL_VOLTS_1_OF_4 " + TF_BAT_CELL_1_4.getText();
-                    iWriter.println(TF_BAT_CELL_1_4.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define LI_ION_CELL_VOLTS_5_OF_6 " + TF_BAT_CELL_5_6.getText();
-                    iWriter.println(TF_BAT_CELL_5_6.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define LI_ION_CELL_VOLTS_4_OF_6 " + TF_BAT_CELL_4_6.getText();
-                    iWriter.println(TF_BAT_CELL_4_6.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define LI_ION_CELL_VOLTS_3_OF_6 " + TF_BAT_CELL_3_6.getText();
-                    iWriter.println(TF_BAT_CELL_3_6.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define LI_ION_CELL_VOLTS_2_OF_6 " + TF_BAT_CELL_2_6.getText();
-                    iWriter.println(TF_BAT_CELL_2_6.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define LI_ION_CELL_VOLTS_1_OF_6 " + TF_BAT_CELL_1_6.getText();
-                    iWriter.println(TF_BAT_CELL_1_6.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define LI_ION_CELL_VOLTS_EMPTY " + TF_BAT_CELL_EMPTY.getText();
-                    iWriter.println(TF_BAT_CELL_EMPTY.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define WHEEL_PERIMETER " + TF_WHEEL_CIRCUMF.getText();
-                    iWriter.println(TF_WHEEL_CIRCUMF.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define WHEEL_MAX_SPEED " + String.valueOf(intMaxSpeed);
-                    iWriter.println(String.valueOf(intMaxSpeed));
-                    pWriter.println(text_to_save);
-
-                    if (CB_LIGHTS.isSelected()) {
-                        text_to_save = "#define ENABLE_LIGHTS 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define ENABLE_LIGHTS 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(CB_LIGHTS.isSelected());
-
-                    if (CB_WALK_ASSIST.isSelected()) {
-                        text_to_save = "#define ENABLE_WALK_ASSIST 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define ENABLE_WALK_ASSIST 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(CB_WALK_ASSIST.isSelected());
-
-                    if (CB_BRAKE_SENSOR.isSelected()) {
-                        text_to_save = "#define ENABLE_BRAKE_SENSOR 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define ENABLE_BRAKE_SENSOR 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(CB_BRAKE_SENSOR.isSelected());
-
-                    if (RB_ADC_OPTION_DIS.isSelected()) {
-                        text_to_save = "#define ENABLE_THROTTLE 0" + System.getProperty("line.separator") + "#define ENABLE_TEMPERATURE_LIMIT 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_ADC_OPTION_DIS.isSelected());
-
-                    if (RB_THROTTLE.isSelected()) {
-                        text_to_save = "#define ENABLE_THROTTLE 1" + System.getProperty("line.separator") + "#define ENABLE_TEMPERATURE_LIMIT 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_THROTTLE.isSelected());
-
-                    if (RB_TEMP_LIMIT.isSelected()) {
-                        text_to_save = "#define ENABLE_THROTTLE 0" + System.getProperty("line.separator") + "#define ENABLE_TEMPERATURE_LIMIT 1";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_TEMP_LIMIT.isSelected());
-
-                    if (CB_STREET_MODE_ON_START.isSelected()) {
-                        text_to_save = "#define ENABLE_STREET_MODE_ON_STARTUP 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define ENABLE_STREET_MODE_ON_STARTUP 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(CB_STREET_MODE_ON_START.isSelected());
-
-                    if (CB_SET_PARAM_ON_START.isSelected()) {
-                        text_to_save = "#define ENABLE_SET_PARAMETER_ON_STARTUP 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define ENABLE_SET_PARAMETER_ON_STARTUP 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(CB_SET_PARAM_ON_START.isSelected());
-
-                    if (CB_ODO_COMPENSATION.isSelected()) {
-                        text_to_save = "#define ENABLE_ODOMETER_COMPENSATION 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define ENABLE_ODOMETER_COMPENSATION 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(CB_ODO_COMPENSATION.isSelected());
-
-                    if (CB_STARTUP_BOOST_ON_START.isSelected()) {
-                        text_to_save = "#define STARTUP_BOOST_ON_STARTUP 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define STARTUP_BOOST_ON_STARTUP 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(CB_STARTUP_BOOST_ON_START.isSelected());
-
-                    if (CB_TOR_SENSOR_ADV.isSelected()) {
-                        text_to_save = "#define TORQUE_SENSOR_ADV_ON_STARTUP 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define TORQUE_SENSOR_ADV_ON_STARTUP 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(CB_TOR_SENSOR_ADV.isSelected());
-
-                    text_to_save = "#define LIGHTS_CONFIGURATION_ON_STARTUP " + TF_LIGHT_MODE_ON_START.getText();
-                    iWriter.println(TF_LIGHT_MODE_ON_START.getText());
-                    pWriter.println(text_to_save);
-
-                    if (RB_POWER_ON_START.isSelected()) {
-                        text_to_save = "#define RIDING_MODE_ON_STARTUP 1";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_POWER_ON_START.isSelected());
-
-                    if (RB_TORQUE_ON_START.isSelected()) {
-                        text_to_save = "#define RIDING_MODE_ON_STARTUP 2";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_TORQUE_ON_START.isSelected());
-
-                    if (RB_CADENCE_ON_START.isSelected()) {
-                        text_to_save = "#define RIDING_MODE_ON_STARTUP 3";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_CADENCE_ON_START.isSelected());
-
-                    if (RB_EMTB_ON_START.isSelected()) {
-                        text_to_save = "#define RIDING_MODE_ON_STARTUP 4";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_EMTB_ON_START.isSelected());
-
-                    text_to_save = "#define LIGHTS_CONFIGURATION_1 " + TF_LIGHT_MODE_1.getText();
-                    iWriter.println(TF_LIGHT_MODE_1.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define LIGHTS_CONFIGURATION_2 " + TF_LIGHT_MODE_2.getText();
-                    iWriter.println(TF_LIGHT_MODE_2.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define LIGHTS_CONFIGURATION_3 " + TF_LIGHT_MODE_3.getText();
-                    iWriter.println(TF_LIGHT_MODE_3.getText());
-                    pWriter.println(text_to_save);
-
-                    if (CB_STREET_POWER_LIM.isSelected()) {
-                        text_to_save = "#define STREET_MODE_POWER_LIMIT_ENABLED 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define STREET_MODE_POWER_LIMIT_ENABLED 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(CB_STREET_POWER_LIM.isSelected());
-
-                    text_to_save = "#define STREET_MODE_POWER_LIMIT " + TF_STREET_POWER_LIM.getText();
-                    iWriter.println(TF_STREET_POWER_LIM.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define STREET_MODE_SPEED_LIMIT " + String.valueOf(intStreetSpeed);
-                    iWriter.println(String.valueOf(intStreetSpeed));
-                    pWriter.println(text_to_save);
-
-                    if (CB_STREET_THROTTLE.isSelected()) {
-                        text_to_save = "#define STREET_MODE_THROTTLE_ENABLED 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define STREET_MODE_THROTTLE_ENABLED 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(CB_STREET_THROTTLE.isSelected());
-
-                    if (CB_STREET_CRUISE.isSelected()) {
-                        text_to_save = "#define STREET_MODE_CRUISE_ENABLED 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define STREET_MODE_CRUISE_ENABLED 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(CB_STREET_CRUISE.isSelected());
-
-                    text_to_save = "#define ADC_THROTTLE_MIN_VALUE " + TF_ADC_THROTTLE_MIN.getText();
-                    iWriter.println(TF_ADC_THROTTLE_MIN.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define ADC_THROTTLE_MAX_VALUE " + TF_ADC_THROTTLE_MAX.getText();
-                    iWriter.println(TF_ADC_THROTTLE_MAX.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define MOTOR_TEMPERATURE_MIN_VALUE_LIMIT " + TF_TEMP_MIN_LIM.getText();
-                    iWriter.println(TF_TEMP_MIN_LIM.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define MOTOR_TEMPERATURE_MAX_VALUE_LIMIT " + TF_TEMP_MAX_LIM.getText();
-                    iWriter.println(TF_TEMP_MAX_LIM.getText());
-                    pWriter.println(text_to_save);
-
-                    if (CB_TEMP_ERR_MIN_LIM.isSelected()) {
-                        text_to_save = "#define ENABLE_TEMPERATURE_ERROR_MIN_LIMIT 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define ENABLE_TEMPERATURE_ERROR_MIN_LIMIT 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(CB_TEMP_ERR_MIN_LIM.isSelected());
-
-                    if (RB_VLCD6.isSelected()) {
-                        text_to_save = "#define ENABLE_VLCD6 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define ENABLE_VLCD6 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_VLCD6.isSelected());
-
-                    if (RB_VLCD5.isSelected()) {
-                        text_to_save = "#define ENABLE_VLCD5 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define ENABLE_VLCD5 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_VLCD5.isSelected());
-
-                    if (RB_XH18.isSelected()) {
-                        text_to_save = "#define ENABLE_XH18 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define ENABLE_XH18 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_XH18.isSelected());
-
-                    if (RB_DISPLAY_WORK_ON.isSelected()) {
-                        text_to_save = "#define ENABLE_DISPLAY_WORKING_FLAG 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define ENABLE_DISPLAY_WORKING_FLAG 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_DISPLAY_WORK_ON.isSelected());
-
-                    if (RB_DISPLAY_ALWAY_ON.isSelected()) {
-                        text_to_save = "#define ENABLE_DISPLAY_ALWAYS_ON 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define ENABLE_DISPLAY_ALWAYS_ON 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_DISPLAY_ALWAY_ON.isSelected());
-
-                    if (CB_MAX_SPEED_DISPLAY.isSelected()) {
-                        text_to_save = "#define ENABLE_WHEEL_MAX_SPEED_FROM_DISPLAY 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define ENABLE_WHEEL_MAX_SPEED_FROM_DISPLAY 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(CB_MAX_SPEED_DISPLAY.isSelected());
-
-                    text_to_save = "#define DELAY_MENU_ON " + TF_DELAY_MENU.getText();
-                    iWriter.println(TF_DELAY_MENU.getText());
-                    pWriter.println(text_to_save);
-
-                    if (CB_COASTER_BRAKE.isSelected()) {
-                        text_to_save = "#define COASTER_BRAKE_ENABLED 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define COASTER_BRAKE_ENABLED 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(CB_COASTER_BRAKE.isSelected());
-
-                    text_to_save = "#define COASTER_BRAKE_TORQUE_THRESHOLD " + TF_COASTER_BRAKE_THRESHOLD.getText();
-                    iWriter.println(TF_COASTER_BRAKE_THRESHOLD.getText());
-                    pWriter.println(text_to_save);
-
-                    if (CB_AUTO_DISPLAY_DATA.isSelected()) {
-                        text_to_save = "#define ENABLE_AUTO_DATA_DISPLAY 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define ENABLE_AUTO_DATA_DISPLAY 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(CB_AUTO_DISPLAY_DATA.isSelected());
-
-                    if (CB_STARTUP_ASSIST_ENABLED.isSelected()) {
-                        text_to_save = "#define STARTUP_ASSIST_ENABLED 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define STARTUP_ASSIST_ENABLED 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(CB_STARTUP_ASSIST_ENABLED.isSelected());
-
-                    text_to_save = "#define DELAY_DISPLAY_DATA_1 " + TF_DELAY_DATA_1.getText();
-                    iWriter.println(TF_DELAY_DATA_1.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define DELAY_DISPLAY_DATA_2 " + TF_DELAY_DATA_2.getText();
-                    iWriter.println(TF_DELAY_DATA_2.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define DELAY_DISPLAY_DATA_3 " + TF_DELAY_DATA_3.getText();
-                    iWriter.println(TF_DELAY_DATA_3.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define DELAY_DISPLAY_DATA_4 " + TF_DELAY_DATA_4.getText();
-                    iWriter.println(TF_DELAY_DATA_4.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define DELAY_DISPLAY_DATA_5 " + TF_DELAY_DATA_5.getText();
-                    iWriter.println(TF_DELAY_DATA_5.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define DELAY_DISPLAY_DATA_6 " + TF_DELAY_DATA_6.getText();
-                    iWriter.println(TF_DELAY_DATA_6.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define DISPLAY_DATA_1 " + TF_DATA_1.getText();
-                    iWriter.println(TF_DATA_1.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define DISPLAY_DATA_2 " + TF_DATA_2.getText();
-                    iWriter.println(TF_DATA_2.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define DISPLAY_DATA_3 " + TF_DATA_3.getText();
-                    iWriter.println(TF_DATA_3.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define DISPLAY_DATA_4 " + TF_DATA_4.getText();
-                    iWriter.println(TF_DATA_4.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define DISPLAY_DATA_5 " + TF_DATA_5.getText();
-                    iWriter.println(TF_DATA_5.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define DISPLAY_DATA_6 " + TF_DATA_6.getText();
-                    iWriter.println(TF_DATA_6.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define POWER_ASSIST_LEVEL_1 " + TF_POWER_ASS_1.getText();
-                    iWriter.println(TF_POWER_ASS_1.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define POWER_ASSIST_LEVEL_2 " + TF_POWER_ASS_2.getText();
-                    iWriter.println(TF_POWER_ASS_2.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define POWER_ASSIST_LEVEL_3 " + TF_POWER_ASS_3.getText();
-                    iWriter.println(TF_POWER_ASS_3.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define POWER_ASSIST_LEVEL_4 " + TF_POWER_ASS_4.getText();
-                    iWriter.println(TF_POWER_ASS_4.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define TORQUE_ASSIST_LEVEL_1 " + TF_TORQUE_ASS_1.getText();
-                    iWriter.println(TF_TORQUE_ASS_1.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define TORQUE_ASSIST_LEVEL_2 " + TF_TORQUE_ASS_2.getText();
-                    iWriter.println(TF_TORQUE_ASS_2.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define TORQUE_ASSIST_LEVEL_3 " + TF_TORQUE_ASS_3.getText();
-                    iWriter.println(TF_TORQUE_ASS_3.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define TORQUE_ASSIST_LEVEL_4 " + TF_TORQUE_ASS_4.getText();
-                    iWriter.println(TF_TORQUE_ASS_4.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define CADENCE_ASSIST_LEVEL_1 " + TF_CADENCE_ASS_1.getText();
-                    iWriter.println(TF_CADENCE_ASS_1.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define CADENCE_ASSIST_LEVEL_2 " + TF_CADENCE_ASS_2.getText();
-                    iWriter.println(TF_CADENCE_ASS_2.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define CADENCE_ASSIST_LEVEL_3 " + TF_CADENCE_ASS_3.getText();
-                    iWriter.println(TF_CADENCE_ASS_3.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define CADENCE_ASSIST_LEVEL_4 " + TF_CADENCE_ASS_4.getText();
-                    iWriter.println(TF_CADENCE_ASS_4.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define EMTB_ASSIST_LEVEL_1 " + TF_EMTB_ASS_1.getText();
-                    iWriter.println(TF_EMTB_ASS_1.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define EMTB_ASSIST_LEVEL_2 " + TF_EMTB_ASS_2.getText();
-                    iWriter.println(TF_EMTB_ASS_2.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define EMTB_ASSIST_LEVEL_3 " + TF_EMTB_ASS_3.getText();
-                    iWriter.println(TF_EMTB_ASS_3.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define EMTB_ASSIST_LEVEL_4 " + TF_EMTB_ASS_4.getText();
-                    iWriter.println(TF_EMTB_ASS_4.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define WALK_ASSIST_LEVEL_1 " + String.valueOf(intWalkSpeed1);
-                    iWriter.println(String.valueOf(intWalkSpeed1));
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define WALK_ASSIST_LEVEL_2 " + String.valueOf(intWalkSpeed2);
-                    iWriter.println(String.valueOf(intWalkSpeed2));
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define WALK_ASSIST_LEVEL_3 " + String.valueOf(intWalkSpeed3);
-                    iWriter.println(String.valueOf(intWalkSpeed3));
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define WALK_ASSIST_LEVEL_4 " + String.valueOf(intWalkSpeed4);
-                    iWriter.println(String.valueOf(intWalkSpeed4));
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define WALK_ASSIST_THRESHOLD_SPEED " + String.valueOf(intWalkSpeedLimit);
-                    iWriter.println(String.valueOf(intWalkSpeedLimit));
-                    pWriter.println(text_to_save);
-
-                    if (CB_WALK_TIME_ENA.isSelected()) {
-                        text_to_save = "#define WALK_ASSIST_DEBOUNCE_ENABLED 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define WALK_ASSIST_DEBOUNCE_ENABLED 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(CB_WALK_TIME_ENA.isSelected());
-
-                    text_to_save = "#define WALK_ASSIST_DEBOUNCE_TIME " + TF_WALK_ASS_TIME.getText();
-                    iWriter.println(TF_WALK_ASS_TIME.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define CRUISE_TARGET_SPEED_LEVEL_1 " + String.valueOf(intCruiseSpeed1);
-                    iWriter.println(String.valueOf(intCruiseSpeed1));
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define CRUISE_TARGET_SPEED_LEVEL_2 " + String.valueOf(intCruiseSpeed2);
-                    iWriter.println(String.valueOf(intCruiseSpeed2));
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define CRUISE_TARGET_SPEED_LEVEL_3 " + String.valueOf(intCruiseSpeed3);
-                    iWriter.println(String.valueOf(intCruiseSpeed3));
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define CRUISE_TARGET_SPEED_LEVEL_4 " + String.valueOf(intCruiseSpeed4);
-                    iWriter.println(String.valueOf(intCruiseSpeed4));
-                    pWriter.println(text_to_save);
-
-                    if (CB_CRUISE_WHITOUT_PED.isSelected()) {
-                        text_to_save = "#define CRUISE_MODE_WALK_ENABLED 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define CRUISE_MODE_WALK_ENABLED 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(CB_CRUISE_WHITOUT_PED.isSelected());
-
-                    text_to_save = "#define CRUISE_THRESHOLD_SPEED " + String.valueOf(intCruiseSpeed);
-                    iWriter.println(String.valueOf(intCruiseSpeed));
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define PEDAL_TORQUE_ADC_OFFSET " + TF_TORQ_ADC_OFFSET.getText();
-                    iWriter.println(TF_TORQ_ADC_OFFSET.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define AUTO_DATA_NUMBER_DISPLAY " + TF_NUM_DATA_AUTO_DISPLAY.getText();
-                    iWriter.println(TF_NUM_DATA_AUTO_DISPLAY.getText());
-                    pWriter.println(text_to_save);
-
-                    if (RB_UNIT_KILOMETERS.isSelected()) {
-                        text_to_save = "#define UNITS_TYPE 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_UNIT_KILOMETERS.isSelected());
-
-                    if (RB_UNIT_MILES.isSelected()) {
-                        text_to_save = "#define UNITS_TYPE 1";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_UNIT_MILES.isSelected());
-
-                    text_to_save = "#define ASSIST_THROTTLE_MIN_VALUE " + TF_ASSIST_THROTTLE_MIN.getText();
-                    iWriter.println(TF_ASSIST_THROTTLE_MIN.getText());
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define ASSIST_THROTTLE_MAX_VALUE " + TF_ASSIST_THROTTLE_MAX.getText();
-                    iWriter.println(TF_ASSIST_THROTTLE_MAX.getText());
-                    pWriter.println(text_to_save);
-
-                    if (CB_STREET_WALK.isSelected()) {
-                        text_to_save = "#define STREET_MODE_WALK_ENABLED 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define STREET_MODE_WALK_ENABLED 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(CB_STREET_WALK.isSelected());
-
-                    if (RB_HYBRID_ON_START.isSelected()) {
-                        text_to_save = "#define RIDING_MODE_ON_STARTUP 5";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_HYBRID_ON_START.isSelected());
-
-                    if (RB_STARTUP_NONE.isSelected()) {
-                        text_to_save = "#define DATA_DISPLAY_ON_STARTUP 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_STARTUP_NONE.isSelected());
-
-                    if (RB_STARTUP_SOC.isSelected()) {
-                        text_to_save = "#define DATA_DISPLAY_ON_STARTUP 1";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_STARTUP_SOC.isSelected());
-
-                    if (RB_STARTUP_VOLTS.isSelected()) {
-                        text_to_save = "#define DATA_DISPLAY_ON_STARTUP 2";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_STARTUP_VOLTS.isSelected());
-
-                    if (CB_FIELD_WEAKENING_ENABLED.isSelected()) {
-                        text_to_save = "#define FIELD_WEAKENING_ENABLED 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define FIELD_WEAKENING_ENABLED 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(CB_FIELD_WEAKENING_ENABLED.isSelected());
-
-                    text_to_save = "#define PEDAL_TORQUE_ADC_OFFSET_ADJ " + String.valueOf(intTorqueOffsetAdj);
-                    iWriter.println(String.valueOf(intTorqueOffsetAdj));
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define PEDAL_TORQUE_ADC_RANGE_ADJ " + String.valueOf(intTorqueRangeAdj);
-                    iWriter.println(String.valueOf(intTorqueRangeAdj));
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define PEDAL_TORQUE_ADC_ANGLE_ADJ " + String.valueOf(intAdcPedalTorqueAngleAdjArray[intTorqueAngleAdj]);
-                    iWriter.println(String.valueOf(intTorqueAngleAdj));
-                    pWriter.println(text_to_save);
-
-                    text_to_save = "#define PEDAL_TORQUE_PER_10_BIT_ADC_STEP_ADV_X100 " + TF_TORQ_PER_ADC_STEP_ADV.getText();
-                    iWriter.println(TF_TORQ_PER_ADC_STEP_ADV.getText());
-                    pWriter.println(text_to_save);
-
-                    if (RB_SOC_AUTO.isSelected()) {
-                        text_to_save = "#define SOC_PERCENT_CALC 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_SOC_AUTO.isSelected());
-
-                    if (RB_SOC_WH.isSelected()) {
-                        text_to_save = "#define SOC_PERCENT_CALC 1";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_SOC_WH.isSelected());
-
-                    if (RB_SOC_VOLTS.isSelected()) {
-                        text_to_save = "#define SOC_PERCENT_CALC 2";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_SOC_VOLTS.isSelected());
-
-                    /*
-                                        if (CB_ADC_STEP_CALC.isSelected()) {
-						text_to_save = "#define TORQUE_ADC_STEP_EXTIMATED 1";
-						pWriter.println(text_to_save);
-					}
-                                        else {
-						text_to_save = "#define TORQUE_ADC_STEP_EXTIMATED 0";
-						pWriter.println(text_to_save);
-					}
-                     */
-                    iWriter.println(CB_ADC_STEP_ESTIM.isSelected());
-
-                    if (RB_BOOST_AT_ZERO_CADENCE.isSelected()) {
-                        text_to_save = "#define STARTUP_BOOST_AT_ZERO 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_BOOST_AT_ZERO_CADENCE.isSelected());
-
-                    if (RB_BOOST_AT_ZERO_SPEED.isSelected()) {
-                        text_to_save = "#define STARTUP_BOOST_AT_ZERO 1";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_BOOST_AT_ZERO_SPEED.isSelected());
-
-                    if (RB_850C.isSelected()) {
-                        text_to_save = "#define ENABLE_850C 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define ENABLE_850C 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(RB_850C.isSelected());
-
-                    if (CB_THROTTLE_LEGAL.isSelected()) {
-                        text_to_save = "#define STREET_MODE_THROTTLE_LEGAL 1";
-                        pWriter.println(text_to_save);
-                    } else {
-                        text_to_save = "#define STREET_MODE_THROTTLE_LEGAL 0";
-                        pWriter.println(text_to_save);
-                    }
-                    iWriter.println(CB_THROTTLE_LEGAL.isSelected());
-
-                    pWriter.println("\r\n#endif /* CONFIG_H_ */");
-
-                    iWriter.close();
-                } catch (IOException ioe) {
-                    ioe.printStackTrace(System.err);
-                } finally {
-                    if (pWriter != null) {
-                        pWriter.flush();
-                        pWriter.close();
-                    }
+            BTN_COMPILE.setEnabled(false);
+
+            // ini writer
+            PrintWriter iw = null;
+            // config.h writer
+            PrintWriter hw = null;
+
+            String newFileName = new SimpleDateFormat("yyyyMMdd-HHmmssz").format(new Date()) + ".ini";
+            String newFilePath = Paths.get(experimentalSettingsDir.getAbsolutePath(), newFileName).toString();
+            String configHPath = Paths.get(rootPath, CONFIG_H_FILE).toString();
+            TA_COMPILE_OUTPUT.setText("Writing settings to " + newFilePath + " and " + configHPath);
+
+            try {
+                File newFile = new File(newFilePath);
+                AddListItem(newFile);
+
+                iw = new PrintWriter(new BufferedWriter(new FileWriter(newFile)));
+                hw = new PrintWriter(new BufferedWriter(new FileWriter(configHPath)));
+                hw.println("/*\r\n"
+                        + " * config.h\r\n"
+                        + " *\r\n"
+                        + " *  Automatically created by TSDS2 Parameter Configurator\r\n"
+                        + " *  Author: stancecoke\r\n"
+                        + " */\r\n"
+                        + "\r\n"
+                        + "#ifndef CONFIG_H_\r\n"
+                        + "#define CONFIG_H_\r\n");
+
+                saveField(hw, iw, "MOTOR_TYPE", RB_MOTOR_36V);
+                iw.println(RB_MOTOR_48V.isSelected());
+                saveField(hw, iw, "TORQUE_SENSOR_CALIBRATED", CB_TORQUE_CALIBRATION);
+                saveField(hw, iw, "MOTOR_ACCELERATION", TF_MOTOR_ACC);
+                saveField(hw, iw, "MOTOR_ASSISTANCE_WITHOUT_PEDAL_ROTATION", CB_ASS_WITHOUT_PED);
+                saveField(hw, iw, "ASSISTANCE_WITHOUT_PEDAL_ROTATION_THRESHOLD", TF_ASS_WITHOUT_PED_THRES);
+                saveField(hw, iw, "PEDAL_TORQUE_PER_10_BIT_ADC_STEP_X100", TF_TORQ_PER_ADC_STEP);
+                saveField(hw, iw, "PEDAL_TORQUE_ADC_MAX", TF_TORQUE_ADC_MAX);
+                saveField(hw, iw, "STARTUP_BOOST_TORQUE_FACTOR", TF_BOOST_TORQUE_FACTOR);
+                saveField(hw, iw, "MOTOR_BLOCKED_COUNTER_THRESHOLD", TF_MOTOR_BLOCK_TIME);
+                saveField(hw, iw, "MOTOR_BLOCKED_BATTERY_CURRENT_THRESHOLD_X10", TF_MOTOR_BLOCK_CURR);
+                saveField(hw, iw, "MOTOR_BLOCKED_ERPS_THRESHOLD", TF_MOTOR_BLOCK_ERPS);
+                saveField(hw, iw, "STARTUP_BOOST_CADENCE_STEP", TF_BOOST_CADENCE_STEP);
+                saveField(hw, iw, "BATTERY_CURRENT_MAX", TF_BAT_CUR_MAX);
+                saveField(hw, iw, "TARGET_MAX_BATTERY_POWER", TF_BATT_POW_MAX);
+                saveField(hw, iw, "TARGET_MAX_BATTERY_CAPACITY", TF_BATT_CAPACITY);
+                saveField(hw, iw, "BATTERY_CELLS_NUMBER", TF_BATT_NUM_CELLS);
+                saveField(hw, iw, "MOTOR_DECELERATION", TF_MOTOR_DEC);
+                saveField(hw, iw, "BATTERY_LOW_VOLTAGE_CUT_OFF", TF_BATT_VOLT_CUT_OFF);
+                saveField(hw, iw, "ACTUAL_BATTERY_VOLTAGE_PERCENT", TF_BATT_VOLT_CAL);
+                saveField(hw, iw, "ACTUAL_BATTERY_CAPACITY_PERCENT", TF_BATT_CAPACITY_CAL);
+                saveField(hw, iw, "LI_ION_CELL_OVERVOLT", TF_BAT_CELL_OVER);
+                saveField(hw, iw, "LI_ION_CELL_RESET_SOC_PERCENT", TF_BAT_CELL_SOC);
+                saveField(hw, iw, "LI_ION_CELL_VOLTS_FULL", TF_BAT_CELL_FULL);
+                saveField(hw, iw, "LI_ION_CELL_VOLTS_3_OF_4", TF_BAT_CELL_3_4);
+                saveField(hw, iw, "LI_ION_CELL_VOLTS_2_OF_4", TF_BAT_CELL_2_4);
+                saveField(hw, iw, "LI_ION_CELL_VOLTS_1_OF_4", TF_BAT_CELL_1_4);
+                saveField(hw, iw, "LI_ION_CELL_VOLTS_5_OF_6", TF_BAT_CELL_5_6);
+                saveField(hw, iw, "LI_ION_CELL_VOLTS_4_OF_6", TF_BAT_CELL_4_6);
+                saveField(hw, iw, "LI_ION_CELL_VOLTS_3_OF_6", TF_BAT_CELL_3_6);
+                saveField(hw, iw, "LI_ION_CELL_VOLTS_2_OF_6", TF_BAT_CELL_2_6);
+                saveField(hw, iw, "LI_ION_CELL_VOLTS_1_OF_6", TF_BAT_CELL_1_6);
+                saveField(hw, iw, "LI_ION_CELL_VOLTS_EMPTY", TF_BAT_CELL_EMPTY);
+                saveField(hw, iw, "WHEEL_PERIMETER", TF_WHEEL_CIRCUMF);
+                saveField(hw, iw, "WHEEL_MAX_SPEED", intMaxSpeed[0]);
+                saveField(hw, iw, "ENABLE_LIGHTS", CB_LIGHTS);
+                saveField(hw, iw, "ENABLE_WALK_ASSIST", CB_WALK_ASSIST);
+                saveField(hw, iw, "ENABLE_BRAKE_SENSOR", CB_BRAKE_SENSOR);
+
+                // these are three mutually exclusive fields
+                saveMaybeDefineFields(hw, iw, RB_ADC_OPTION_DIS, "ENABLE_THROTTLE", 0, "ENABLE_TEMPERATURE_LIMIT", 0);
+                saveMaybeDefineFields(hw, iw, RB_THROTTLE, "ENABLE_THROTTLE", 1, "ENABLE_TEMPERATURE_LIMIT", 0);
+                saveMaybeDefineFields(hw, iw, RB_TEMP_LIMIT, "ENABLE_THROTTLE", 0, "ENABLE_TEMPERATURE_LIMIT", 1);
+
+                saveField(hw, iw, "ENABLE_STREET_MODE_ON_STARTUP", CB_STREET_MODE_ON_START);
+                saveField(hw, iw, "ENABLE_SET_PARAMETER_ON_STARTUP", CB_SET_PARAM_ON_START);
+                saveField(hw, iw, "ENABLE_ODOMETER_COMPENSATION", CB_ODO_COMPENSATION);
+                saveField(hw, iw, "STARTUP_BOOST_ON_STARTUP", CB_STARTUP_BOOST_ON_START);
+                saveField(hw, iw, "TORQUE_SENSOR_ADV_ON_STARTUP", CB_TOR_SENSOR_ADV);
+                saveField(hw, iw, "LIGHTS_CONFIGURATION_ON_STARTUP", TF_LIGHT_MODE_ON_START);
+                saveMaybeDefineField(hw, iw, "RIDING_MODE_ON_STARTUP", RB_POWER_ON_START, 1);
+                saveMaybeDefineField(hw, iw, "RIDING_MODE_ON_STARTUP", RB_TORQUE_ON_START, 2);
+                saveMaybeDefineField(hw, iw, "RIDING_MODE_ON_STARTUP", RB_CADENCE_ON_START, 3);
+                saveMaybeDefineField(hw, iw, "RIDING_MODE_ON_STARTUP", RB_EMTB_ON_START, 4);
+                saveField(hw, iw, "LIGHTS_CONFIGURATION_1", TF_LIGHT_MODE_1);
+                saveField(hw, iw, "LIGHTS_CONFIGURATION_2", TF_LIGHT_MODE_2);
+                saveField(hw, iw, "LIGHTS_CONFIGURATION_3", TF_LIGHT_MODE_3);
+                saveField(hw, iw, "STREET_MODE_POWER_LIMIT_ENABLED", CB_STREET_POWER_LIM);
+                saveField(hw, iw, "STREET_MODE_POWER_LIMIT", TF_STREET_POWER_LIM);
+                saveField(hw, iw, "STREET_MODE_SPEED_LIMIT", intMaxSpeed[1]);
+                saveField(hw, iw, "STREET_MODE_THROTTLE_ENABLED", CB_STREET_THROTTLE);
+                saveField(hw, iw, "STREET_MODE_CRUISE_ENABLED", CB_STREET_CRUISE);
+                saveField(hw, iw, "ADC_THROTTLE_MIN_VALUE", TF_ADC_THROTTLE_MIN);
+                saveField(hw, iw, "ADC_THROTTLE_MAX_VALUE", TF_ADC_THROTTLE_MAX);
+                saveField(hw, iw, "MOTOR_TEMPERATURE_MIN_VALUE_LIMIT", TF_TEMP_MIN_LIM);
+                saveField(hw, iw, "MOTOR_TEMPERATURE_MAX_VALUE_LIMIT", TF_TEMP_MAX_LIM);
+                saveField(hw, iw, "ENABLE_TEMPERATURE_ERROR_MIN_LIMIT", CB_TEMP_ERR_MIN_LIM);
+
+                DisplayType displayType = (DisplayType) CMB_DISPLAY_TYPE.getSelectedItem();
+                saveField(hw, iw, "ENABLE_VLCD6", displayType == DisplayType.VLCD6);
+                saveField(hw, iw, "ENABLE_VLCD5", displayType == DisplayType.VLCD5);
+                saveField(hw, iw, "ENABLE_XH18", displayType == DisplayType.XH18);
+
+                saveField(hw, iw, "ENABLE_DISPLAY_WORKING_FLAG", RB_DISPLAY_WORK_ON);
+                saveField(hw, iw, "ENABLE_DISPLAY_ALWAYS_ON", RB_DISPLAY_ALWAY_ON);
+                saveField(hw, iw, "ENABLE_WHEEL_MAX_SPEED_FROM_DISPLAY", CB_MAX_SPEED_DISPLAY);
+                saveField(hw, iw, "DELAY_MENU_ON", TF_DELAY_MENU);
+                saveField(hw, iw, "COASTER_BRAKE_ENABLED", CB_COASTER_BRAKE);
+                saveField(hw, iw, "COASTER_BRAKE_TORQUE_THRESHOLD", TF_COASTER_BRAKE_THRESHOLD);
+                saveField(hw, iw, "ENABLE_AUTO_DATA_DISPLAY", CB_AUTO_DISPLAY_DATA);
+                saveField(hw, iw, "STARTUP_ASSIST_ENABLED", CB_STARTUP_ASSIST_ENABLED);
+                saveField(hw, iw, "DELAY_DISPLAY_DATA_1", TF_DELAY_DATA_1);
+                saveField(hw, iw, "DELAY_DISPLAY_DATA_2", TF_DELAY_DATA_2);
+                saveField(hw, iw, "DELAY_DISPLAY_DATA_3", TF_DELAY_DATA_3);
+                saveField(hw, iw, "DELAY_DISPLAY_DATA_4", TF_DELAY_DATA_4);
+                saveField(hw, iw, "DELAY_DISPLAY_DATA_5", TF_DELAY_DATA_5);
+                saveField(hw, iw, "DELAY_DISPLAY_DATA_6", TF_DELAY_DATA_6);
+                saveField(hw, iw, "DISPLAY_DATA_1", TF_DATA_1);
+                saveField(hw, iw, "DISPLAY_DATA_2", TF_DATA_2);
+                saveField(hw, iw, "DISPLAY_DATA_3", TF_DATA_3);
+                saveField(hw, iw, "DISPLAY_DATA_4", TF_DATA_4);
+                saveField(hw, iw, "DISPLAY_DATA_5", TF_DATA_5);
+                saveField(hw, iw, "DISPLAY_DATA_6", TF_DATA_6);
+                saveField(hw, iw, "POWER_ASSIST_LEVEL_1", TF_POWER_ASS_1);
+                saveField(hw, iw, "POWER_ASSIST_LEVEL_2", TF_POWER_ASS_2);
+                saveField(hw, iw, "POWER_ASSIST_LEVEL_3", TF_POWER_ASS_3);
+                saveField(hw, iw, "POWER_ASSIST_LEVEL_4", TF_POWER_ASS_4);
+                saveField(hw, iw, "TORQUE_ASSIST_LEVEL_1", TF_TORQUE_ASS_1);
+                saveField(hw, iw, "TORQUE_ASSIST_LEVEL_2", TF_TORQUE_ASS_2);
+                saveField(hw, iw, "TORQUE_ASSIST_LEVEL_3", TF_TORQUE_ASS_3);
+                saveField(hw, iw, "TORQUE_ASSIST_LEVEL_4", TF_TORQUE_ASS_4);
+                saveField(hw, iw, "CADENCE_ASSIST_LEVEL_1", TF_CADENCE_ASS_1);
+                saveField(hw, iw, "CADENCE_ASSIST_LEVEL_2", TF_CADENCE_ASS_2);
+                saveField(hw, iw, "CADENCE_ASSIST_LEVEL_3", TF_CADENCE_ASS_3);
+                saveField(hw, iw, "CADENCE_ASSIST_LEVEL_4", TF_CADENCE_ASS_4);
+                saveField(hw, iw, "EMTB_ASSIST_LEVEL_1", TF_EMTB_ASS_1);
+                saveField(hw, iw, "EMTB_ASSIST_LEVEL_2", TF_EMTB_ASS_2);
+                saveField(hw, iw, "EMTB_ASSIST_LEVEL_3", TF_EMTB_ASS_3);
+                saveField(hw, iw, "EMTB_ASSIST_LEVEL_4", TF_EMTB_ASS_4);
+                saveField(hw, iw, "WALK_ASSIST_LEVEL_1", intWalkSpeed[1]);
+                saveField(hw, iw, "WALK_ASSIST_LEVEL_2", intWalkSpeed[2]);
+                saveField(hw, iw, "WALK_ASSIST_LEVEL_3", intWalkSpeed[3]);
+                saveField(hw, iw, "WALK_ASSIST_LEVEL_4", intWalkSpeed[4]);
+                saveField(hw, iw, "WALK_ASSIST_THRESHOLD_SPEED", intWalkSpeed[0]);
+                saveField(hw, iw, "WALK_ASSIST_DEBOUNCE_ENABLED", CB_WALK_TIME_ENA);
+                saveField(hw, iw, "WALK_ASSIST_DEBOUNCE_TIME", TF_WALK_ASS_TIME);
+                saveField(hw, iw, "CRUISE_TARGET_SPEED_LEVEL_1", intCruiseSpeed[1]);
+                saveField(hw, iw, "CRUISE_TARGET_SPEED_LEVEL_2", intCruiseSpeed[2]);
+                saveField(hw, iw, "CRUISE_TARGET_SPEED_LEVEL_3", intCruiseSpeed[3]);
+                saveField(hw, iw, "CRUISE_TARGET_SPEED_LEVEL_4", intCruiseSpeed[4]);
+                saveField(hw, iw, "CRUISE_MODE_WALK_ENABLED", CB_CRUISE_WHITOUT_PED);
+                saveField(hw, iw, "CRUISE_THRESHOLD_SPEED", intCruiseSpeed[0]);
+                saveField(hw, iw, "PEDAL_TORQUE_ADC_OFFSET", TF_TORQ_ADC_OFFSET);
+                saveField(hw, iw, "AUTO_DATA_NUMBER_DISPLAY", TF_NUM_DATA_AUTO_DISPLAY);
+                saveMaybeDefineField(hw, iw, "UNITS_TYPE", RB_UNIT_KILOMETERS, 0);
+                saveMaybeDefineField(hw, iw, "UNITS_TYPE", RB_UNIT_MILES, 1);
+                saveField(hw, iw, "ASSIST_THROTTLE_MIN_VALUE", TF_ASSIST_THROTTLE_MIN);
+                saveField(hw, iw, "ASSIST_THROTTLE_MAX_VALUE", TF_ASSIST_THROTTLE_MAX);
+                saveField(hw, iw, "STREET_MODE_WALK_ENABLED", CB_STREET_WALK);
+                saveMaybeDefineField(hw, iw, "RIDING_MODE_ON_STARTUP", RB_HYBRID_ON_START, 5);
+                saveMaybeDefineField(hw, iw, "DATA_DISPLAY_ON_STARTUP", RB_STARTUP_NONE, 0);
+                saveMaybeDefineField(hw, iw, "DATA_DISPLAY_ON_STARTUP", RB_STARTUP_SOC, 1);
+                saveMaybeDefineField(hw, iw, "DATA_DISPLAY_ON_STARTUP", RB_STARTUP_VOLTS, 2);
+                saveField(hw, iw, "FIELD_WEAKENING_ENABLED", CB_FIELD_WEAKENING_ENABLED);
+                saveField(hw, iw, "PEDAL_TORQUE_ADC_OFFSET_ADJ", intTorqueOffsetAdj);
+                saveField(hw, iw, "PEDAL_TORQUE_ADC_RANGE_ADJ", intTorqueRangeAdj);
+                defineField(hw, "PEDAL_TORQUE_ADC_ANGLE_ADJ", intAdcPedalTorqueAngleAdjArray[intTorqueAngleAdj]);
+                iw.println(String.valueOf(intTorqueAngleAdj));
+                saveField(hw, iw, "PEDAL_TORQUE_PER_10_BIT_ADC_STEP_ADV_X100", TF_TORQ_PER_ADC_STEP_ADV);
+                saveMaybeDefineField(hw, iw, "SOC_PERCENT_CALC", RB_SOC_AUTO, 0);
+                saveMaybeDefineField(hw, iw, "SOC_PERCENT_CALC", RB_SOC_WH, 1);
+                saveMaybeDefineField(hw, iw, "SOC_PERCENT_CALC", RB_SOC_VOLTS, 2);
+                iw.println(CB_ADC_STEP_ESTIM.isSelected());
+                saveMaybeDefineField(hw, iw, "STARTUP_BOOST_AT_ZERO", RB_BOOST_AT_ZERO_CADENCE, 0);
+                saveMaybeDefineField(hw, iw, "STARTUP_BOOST_AT_ZERO", RB_BOOST_AT_ZERO_SPEED, 1);
+                saveField(hw, iw, "ENABLE_850C", displayType == DisplayType._850C);
+                saveField(hw, iw, "STREET_MODE_THROTTLE_LEGAL", CB_THROTTLE_LEGAL);
+
+                hw.println("\r\n#endif /* CONFIG_H_ */");
+
+                iw.close();
+            } catch (IOException ioe) {
+                ioe.printStackTrace(System.err);
+                JOptionPane.showMessageDialog(this, "Error writing settings to file: " + ioe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            } finally {
+                if (hw != null) {
+                    hw.flush();
+                    hw.close();
                 }
+            }
 
-                compileAndFlash(newFileName);
+            compileAndFlash(newFileName);
         });
 
         if (lastSettingsFile != null) {
@@ -1350,26 +719,263 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         BTN_CANCEL.setEnabled(false);
     }
 
+    private void saveField(PrintWriter hw, PrintWriter iw, String name, JToggleButton rb) {
+        saveField(hw, iw, name, rb.isSelected());
+    }
+
+    private void saveField(PrintWriter hw, PrintWriter iw, String name, JTextField txt) {
+        defineField(hw, name, txt.getText());
+        iw.println(txt.getText());
+    }
+
+    private void saveField(PrintWriter hw, PrintWriter iw, String name, int value) {
+        defineField(hw, name, value);
+        iw.println(value);
+    }
+
+    private void saveField(PrintWriter hw, PrintWriter iw, String name, boolean value) {
+        defineField(hw, name, value ? 1 : 0);
+        iw.println(value);
+    }
+
+    private void saveMaybeDefineField(PrintWriter hw, PrintWriter iw, String name, JToggleButton rb, int value) {
+        if (rb.isSelected()) {
+            defineField(hw, name, value);
+        }
+        iw.println(rb.isSelected());
+    }
+
+    private void saveMaybeDefineFields(PrintWriter hw, PrintWriter iw, JToggleButton rb, String name1, int value1, String name2, int value2) {
+        if (rb.isSelected()) {
+            defineField(hw, name1, value1);
+            defineField(hw, name2, value2);
+        }
+        iw.println(rb.isSelected());
+    }
+
+    private void defineField(PrintWriter hw, String name, int value) {
+        hw.println("#define " + name + " " + value);
+    }
+    private void defineField(PrintWriter hw, String name, String value) {
+        hw.println("#define " + name + " " + value);
+    }
+
+    private int getKmValue(int val, boolean isKm) {
+        return isKm ? val : (val * 10 + 5) / 16;
+    }
+
+    private String kmValueToString(int val, boolean isKm) {
+        return String.valueOf(getKmValue(val, isKm));
+    }
+
+    private void handleFieldKmValue(JTextField field, int[] values, int index) {
+        Integer intObj = safeParseInt(field.getText());
+        // ignore bad values
+        if (intObj != null) {
+            values[index] = getKmValue(intObj.intValue(), RB_UNIT_KILOMETERS.isSelected());
+        }
+    }
+
+    private int handleFieldValueWithAdjustment(JTextField field, int adjust) {
+        String strValue = field.getText();
+        Integer intObj = safeParseInt(strValue);
+        int value = intObj != null ? intObj.intValue() : 0;
+        if (intObj != null && value >= 0 && value <= adjust) {
+            return value + adjust;
+        }
+        field.setText("0");
+        return adjust;
+    }
+
+    /** Update a field if its value is outside the min or max. */
+    private void ensureFieldInRange(JTextField field, int min, int max) {
+        Integer intObj = safeParseInt(field.getText());
+        if (intObj == null) {
+        } else {
+            int value = intObj.intValue();
+            if (value < min) {
+                field.setText(String.valueOf(min));
+            } else if (value > max) {
+                field.setText(String.valueOf(max));
+            }
+        }
+    }
+
+    private Integer safeParseInt(String str) {
+        try {
+            return Integer.valueOf(str);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    private void updateTorqueCalibrationValues() {
+        boolean selected = CB_TORQUE_CALIBRATION.isSelected();
+        TF_TORQ_ADC_OFFSET.setEnabled(selected);
+        TF_TORQ_ADC_RANGE_ADJ.setEnabled(selected);
+        TF_TORQ_ADC_ANGLE_ADJ.setEnabled(selected);
+        TF_TORQUE_ADC_MAX.setEnabled(selected);
+        CB_ADC_STEP_ESTIM.setEnabled(selected);
+        TF_TORQ_PER_ADC_STEP_ADV.setEnabled(selected);
+        TF_TORQ_PER_ADC_STEP.setEnabled(!selected);
+
+        if (selected) {
+            int intTorqueAdcOffset = Integer.parseInt(TF_TORQ_ADC_OFFSET.getText());
+            int intTorqueAdcMax = Integer.parseInt(TF_TORQUE_ADC_MAX.getText());
+            int intTorqueAdcOnWeight = intTorqueAdcOffset + ((intTorqueAdcMax - intTorqueAdcOffset) * 75) / 100;
+            int intTorqueAdcStepCalc = (WEIGHT_ON_PEDAL * 167) / (intTorqueAdcOnWeight - intTorqueAdcOffset);
+            TF_TORQ_PER_ADC_STEP.setText(String.valueOf(intTorqueAdcStepCalc));
+        }
+    }
+
+    private void updateDataLabel(JTextField field, JLabel label, int dataNum) {
+        try {
+            int value = Integer.parseInt(field.getText());
+            if (dataNum >= 0 && dataNum <= 10) {
+                label.setText(String.format("Data %d - %s", dataNum, displayDataArray[value]));
+            } else {
+                label.setText("Data " + dataNum);
+            }
+        } catch (NumberFormatException ex) {
+            label.setText("Data " + dataNum);
+        }
+    }
+
+    private void updateLightsFieldLabel(JTextField field, JLabel label, int modeNum) {
+        int max = modeNum == 2 ? 9 : 8; // not sure why this was different
+        int extra = modeNum == 3 ? 10 : Integer.MAX_VALUE;
+        String name = modeNum == 0 ? "Light mode on start" : "Light mode " + modeNum;
+        try {
+            int index = Integer.parseInt(field.getText());
+            if ((index >= 0 && index <= max) || index == extra) {
+                label.setText(String.format("<html>%s - %s</html>", name, lightModeArray[index]));
+            } else {
+                label.setText(name);
+            }
+        } catch (NumberFormatException ex) {
+            label.setText(name);
+        }
+    }
+
+    private void setAdcOptionFieldsEnabled() {
+        boolean isThrottle = RB_THROTTLE.isSelected();
+        boolean isTempLimit = RB_TEMP_LIMIT.isSelected();
+
+        TF_ADC_THROTTLE_MIN.setEnabled(isThrottle);
+        TF_ADC_THROTTLE_MAX.setEnabled(isThrottle);
+        TF_ASSIST_THROTTLE_MIN.setEnabled(isThrottle);
+        TF_ASSIST_THROTTLE_MAX.setEnabled(isThrottle);
+
+        TF_TEMP_MIN_LIM.setEnabled(isTempLimit);
+        TF_TEMP_MAX_LIM.setEnabled(isTempLimit);
+        CB_TEMP_ERR_MIN_LIM.setEnabled(isTempLimit);
+        CB_TEMP_ERR_MIN_LIM.setEnabled(isTempLimit);
+    }
+
+    /** Enables/disables fields walk assist time, cruise without pedaling, CB walk debounce time, throttle option */
+    private void setBrakeSensorFieldsEnabled() {
+        boolean brakeSensorSelected = CB_BRAKE_SENSOR.isSelected();
+        TF_WALK_ASS_TIME.setEnabled(CB_WALK_TIME_ENA.isSelected() && brakeSensorSelected && CB_WALK_ASSIST.isSelected());
+        CB_CRUISE_WHITOUT_PED.setEnabled(brakeSensorSelected);
+        CB_WALK_TIME_ENA.setEnabled(brakeSensorSelected && CB_WALK_ASSIST.isSelected());
+
+        boolean coasterBrakeSelected = CB_COASTER_BRAKE.isSelected();
+        boolean isThrottleEnabled = brakeSensorSelected && !coasterBrakeSelected;
+        if (!isThrottleEnabled && RB_THROTTLE.isSelected()) {
+            RB_ADC_OPTION_DIS.setSelected(true);
+        }
+        RB_THROTTLE.setEnabled(isThrottleEnabled);
+        CB_THROTTLE_LEGAL.setEnabled(isThrottleEnabled);
+        TF_COASTER_BRAKE_THRESHOLD.setEnabled(coasterBrakeSelected);
+    }
+
+    /** Enable/disable battery fraction text fields based on whether this is the VLCD5 or not */
+    private void setBatteryFieldsEnabled(DisplayType selectedItem) {
+        boolean isSixBars = selectedItem == DisplayType.VLCD5 || selectedItem == DisplayType._850C;
+        TF_BAT_CELL_5_6.setEnabled(isSixBars);
+        TF_BAT_CELL_4_6.setEnabled(isSixBars);
+        TF_BAT_CELL_3_6.setEnabled(isSixBars);
+        TF_BAT_CELL_2_6.setEnabled(isSixBars);
+        TF_BAT_CELL_1_6.setEnabled(isSixBars);
+        TF_BAT_CELL_3_4.setEnabled(!isSixBars);
+        TF_BAT_CELL_2_4.setEnabled(!isSixBars);
+        TF_BAT_CELL_1_4.setEnabled(!isSixBars);
+    }
+
+    private void updateUnits() {
+        boolean isKm = RB_UNIT_KILOMETERS.isSelected();
+        String unitsStr = isKm ? "km/h" : "mph";
+        jLabel_MAX_SPEED.setText("Max speed offroad mode (" + unitsStr + ")");
+        jLabel_STREET_SPEED_LIM.setText("Street speed limit (" + unitsStr + ")");
+        jLabelCruiseSpeedUnits.setText(unitsStr);
+        jLabelWalkSpeedUnits.setText(unitsStr + "x10");
+        TF_MAX_SPEED.setText(String.valueOf(intMaxSpeed[0]));
+        TF_STREET_SPEED_LIM.setText(kmValueToString(intMaxSpeed[1], isKm));
+        TF_WALK_ASS_SPEED_1.setText(kmValueToString(intWalkSpeed[1], isKm));
+        TF_WALK_ASS_SPEED_2.setText(kmValueToString(intWalkSpeed[2], isKm));
+        TF_WALK_ASS_SPEED_3.setText(kmValueToString(intWalkSpeed[3], isKm));
+        TF_WALK_ASS_SPEED_4.setText(kmValueToString(intWalkSpeed[4], isKm));
+        TF_WALK_ASS_SPEED_LIMIT.setText(kmValueToString(intWalkSpeed[0], isKm));
+        TF_CRUISE_SPEED_ENA.setText(kmValueToString(intCruiseSpeed[0], isKm));
+        TF_CRUISE_ASS_1.setText(kmValueToString(intCruiseSpeed[1], isKm));
+        TF_CRUISE_ASS_2.setText(kmValueToString(intCruiseSpeed[2], isKm));
+        TF_CRUISE_ASS_3.setText(kmValueToString(intCruiseSpeed[3], isKm));
+        TF_CRUISE_ASS_4.setText(kmValueToString(intCruiseSpeed[4], isKm));
+    }
+
+    private void setWalkAssistFieldsEnabled() {
+        boolean enabled = CB_WALK_ASSIST.isSelected();
+        TF_WALK_ASS_SPEED_1.setEnabled(enabled);
+        TF_WALK_ASS_SPEED_2.setEnabled(enabled);
+        TF_WALK_ASS_SPEED_3.setEnabled(enabled);
+        TF_WALK_ASS_SPEED_4.setEnabled(enabled);
+        TF_WALK_ASS_SPEED_LIMIT.setEnabled(enabled);
+        TF_WALK_ASS_TIME.setEnabled(CB_WALK_TIME_ENA.isSelected() && CB_BRAKE_SENSOR.isSelected() && enabled);
+        CB_WALK_TIME_ENA.setEnabled(CB_BRAKE_SENSOR.isSelected() && enabled);
+        CB_STREET_WALK.setEnabled(enabled);
+    }
+
+    private void setLightsFieldsEnabled() {
+        boolean enabled = CB_LIGHTS.isSelected();
+        TF_LIGHT_MODE_ON_START.setEnabled(enabled);
+        TF_LIGHT_MODE_1.setEnabled(enabled);
+        TF_LIGHT_MODE_2.setEnabled(enabled);
+        TF_LIGHT_MODE_3.setEnabled(enabled);
+    }
+
+    private void setMaxSpeedOffroadEnabled() {
+        TF_MAX_SPEED.setEnabled(!CB_MAX_SPEED_DISPLAY.isSelected());
+    }
+
+    private void setStreetPowerLimitEnabled() {
+        TF_STREET_POWER_LIM.setEnabled(CB_STREET_POWER_LIM.isSelected());
+    }
+
+    private void setAssistWithoutPedThresholdEnabled() {
+        TF_ASS_WITHOUT_PED_THRES.setEnabled(CB_ASS_WITHOUT_PED.isSelected());
+    }
+
+    private void setNumDataAutoDisplayEnabled() {
+        TF_NUM_DATA_AUTO_DISPLAY.setEnabled(CB_AUTO_DISPLAY_DATA.isSelected());
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
-    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
-        buttonGroup2 = new javax.swing.ButtonGroup();
-        buttonGroup3 = new javax.swing.ButtonGroup();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        buttonGroup4 = new javax.swing.ButtonGroup();
-        buttonGroup5 = new javax.swing.ButtonGroup();
-        buttonGroup6 = new javax.swing.ButtonGroup();
-        buttonGroup7 = new javax.swing.ButtonGroup();
-        buttonGroup8 = new javax.swing.ButtonGroup();
-        buttonGroup9 = new javax.swing.ButtonGroup();
+        groupMotorV = new javax.swing.ButtonGroup();
+        groupOptAdc = new javax.swing.ButtonGroup();
+        groupDisplayMode = new javax.swing.ButtonGroup();
+        groupAssistOnStart = new javax.swing.ButtonGroup();
+        groupUnits = new javax.swing.ButtonGroup();
+        groupStartupDisplay = new javax.swing.ButtonGroup();
+        groupStartupSoc = new javax.swing.ButtonGroup();
+        groupStartupBoost = new javax.swing.ButtonGroup();
         labelTitle = new java.awt.Label();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         panelBasicSettings = new javax.swing.JPanel();
@@ -1430,11 +1036,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         TF_BATT_VOLT_CUT_OFF = new javax.swing.JTextField();
         headerDisplaySettings = new javax.swing.JLabel();
         jLabelDisplayType = new javax.swing.JLabel();
-        rowDisplayType = new javax.swing.JPanel();
-        RB_VLCD5 = new javax.swing.JRadioButton();
-        RB_XH18 = new javax.swing.JRadioButton();
-        RB_VLCD6 = new javax.swing.JRadioButton();
-        RB_850C = new javax.swing.JRadioButton();
+        CMB_DISPLAY_TYPE = new JComboBox<>(DisplayType.values());
         jLabelDisplayMode = new javax.swing.JLabel();
         rowDisplayMode = new javax.swing.JPanel();
         RB_DISPLAY_ALWAY_ON = new javax.swing.JRadioButton();
@@ -1460,9 +1062,9 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         rowOptADC = new javax.swing.JPanel();
         RB_TEMP_LIMIT = new javax.swing.JRadioButton();
         filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 32767));
-        RB_ADC_OPTION_DIS = new javax.swing.JRadioButton();
-        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 32767));
         RB_THROTTLE = new javax.swing.JRadioButton();
+        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 32767));
+        RB_ADC_OPTION_DIS = new javax.swing.JRadioButton();
         CB_STREET_MODE_ON_START = new javax.swing.JCheckBox();
         CB_STARTUP_BOOST_ON_START = new javax.swing.JCheckBox();
         rowTorSensorAdv = new javax.swing.JPanel();
@@ -1626,7 +1228,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         jLabel100 = new javax.swing.JLabel();
         TF_DELAY_DATA_6 = new javax.swing.JTextField();
         subPanelDataOther = new javax.swing.JPanel();
-        jLabel101 = new javax.swing.JLabel();
+        headerOtherSettings = new javax.swing.JLabel();
         jLabel107 = new javax.swing.JLabel();
         jLabel102 = new javax.swing.JLabel();
         jLabel103 = new javax.swing.JLabel();
@@ -1656,13 +1258,13 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         TF_MOTOR_BLOCK_CURR = new javax.swing.JTextField();
         jLabelMOTOR_BLOCK_CURR = new javax.swing.JLabel();
         jLabelMOTOR_BLOCK_ERPS = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        rowStartupData = new javax.swing.JPanel();
         RB_STARTUP_SOC = new javax.swing.JRadioButton();
         filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 32767));
         RB_STARTUP_VOLTS = new javax.swing.JRadioButton();
         filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 32767));
         RB_STARTUP_NONE = new javax.swing.JRadioButton();
-        jPanel3 = new javax.swing.JPanel();
+        rowSocCalc = new javax.swing.JPanel();
         RB_SOC_WH = new javax.swing.JRadioButton();
         filler10 = new javax.swing.Box.Filler(new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 32767));
         RB_SOC_AUTO = new javax.swing.JRadioButton();
@@ -1683,8 +1285,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         LB_COMPILE_OUTPUT = new javax.swing.JLabel();
         scrollCompileOutput = new javax.swing.JScrollPane();
         TA_COMPILE_OUTPUT = new javax.swing.JTextArea();
-
-        jRadioButton1.setText("jRadioButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TSDZ2 Parameter Configurator 4.3 for Open Source Firmware v20.1C.2-2");
@@ -1778,7 +1378,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_ASS_WITHOUT_PED_THRES.setText("20");
         TF_ASS_WITHOUT_PED_THRES.setToolTipText("<html>Max value 100<br>\nRecommended range 10 to 30\n</html>");
-        TF_ASS_WITHOUT_PED_THRES.setEnabled(CB_ASS_WITHOUT_PED.isSelected());
         TF_ASS_WITHOUT_PED_THRES.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
@@ -1788,7 +1387,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_TORQ_PER_ADC_STEP.setText("67");
         TF_TORQ_PER_ADC_STEP.setToolTipText("<html>\nDefault value 67<br>\nOptional calibration\n</html>");
-        TF_TORQ_PER_ADC_STEP.setEnabled(!CB_ADC_STEP_ESTIM.isSelected());
         TF_TORQ_PER_ADC_STEP.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
@@ -1806,7 +1404,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_TORQ_PER_ADC_STEP_ADV.setText("34");
         TF_TORQ_PER_ADC_STEP_ADV.setToolTipText("<html>\nDefault value 34<br>\nOptional calibration\n</html>");
-        TF_TORQ_PER_ADC_STEP_ADV.setEnabled(CB_TORQUE_CALIBRATION.isSelected());
         TF_TORQ_PER_ADC_STEP_ADV.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
@@ -1846,7 +1443,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_TORQ_ADC_RANGE_ADJ.setText("0");
         TF_TORQ_ADC_RANGE_ADJ.setToolTipText("<html>\nValue -20 to 20<br>\nDefault 0\n</html>");
-        TF_TORQ_ADC_RANGE_ADJ.setEnabled(CB_TORQUE_CALIBRATION.isSelected());
         TF_TORQ_ADC_RANGE_ADJ.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_TORQ_ADC_RANGE_ADJ.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -1869,7 +1465,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_TORQ_ADC_ANGLE_ADJ.setText("0");
         TF_TORQ_ADC_ANGLE_ADJ.setToolTipText("<html>\nValue -20 to 20<br>\nDefault 0\n</html>");
-        TF_TORQ_ADC_ANGLE_ADJ.setEnabled(CB_TORQUE_CALIBRATION.isSelected());
         TF_TORQ_ADC_ANGLE_ADJ.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_TORQ_ADC_ANGLE_ADJ.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -1892,7 +1487,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_TORQ_ADC_OFFSET.setText("150");
         TF_TORQ_ADC_OFFSET.setToolTipText("<html>\nInsert value read on calibration<br>\nMax 250\n</html>");
-        TF_TORQ_ADC_OFFSET.setEnabled(CB_TORQUE_CALIBRATION.isSelected());
         TF_TORQ_ADC_OFFSET.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_TORQ_ADC_OFFSET.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -1915,7 +1509,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_TORQUE_ADC_MAX.setText("300");
         TF_TORQUE_ADC_MAX.setToolTipText("<html>\nInsert value read on calibration<br>\nMax 500\n</html>");
-        TF_TORQUE_ADC_MAX.setEnabled(CB_TORQUE_CALIBRATION.isSelected());
         TF_TORQUE_ADC_MAX.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_TORQUE_ADC_MAX.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -1939,11 +1532,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         TF_BOOST_TORQUE_FACTOR.setText("300");
         TF_BOOST_TORQUE_FACTOR.setToolTipText("<html>Max value 500<br>\nRecommended range 200 to 300\n</html>");
         TF_BOOST_TORQUE_FACTOR.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_BOOST_TORQUE_FACTOR.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TF_BOOST_TORQUE_FACTORActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 24;
@@ -1976,12 +1564,12 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         jPanel_BOOST_AT_ZERO.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
 
-        buttonGroup9.add(RB_BOOST_AT_ZERO_CADENCE);
+        groupStartupBoost.add(RB_BOOST_AT_ZERO_CADENCE);
         RB_BOOST_AT_ZERO_CADENCE.setText("cadence");
         jPanel_BOOST_AT_ZERO.add(RB_BOOST_AT_ZERO_CADENCE);
         jPanel_BOOST_AT_ZERO.add(filler2);
 
-        buttonGroup9.add(RB_BOOST_AT_ZERO_SPEED);
+        groupStartupBoost.add(RB_BOOST_AT_ZERO_SPEED);
         RB_BOOST_AT_ZERO_SPEED.setText("speed");
         jPanel_BOOST_AT_ZERO.add(RB_BOOST_AT_ZERO_SPEED);
 
@@ -1994,12 +1582,12 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         jPanel_MOTOR_V.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
 
-        buttonGroup1.add(RB_MOTOR_36V);
+        groupMotorV.add(RB_MOTOR_36V);
         RB_MOTOR_36V.setText("36V");
         jPanel_MOTOR_V.add(RB_MOTOR_36V);
         jPanel_MOTOR_V.add(filler1);
 
-        buttonGroup1.add(RB_MOTOR_48V);
+        groupMotorV.add(RB_MOTOR_48V);
         RB_MOTOR_48V.setText("48V");
         jPanel_MOTOR_V.add(RB_MOTOR_48V);
 
@@ -2017,7 +1605,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         jPanel2.add(filler5);
 
         CB_ADC_STEP_ESTIM.setText("Estimated");
-        CB_ADC_STEP_ESTIM.setEnabled(CB_TORQUE_CALIBRATION.isSelected());
         CB_ADC_STEP_ESTIM.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 CB_ADC_STEP_ESTIMStateChanged(evt);
@@ -2202,71 +1789,17 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelBatterySettings.add(jLabelDisplayType, gridBagConstraints);
 
-        java.awt.GridBagLayout rowDisplayTypeLayout = new java.awt.GridBagLayout();
-        rowDisplayTypeLayout.columnWidths = new int[] {0, 8, 0, 8, 0};
-        rowDisplayTypeLayout.rowHeights = new int[] {0, 4, 0};
-        rowDisplayType.setLayout(rowDisplayTypeLayout);
-
-        buttonGroup2.add(RB_VLCD5);
-        RB_VLCD5.setText("VLCD5");
-        RB_VLCD5.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                RB_VLCD5StateChanged(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        rowDisplayType.add(RB_VLCD5, gridBagConstraints);
-
-        buttonGroup2.add(RB_XH18);
-        RB_XH18.setText("XH18");
-        RB_XH18.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                RB_XH18StateChanged(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        rowDisplayType.add(RB_XH18, gridBagConstraints);
-
-        buttonGroup2.add(RB_VLCD6);
-        RB_VLCD6.setText("VLCD6");
-        RB_VLCD6.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                RB_VLCD6StateChanged(evt);
+        CMB_DISPLAY_TYPE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CMB_DISPLAY_TYPEActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        rowDisplayType.add(RB_VLCD6, gridBagConstraints);
-
-        buttonGroup2.add(RB_850C);
-        RB_850C.setText("850C");
-        RB_850C.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                RB_850CStateChanged(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 18;
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        rowDisplayType.add(RB_850C, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 16;
-        gridBagConstraints.gridwidth = 5;
-        gridBagConstraints.gridheight = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        subPanelBatterySettings.add(rowDisplayType, gridBagConstraints);
+        subPanelBatterySettings.add(CMB_DISPLAY_TYPE, gridBagConstraints);
 
         jLabelDisplayMode.setText("Mode");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2277,12 +1810,12 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         rowDisplayMode.setLayout(new javax.swing.BoxLayout(rowDisplayMode, javax.swing.BoxLayout.LINE_AXIS));
 
-        buttonGroup4.add(RB_DISPLAY_ALWAY_ON);
+        groupDisplayMode.add(RB_DISPLAY_ALWAY_ON);
         RB_DISPLAY_ALWAY_ON.setText("Always on");
         rowDisplayMode.add(RB_DISPLAY_ALWAY_ON);
         rowDisplayMode.add(filler3);
 
-        buttonGroup4.add(RB_DISPLAY_WORK_ON);
+        groupDisplayMode.add(RB_DISPLAY_WORK_ON);
         RB_DISPLAY_WORK_ON.setText("Working on");
         rowDisplayMode.add(RB_DISPLAY_WORK_ON);
 
@@ -2302,7 +1835,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         rowUnits.setLayout(new javax.swing.BoxLayout(rowUnits, javax.swing.BoxLayout.LINE_AXIS));
 
-        buttonGroup6.add(RB_UNIT_KILOMETERS);
+        groupUnits.add(RB_UNIT_KILOMETERS);
         RB_UNIT_KILOMETERS.setText("km/h");
         RB_UNIT_KILOMETERS.setToolTipText("<html>Also set on the display<br>\nIf you set miles in display<br>\nset max wheel available\n</html>");
         RB_UNIT_KILOMETERS.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -2313,7 +1846,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         rowUnits.add(RB_UNIT_KILOMETERS);
         rowUnits.add(filler4);
 
-        buttonGroup6.add(RB_UNIT_MILES);
+        groupUnits.add(RB_UNIT_MILES);
         RB_UNIT_MILES.setText("mph");
         RB_UNIT_MILES.setToolTipText("<html>Also set on the display<br>\nIf you set miles in display<br>\nset max wheel available\n</html>");
         RB_UNIT_MILES.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -2350,7 +1883,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_MAX_SPEED.setText("25");
         TF_MAX_SPEED.setToolTipText("<html>km/h or mph<br>\nMax value in EU 25 km/h\n</html>");
-        TF_MAX_SPEED.setEnabled(!CB_MAX_SPEED_DISPLAY.isSelected());
         TF_MAX_SPEED.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_MAX_SPEED.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -2460,7 +1992,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         rowOptADC.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
 
-        buttonGroup3.add(RB_TEMP_LIMIT);
+        groupOptAdc.add(RB_TEMP_LIMIT);
         RB_TEMP_LIMIT.setText("Temp. sensor");
         RB_TEMP_LIMIT.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -2470,7 +2002,17 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         rowOptADC.add(RB_TEMP_LIMIT);
         rowOptADC.add(filler6);
 
-        buttonGroup3.add(RB_ADC_OPTION_DIS);
+        groupOptAdc.add(RB_THROTTLE);
+        RB_THROTTLE.setText("Throttle");
+        RB_THROTTLE.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                RB_THROTTLEStateChanged(evt);
+            }
+        });
+        rowOptADC.add(RB_THROTTLE);
+        rowOptADC.add(filler7);
+
+        groupOptAdc.add(RB_ADC_OPTION_DIS);
         RB_ADC_OPTION_DIS.setText("None");
         RB_ADC_OPTION_DIS.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -2478,17 +2020,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
             }
         });
         rowOptADC.add(RB_ADC_OPTION_DIS);
-        rowOptADC.add(filler7);
-
-        buttonGroup3.add(RB_THROTTLE);
-        RB_THROTTLE.setText("Throttle");
-        RB_THROTTLE.setEnabled(CB_BRAKE_SENSOR.isSelected()&&(!(CB_COASTER_BRAKE.isSelected())));
-        RB_THROTTLE.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                RB_THROTTLEStateChanged(evt);
-            }
-        });
-        rowOptADC.add(RB_THROTTLE);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2692,7 +2223,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelPowerAssist.add(TF_POWER_ASS_4, gridBagConstraints);
 
-        buttonGroup5.add(RB_POWER_ON_START);
+        groupAssistOnStart.add(RB_POWER_ON_START);
         RB_POWER_ON_START.setText("Enable on startup");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2799,7 +2330,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelTorqueAssist.add(TF_TORQUE_ASS_4, gridBagConstraints);
 
-        buttonGroup5.add(RB_TORQUE_ON_START);
+        groupAssistOnStart.add(RB_TORQUE_ON_START);
         RB_TORQUE_ON_START.setText("Enable on startup");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2906,7 +2437,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelCadenceAssist.add(TF_CADENCE_ASS_4, gridBagConstraints);
 
-        buttonGroup5.add(RB_CADENCE_ON_START);
+        groupAssistOnStart.add(RB_CADENCE_ON_START);
         RB_CADENCE_ON_START.setText("Enable on startup");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -3013,7 +2544,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelEmtbAssist.add(TF_EMTB_ASS_4, gridBagConstraints);
 
-        buttonGroup5.add(RB_EMTB_ON_START);
+        groupAssistOnStart.add(RB_EMTB_ON_START);
         RB_EMTB_ON_START.setText("Enable on startup");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -3064,7 +2595,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_WALK_ASS_SPEED_1.setText("35");
         TF_WALK_ASS_SPEED_1.setToolTipText("<html>km/h x10 or mph x10<br>\nValue 35 to 50 (3.5 to 5.0 km/h)\n</html>");
-        TF_WALK_ASS_SPEED_1.setEnabled(CB_WALK_ASSIST.isSelected());
         TF_WALK_ASS_SPEED_1.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_1.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -3088,7 +2618,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_WALK_ASS_SPEED_2.setText("40");
         TF_WALK_ASS_SPEED_2.setToolTipText("<html>km/h x10 or mph x10<br>\nValue 35 to 50 (3.5 to 5.0 km/h)\n</html>");
-        TF_WALK_ASS_SPEED_2.setEnabled(CB_WALK_ASSIST.isSelected());
         TF_WALK_ASS_SPEED_2.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_2.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_2.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -3112,7 +2641,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_WALK_ASS_SPEED_3.setText("45");
         TF_WALK_ASS_SPEED_3.setToolTipText("<html>km/h x10 or mph x10<br>\nValue 35 to 50 (3.5 to 5.0 km/h)\n</html>");
-        TF_WALK_ASS_SPEED_3.setEnabled(CB_WALK_ASSIST.isSelected());
         TF_WALK_ASS_SPEED_3.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_3.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_3.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -3136,7 +2664,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_WALK_ASS_SPEED_4.setText("50");
         TF_WALK_ASS_SPEED_4.setToolTipText("<html>km/h x10 or mph x10<br>\nValue 35 to 50 (3.5 to 5.0 km/h)\n</html>");
-        TF_WALK_ASS_SPEED_4.setEnabled(CB_WALK_ASSIST.isSelected());
         TF_WALK_ASS_SPEED_4.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_4.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_4.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -3160,7 +2687,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_WALK_ASS_SPEED_LIMIT.setText("60");
         TF_WALK_ASS_SPEED_LIMIT.setToolTipText("<html>km/h x10 or mph x10<br>\nMax value 60 (in EU 6 km/h)\n</html>");
-        TF_WALK_ASS_SPEED_LIMIT.setEnabled(CB_WALK_ASSIST.isSelected());
         TF_WALK_ASS_SPEED_LIMIT.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_LIMIT.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_LIMIT.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -3184,7 +2710,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_WALK_ASS_TIME.setText("60");
         TF_WALK_ASS_TIME.setToolTipText("Max value 255 (0.1 s)\n\n");
-        TF_WALK_ASS_TIME.setEnabled(CB_WALK_TIME_ENA.isSelected() && CB_BRAKE_SENSOR.isSelected() && CB_WALK_ASSIST.isSelected());
         TF_WALK_ASS_TIME.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_TIME.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -3195,7 +2720,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         CB_WALK_TIME_ENA.setText("Walk assist debounce time");
         CB_WALK_TIME_ENA.setToolTipText("Only with brake sensors enabled");
-        CB_WALK_TIME_ENA.setEnabled(CB_BRAKE_SENSOR.isSelected() && CB_WALK_ASSIST.isSelected());
         CB_WALK_TIME_ENA.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 CB_WALK_TIME_ENAStateChanged(evt);
@@ -3269,7 +2793,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_STREET_POWER_LIM.setText("500");
         TF_STREET_POWER_LIM.setToolTipText("<html>Max nominal value in EU 250 W<br>\nMax peak value approx. 500 W\n</html>");
-        TF_STREET_POWER_LIM.setEnabled(CB_STREET_POWER_LIM.isSelected());
         TF_STREET_POWER_LIM.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_STREET_POWER_LIM.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -3315,7 +2838,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelStreetMode.add(CB_STREET_CRUISE, gridBagConstraints);
 
         CB_STREET_WALK.setText("Walk assist on street mode");
-        CB_STREET_WALK.setEnabled(CB_WALK_ASSIST.isSelected());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 12;
@@ -3470,7 +2992,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         CB_CRUISE_WHITOUT_PED.setText("Cruise without pedaling");
         CB_CRUISE_WHITOUT_PED.setToolTipText("Only with brake sensors enabled");
-        CB_CRUISE_WHITOUT_PED.setEnabled(CB_BRAKE_SENSOR.isSelected());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 12;
@@ -3516,7 +3037,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_LIGHT_MODE_ON_START.setText("0");
         TF_LIGHT_MODE_ON_START.setToolTipText("<html>With lights button ON<br>\n0 - lights ON<br>\n1 - lights FLASHING<br>\n2 - lights ON and BRAKE-FLASHING when braking<br>\n3 - lights FLASHING and ON when braking<br>\n4 - lights FLASHING and BRAKE-FLASHING when braking<br>\n5 - lights ON and ON when braking, even with the light button OFF<br>\n6 - lights ON and BRAKE-FLASHING when braking, even with the light button OFF<br>\n7 - lights FLASHING and ON when braking, even with the light button OFF<br>\n8 - lights FLASHING and BRAKE-FLASHING when braking, even with the light button OFF\n</html>");
-        TF_LIGHT_MODE_ON_START.setEnabled(CB_LIGHTS.isSelected());
         TF_LIGHT_MODE_ON_START.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_LIGHT_MODE_ON_START.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_LIGHT_MODE_ON_START.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -3544,7 +3064,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_LIGHT_MODE_1.setText("6");
         TF_LIGHT_MODE_1.setToolTipText("<html>With lights button ON<br>\n0 - lights ON<br>\n1 - lights FLASHING<br>\n2 - lights ON and BRAKE-FLASHING when braking<br>\n3 - lights FLASHING and ON when braking<br>\n4 - lights FLASHING and BRAKE-FLASHING when braking<br>\n5 - lights ON and ON when braking, even with the light button OFF<br>\n6 - lights ON and BRAKE-FLASHING when braking, even with the light button OFF<br>\n7 - lights FLASHING and ON when braking, even with the light button OFF<br>\n8 - lights FLASHING and BRAKE-FLASHING when braking, even with the light button OFF\n</html>");
-        TF_LIGHT_MODE_1.setEnabled(CB_LIGHTS.isSelected());
         TF_LIGHT_MODE_1.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_LIGHT_MODE_1.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_LIGHT_MODE_1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -3572,7 +3091,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_LIGHT_MODE_2.setText("7");
         TF_LIGHT_MODE_2.setToolTipText("<html>With lights button ON<br>\n0 - lights ON<br>\n1 - lights FLASHING<br>\n2 - lights ON and BRAKE-FLASHING when braking<br>\n3 - lights FLASHING and ON when braking<br>\n4 - lights FLASHING and BRAKE-FLASHING when braking<br>\n5 - lights ON and ON when braking, even with the light button OFF<br>\n6 - lights ON and BRAKE-FLASHING when braking, even with the light button OFF<br>\n7 - lights FLASHING and ON when braking, even with the light button OFF<br>\n8 - lights FLASHING and BRAKE-FLASHING when braking, even with the light button OFF<br>\nor alternative option settings<br>\n9 - assistance without pedal rotation\n</html>");
-        TF_LIGHT_MODE_2.setEnabled(CB_LIGHTS.isSelected());
         TF_LIGHT_MODE_2.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_LIGHT_MODE_2.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_LIGHT_MODE_2.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -3600,7 +3118,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_LIGHT_MODE_3.setText("1");
         TF_LIGHT_MODE_3.setToolTipText("<html>With lights button ON<br>\n0 - lights ON<br>\n1 - lights FLASHING<br>\n2 - lights ON and BRAKE-FLASHING when braking<br>\n3 - lights FLASHING and ON when braking<br>\n4 - lights FLASHING and BRAKE-FLASHING when braking<br>\n5 - lights ON and ON when braking, even with the light button OFF<br>\n6 - lights ON and BRAKE-FLASHING when braking, even with the light button OFF<br>\n7 - lights FLASHING and ON when braking, even with the light button OFF<br>\n8 - lights FLASHING and BRAKE-FLASHING when braking, even with the light button OFF<br>\nor alternative option settings<br>\n10 - assistance with sensors error\n</html>");
-        TF_LIGHT_MODE_3.setEnabled(CB_LIGHTS.isSelected());
         TF_LIGHT_MODE_3.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_LIGHT_MODE_3.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_LIGHT_MODE_3.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -3626,7 +3143,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(6, 0, 0, 0);
         subPanelLightsHybrid.add(headerHybridAssist, gridBagConstraints);
 
-        buttonGroup5.add(RB_HYBRID_ON_START);
+        groupAssistOnStart.add(RB_HYBRID_ON_START);
         RB_HYBRID_ON_START.setText("Enable on startup");
         RB_HYBRID_ON_START.setToolTipText("Torque & Power");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -3731,7 +3248,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_BAT_CELL_3_4.setText("3.70");
         TF_BAT_CELL_3_4.setToolTipText("Value empty to full");
-        TF_BAT_CELL_3_4.setEnabled(!(RB_VLCD5.isSelected()));
         TF_BAT_CELL_3_4.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -3749,7 +3265,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_BAT_CELL_2_4.setText("3.45");
         TF_BAT_CELL_2_4.setToolTipText("Value empty to full");
-        TF_BAT_CELL_2_4.setEnabled(!(RB_VLCD5.isSelected()));
         TF_BAT_CELL_2_4.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -3767,7 +3282,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_BAT_CELL_1_4.setText("3.25");
         TF_BAT_CELL_1_4.setToolTipText("Value empty to full");
-        TF_BAT_CELL_1_4.setEnabled(!(RB_VLCD5.isSelected()));
         TF_BAT_CELL_1_4.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -3785,7 +3299,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_BAT_CELL_5_6.setText("3.85");
         TF_BAT_CELL_5_6.setToolTipText("Value empty to full");
-        TF_BAT_CELL_5_6.setEnabled(RB_VLCD5.isSelected());
         TF_BAT_CELL_5_6.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -3803,7 +3316,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_BAT_CELL_4_6.setText("3.70");
         TF_BAT_CELL_4_6.setToolTipText("Value empty to full");
-        TF_BAT_CELL_4_6.setEnabled(RB_VLCD5.isSelected());
         TF_BAT_CELL_4_6.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -3821,7 +3333,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_BAT_CELL_3_6.setText("3.55");
         TF_BAT_CELL_3_6.setToolTipText("Value empty to full");
-        TF_BAT_CELL_3_6.setEnabled(RB_VLCD5.isSelected());
         TF_BAT_CELL_3_6.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -3831,7 +3342,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_BAT_CELL_2_6.setText("3.40");
         TF_BAT_CELL_2_6.setToolTipText("Value empty to full");
-        TF_BAT_CELL_2_6.setEnabled(RB_VLCD5.isSelected());
         TF_BAT_CELL_2_6.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -3849,7 +3359,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_BAT_CELL_1_6.setText("3.25");
         TF_BAT_CELL_1_6.setToolTipText("Value empty to full");
-        TF_BAT_CELL_1_6.setEnabled(RB_VLCD5.isSelected());
         TF_BAT_CELL_1_6.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -4154,8 +3663,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelDataOtherLayout.rowHeights = new int[] {0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0};
         subPanelDataOther.setLayout(subPanelDataOtherLayout);
 
-        jLabel101.setFont(jLabel101.getFont().deriveFont(jLabel101.getFont().getStyle() | java.awt.Font.BOLD, jLabel101.getFont().getSize()+2));
-        jLabel101.setText("Other function settings");
+        headerOtherSettings.setFont(headerOtherSettings.getFont().deriveFont(headerOtherSettings.getFont().getStyle() | java.awt.Font.BOLD, headerOtherSettings.getFont().getSize()+2));
+        headerOtherSettings.setText("Other function settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 10;
@@ -4163,7 +3672,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(6, 0, 0, 0);
-        subPanelDataOther.add(jLabel101, gridBagConstraints);
+        subPanelDataOther.add(headerOtherSettings, gridBagConstraints);
 
         jLabel107.setText("ADC throttle value");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -4197,7 +3706,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_ADC_THROTTLE_MIN.setText("47");
         TF_ADC_THROTTLE_MIN.setToolTipText("Value 40 to 50");
-        TF_ADC_THROTTLE_MIN.setEnabled(RB_THROTTLE.isSelected());
         TF_ADC_THROTTLE_MIN.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_ADC_THROTTLE_MIN.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -4208,7 +3716,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_ADC_THROTTLE_MAX.setText("176");
         TF_ADC_THROTTLE_MAX.setToolTipText("Value 170 to 180");
-        TF_ADC_THROTTLE_MAX.setEnabled(RB_THROTTLE.isSelected());
         TF_ADC_THROTTLE_MAX.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_ADC_THROTTLE_MAX.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -4218,7 +3725,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelDataOther.add(TF_ADC_THROTTLE_MAX, gridBagConstraints);
 
         CB_TEMP_ERR_MIN_LIM.setText("Temperature error with min limit");
-        CB_TEMP_ERR_MIN_LIM.setEnabled(RB_TEMP_LIMIT.isSelected());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 18;
@@ -4238,7 +3744,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_TEMP_MIN_LIM.setText("65");
         TF_TEMP_MIN_LIM.setToolTipText("Max value 75 (°C)");
-        TF_TEMP_MIN_LIM.setEnabled(RB_TEMP_LIMIT.isSelected());
         TF_TEMP_MIN_LIM.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_TEMP_MIN_LIM.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -4258,7 +3763,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_TEMP_MAX_LIM.setText("80");
         TF_TEMP_MAX_LIM.setToolTipText("Max value 85 (°C)");
-        TF_TEMP_MAX_LIM.setEnabled(RB_TEMP_LIMIT.isSelected());
         TF_TEMP_MAX_LIM.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_TEMP_MAX_LIM.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -4338,7 +3842,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_ASSIST_THROTTLE_MIN.setText("0");
         TF_ASSIST_THROTTLE_MIN.setToolTipText("Value 0 to 100");
-        TF_ASSIST_THROTTLE_MIN.setEnabled(RB_THROTTLE.isSelected());
         TF_ASSIST_THROTTLE_MIN.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_ASSIST_THROTTLE_MIN.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -4356,7 +3859,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_ASSIST_THROTTLE_MAX.setText("255");
         TF_ASSIST_THROTTLE_MAX.setToolTipText("Value MIN to 255");
-        TF_ASSIST_THROTTLE_MAX.setEnabled(RB_THROTTLE.isSelected());
         TF_ASSIST_THROTTLE_MAX.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_ASSIST_THROTTLE_MAX.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -4385,7 +3887,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_COASTER_BRAKE_THRESHOLD.setText("30");
         TF_COASTER_BRAKE_THRESHOLD.setToolTipText("Max value 255 (s)");
-        TF_COASTER_BRAKE_THRESHOLD.setEnabled(CB_COASTER_BRAKE.isSelected());
         TF_COASTER_BRAKE_THRESHOLD.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_COASTER_BRAKE_THRESHOLD.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -4441,24 +3942,24 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelDataOther.add(jLabelMOTOR_BLOCK_ERPS, gridBagConstraints);
 
-        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
+        rowStartupData.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
 
-        buttonGroup7.add(RB_STARTUP_SOC);
+        groupStartupDisplay.add(RB_STARTUP_SOC);
         RB_STARTUP_SOC.setText("Soc %");
         RB_STARTUP_SOC.setToolTipText("");
-        jPanel1.add(RB_STARTUP_SOC);
-        jPanel1.add(filler8);
+        rowStartupData.add(RB_STARTUP_SOC);
+        rowStartupData.add(filler8);
 
-        buttonGroup7.add(RB_STARTUP_VOLTS);
+        groupStartupDisplay.add(RB_STARTUP_VOLTS);
         RB_STARTUP_VOLTS.setText("Volts");
         RB_STARTUP_VOLTS.setToolTipText("");
-        jPanel1.add(RB_STARTUP_VOLTS);
-        jPanel1.add(filler9);
+        rowStartupData.add(RB_STARTUP_VOLTS);
+        rowStartupData.add(filler9);
 
-        buttonGroup7.add(RB_STARTUP_NONE);
+        groupStartupDisplay.add(RB_STARTUP_NONE);
         RB_STARTUP_NONE.setText("None");
         RB_STARTUP_NONE.setToolTipText("");
-        jPanel1.add(RB_STARTUP_NONE);
+        rowStartupData.add(RB_STARTUP_NONE);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -4466,34 +3967,34 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
-        subPanelDataOther.add(jPanel1, gridBagConstraints);
+        subPanelDataOther.add(rowStartupData, gridBagConstraints);
 
-        jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
+        rowSocCalc.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
 
-        buttonGroup8.add(RB_SOC_WH);
+        groupStartupSoc.add(RB_SOC_WH);
         RB_SOC_WH.setSelected(true);
         RB_SOC_WH.setText("Wh");
         RB_SOC_WH.setToolTipText("");
-        jPanel3.add(RB_SOC_WH);
-        jPanel3.add(filler10);
+        rowSocCalc.add(RB_SOC_WH);
+        rowSocCalc.add(filler10);
 
-        buttonGroup8.add(RB_SOC_AUTO);
+        groupStartupSoc.add(RB_SOC_AUTO);
         RB_SOC_AUTO.setText("Auto");
         RB_SOC_AUTO.setToolTipText("");
-        jPanel3.add(RB_SOC_AUTO);
-        jPanel3.add(filler11);
+        rowSocCalc.add(RB_SOC_AUTO);
+        rowSocCalc.add(filler11);
 
-        buttonGroup8.add(RB_SOC_VOLTS);
+        groupStartupSoc.add(RB_SOC_VOLTS);
         RB_SOC_VOLTS.setText("Volts");
         RB_SOC_VOLTS.setToolTipText("");
-        jPanel3.add(RB_SOC_VOLTS);
+        rowSocCalc.add(RB_SOC_VOLTS);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 8;
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        subPanelDataOther.add(jPanel3, gridBagConstraints);
+        subPanelDataOther.add(rowSocCalc, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
@@ -4652,329 +4153,138 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void CB_COASTER_BRAKEStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CB_COASTER_BRAKEStateChanged
-        TF_COASTER_BRAKE_THRESHOLD.setEnabled(CB_COASTER_BRAKE.isSelected());
-        RB_THROTTLE.setEnabled(CB_BRAKE_SENSOR.isSelected() && (!(CB_COASTER_BRAKE.isSelected())));
-        if (CB_COASTER_BRAKE.isSelected() && RB_THROTTLE.isSelected()) {
-            RB_ADC_OPTION_DIS.setSelected(true);
-        }
+        setBrakeSensorFieldsEnabled();
     }//GEN-LAST:event_CB_COASTER_BRAKEStateChanged
 
     private void CB_WALK_TIME_ENAStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CB_WALK_TIME_ENAStateChanged
-        TF_WALK_ASS_TIME.setEnabled(CB_WALK_TIME_ENA.isSelected() && CB_BRAKE_SENSOR.isSelected() && CB_WALK_ASSIST.isSelected());
+        setBrakeSensorFieldsEnabled();
     }//GEN-LAST:event_CB_WALK_TIME_ENAStateChanged
 
     private void CB_BRAKE_SENSORStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CB_BRAKE_SENSORStateChanged
-        TF_WALK_ASS_TIME.setEnabled(CB_WALK_TIME_ENA.isSelected() && CB_BRAKE_SENSOR.isSelected() && CB_WALK_ASSIST.isSelected());
-        CB_CRUISE_WHITOUT_PED.setEnabled(CB_BRAKE_SENSOR.isSelected());
-        CB_WALK_TIME_ENA.setEnabled(CB_BRAKE_SENSOR.isSelected() && CB_WALK_ASSIST.isSelected());
-        RB_THROTTLE.setEnabled(CB_BRAKE_SENSOR.isSelected() && (!(CB_COASTER_BRAKE.isSelected())));
+        setBrakeSensorFieldsEnabled();
     }//GEN-LAST:event_CB_BRAKE_SENSORStateChanged
 
     private void RB_THROTTLEStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_RB_THROTTLEStateChanged
-        TF_ADC_THROTTLE_MIN.setEnabled(RB_THROTTLE.isSelected());
-        TF_ADC_THROTTLE_MAX.setEnabled(RB_THROTTLE.isSelected());
-        TF_ASSIST_THROTTLE_MIN.setEnabled(RB_THROTTLE.isSelected());
-        TF_ASSIST_THROTTLE_MAX.setEnabled(RB_THROTTLE.isSelected());
+        setAdcOptionFieldsEnabled();
     }//GEN-LAST:event_RB_THROTTLEStateChanged
 
     private void RB_TEMP_LIMITStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_RB_TEMP_LIMITStateChanged
-        TF_TEMP_MIN_LIM.setEnabled(RB_TEMP_LIMIT.isSelected());
-        TF_TEMP_MAX_LIM.setEnabled(RB_TEMP_LIMIT.isSelected());
-        CB_TEMP_ERR_MIN_LIM.setEnabled(RB_TEMP_LIMIT.isSelected());
+        setAdcOptionFieldsEnabled();
     }//GEN-LAST:event_RB_TEMP_LIMITStateChanged
 
     private void RB_ADC_OPTION_DISStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_RB_ADC_OPTION_DISStateChanged
-        TF_ADC_THROTTLE_MIN.setEnabled(RB_THROTTLE.isSelected());
-        TF_ADC_THROTTLE_MAX.setEnabled(RB_THROTTLE.isSelected());
-        TF_TEMP_MIN_LIM.setEnabled(RB_TEMP_LIMIT.isSelected());
-        TF_TEMP_MAX_LIM.setEnabled(RB_TEMP_LIMIT.isSelected());
-        TF_ASSIST_THROTTLE_MIN.setEnabled(RB_THROTTLE.isSelected());
-        TF_ASSIST_THROTTLE_MAX.setEnabled(RB_THROTTLE.isSelected());
+        setAdcOptionFieldsEnabled();
     }//GEN-LAST:event_RB_ADC_OPTION_DISStateChanged
 
     private void TF_DATA_1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_DATA_1KeyReleased
-        try {
-            int index = Integer.parseInt(TF_DATA_1.getText());
-            if ((index >= 0) && (index <= 10)) {
-                jLabelData1.setText("Data 1 - " + displayDataArray[index]);
-            } else {
-                jLabelData1.setText("Data 1");
-            }
-        } catch (NumberFormatException ex) {
-            jLabelData1.setText("Data 1");
-        }
+        updateDataLabel(TF_DATA_1, jLabelData1, 1);
     }//GEN-LAST:event_TF_DATA_1KeyReleased
 
     private void TF_DATA_2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_DATA_2KeyReleased
-        try {
-            int index = Integer.parseInt(TF_DATA_2.getText());
-            if ((index >= 0) && (index <= 10)) {
-                jLabelData2.setText("Data 2 - " + displayDataArray[index]);
-            } else {
-                jLabelData2.setText("Data 2");
-            }
-        } catch (NumberFormatException ex) {
-            jLabelData2.setText("Data 2");
-        }
+        updateDataLabel(TF_DATA_2, jLabelData2, 2);
     }//GEN-LAST:event_TF_DATA_2KeyReleased
 
     private void TF_DATA_3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_DATA_3KeyReleased
-        try {
-            int index = Integer.parseInt(TF_DATA_3.getText());
-            if ((index >= 0) && (index <= 10)) {
-                jLabelData3.setText("Data 3 - " + displayDataArray[index]);
-            } else {
-                jLabelData3.setText("Data 3");
-            }
-        } catch (NumberFormatException ex) {
-            jLabelData3.setText("Data 3");
-        }
+        updateDataLabel(TF_DATA_3, jLabelData3, 3);
     }//GEN-LAST:event_TF_DATA_3KeyReleased
 
     private void TF_DATA_4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_DATA_4KeyReleased
-        try {
-            int index = Integer.parseInt(TF_DATA_4.getText());
-            if ((index >= 0) && (index <= 10)) {
-                jLabelData4.setText("Data 4 - " + displayDataArray[index]);
-            } else {
-                jLabelData4.setText("Data 4");
-            }
-        } catch (NumberFormatException ex) {
-            jLabelData4.setText("Data 4");
-        }
+        updateDataLabel(TF_DATA_4, jLabelData4, 4);
     }//GEN-LAST:event_TF_DATA_4KeyReleased
 
     private void TF_DATA_5KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_DATA_5KeyReleased
-        try {
-            int index = Integer.parseInt(TF_DATA_5.getText());
-            if ((index >= 0) && (index <= 10)) {
-                jLabelData5.setText("Data 5 - " + displayDataArray[index]);
-            } else {
-                jLabelData5.setText("Data 5");
-            }
-        } catch (NumberFormatException ex) {
-            jLabelData5.setText("Data 5");
-        }
+        updateDataLabel(TF_DATA_5, jLabelData5, 5);
     }//GEN-LAST:event_TF_DATA_5KeyReleased
 
     private void TF_DATA_6KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_DATA_6KeyReleased
-        try {
-            int index = Integer.parseInt(TF_DATA_6.getText());
-            if ((index >= 0) && (index <= 10)) {
-                jLabelData6.setText("Data 6 - " + displayDataArray[index]);
-            } else {
-                jLabelData6.setText("Data 6");
-            }
-        } catch (NumberFormatException ex) {
-            jLabelData6.setText("Data 6");
-        }
+        updateDataLabel(TF_DATA_6, jLabelData6, 6);
     }//GEN-LAST:event_TF_DATA_6KeyReleased
 
     private void TF_LIGHT_MODE_ON_STARTKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_LIGHT_MODE_ON_STARTKeyReleased
-        try {
-            int index = Integer.parseInt(TF_LIGHT_MODE_ON_START.getText());
-            if ((index >= 0) && (index <= 8)) {
-                jLabel_LIGHT_MODE_ON_START.setText("<html>Lights mode on startup - " + lightModeArray[Integer.parseInt(TF_LIGHT_MODE_ON_START.getText())] + "</html>");
-            } else {
-                jLabel_LIGHT_MODE_ON_START.setText("Lights mode on startup");
-            }
-        } catch (NumberFormatException ex) {
-            jLabel_LIGHT_MODE_ON_START.setText("Lights mode on startup");
-        }
+        updateLightsFieldLabel(TF_LIGHT_MODE_ON_START, jLabel_LIGHT_MODE_ON_START, 0);
     }//GEN-LAST:event_TF_LIGHT_MODE_ON_STARTKeyReleased
 
     private void TF_LIGHT_MODE_1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_LIGHT_MODE_1KeyReleased
-        try {
-            int index = Integer.parseInt(TF_LIGHT_MODE_1.getText());
-            if ((index >= 0) && (index <= 8)) {
-                jLabel_LIGHT_MODE_1.setText("<html>Mode 1 - " + lightModeArray[Integer.parseInt(TF_LIGHT_MODE_1.getText())] + "</html>");
-            } else {
-                jLabel_LIGHT_MODE_1.setText("Mode 1");
-            }
-        } catch (NumberFormatException ex) {
-            jLabel_LIGHT_MODE_1.setText("Mode 1");
-        }
+        updateLightsFieldLabel(TF_LIGHT_MODE_1, jLabel_LIGHT_MODE_1, 1);
     }//GEN-LAST:event_TF_LIGHT_MODE_1KeyReleased
 
     private void TF_LIGHT_MODE_2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_LIGHT_MODE_2KeyReleased
-        try {
-            int index = Integer.parseInt(TF_LIGHT_MODE_2.getText());
-            if ((index >= 0) && (index <= 9)) {
-                jLabel_LIGHT_MODE_2.setText("<html>Mode 2 - " + lightModeArray[Integer.parseInt(TF_LIGHT_MODE_2.getText())] + "</html>");
-            } else {
-                jLabel_LIGHT_MODE_2.setText("Mode 2");
-            }
-        } catch (NumberFormatException ex) {
-            jLabel_LIGHT_MODE_2.setText("Mode 2");
-        }
+        updateLightsFieldLabel(TF_LIGHT_MODE_1, jLabel_LIGHT_MODE_2, 2);
     }//GEN-LAST:event_TF_LIGHT_MODE_2KeyReleased
 
     private void TF_LIGHT_MODE_3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_LIGHT_MODE_3KeyReleased
-        try {
-            int index = Integer.parseInt(TF_LIGHT_MODE_3.getText());
-            if (((index >= 0) && (index <= 8)) || (index == 10)) {
-                jLabel_LIGHT_MODE_3.setText("<html>Mode 3 - " + lightModeArray[Integer.parseInt(TF_LIGHT_MODE_3.getText())] + "</html>");
-            } else {
-                jLabel_LIGHT_MODE_3.setText("Mode 3");
-            }
-        } catch (NumberFormatException ex) {
-            jLabel_LIGHT_MODE_3.setText("Mode 3");
-        }
+        updateLightsFieldLabel(TF_LIGHT_MODE_1, jLabel_LIGHT_MODE_3, 3);
     }//GEN-LAST:event_TF_LIGHT_MODE_3KeyReleased
 
     private void CB_STREET_POWER_LIMStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CB_STREET_POWER_LIMStateChanged
-        TF_STREET_POWER_LIM.setEnabled(CB_STREET_POWER_LIM.isSelected());
+       setStreetPowerLimitEnabled();
     }//GEN-LAST:event_CB_STREET_POWER_LIMStateChanged
 
     private void CB_ASS_WITHOUT_PEDStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CB_ASS_WITHOUT_PEDStateChanged
-        TF_ASS_WITHOUT_PED_THRES.setEnabled(CB_ASS_WITHOUT_PED.isSelected());
+        setAssistWithoutPedThresholdEnabled();
     }//GEN-LAST:event_CB_ASS_WITHOUT_PEDStateChanged
 
     private void CB_MAX_SPEED_DISPLAYStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CB_MAX_SPEED_DISPLAYStateChanged
-        TF_MAX_SPEED.setEnabled(!CB_MAX_SPEED_DISPLAY.isSelected());
+        setMaxSpeedOffroadEnabled();
     }//GEN-LAST:event_CB_MAX_SPEED_DISPLAYStateChanged
 
     private void CB_LIGHTSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CB_LIGHTSStateChanged
-        TF_LIGHT_MODE_ON_START.setEnabled(CB_LIGHTS.isSelected());
-        TF_LIGHT_MODE_1.setEnabled(CB_LIGHTS.isSelected());
-        TF_LIGHT_MODE_2.setEnabled(CB_LIGHTS.isSelected());
-        TF_LIGHT_MODE_3.setEnabled(CB_LIGHTS.isSelected());
+        setLightsFieldsEnabled();
     }//GEN-LAST:event_CB_LIGHTSStateChanged
 
     private void CB_WALK_ASSISTStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CB_WALK_ASSISTStateChanged
-        TF_WALK_ASS_SPEED_1.setEnabled(CB_WALK_ASSIST.isSelected());
-        TF_WALK_ASS_SPEED_2.setEnabled(CB_WALK_ASSIST.isSelected());
-        TF_WALK_ASS_SPEED_3.setEnabled(CB_WALK_ASSIST.isSelected());
-        TF_WALK_ASS_SPEED_4.setEnabled(CB_WALK_ASSIST.isSelected());
-        TF_WALK_ASS_SPEED_LIMIT.setEnabled(CB_WALK_ASSIST.isSelected());
-        TF_WALK_ASS_TIME.setEnabled(CB_WALK_TIME_ENA.isSelected() && CB_BRAKE_SENSOR.isSelected() && CB_WALK_ASSIST.isSelected());
-        CB_WALK_TIME_ENA.setEnabled(CB_BRAKE_SENSOR.isSelected() && CB_WALK_ASSIST.isSelected());
-        CB_STREET_WALK.setEnabled(CB_WALK_ASSIST.isSelected());
+        setWalkAssistFieldsEnabled();
     }//GEN-LAST:event_CB_WALK_ASSISTStateChanged
 
     private void CB_AUTO_DISPLAY_DATAStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CB_AUTO_DISPLAY_DATAStateChanged
-        TF_NUM_DATA_AUTO_DISPLAY.setEnabled(CB_AUTO_DISPLAY_DATA.isSelected());
+        setNumDataAutoDisplayEnabled();
     }//GEN-LAST:event_CB_AUTO_DISPLAY_DATAStateChanged
 
     private void TF_MAX_SPEEDKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_MAX_SPEEDKeyReleased
-        if (RB_UNIT_KILOMETERS.isSelected()) {
-            intMaxSpeed = Integer.parseInt(TF_MAX_SPEED.getText());
-        }
-        if (RB_UNIT_MILES.isSelected()) {
-            intMaxSpeed = Integer.parseInt(TF_MAX_SPEED.getText()) * 16 / 10;
-        }
+        handleFieldKmValue(TF_MAX_SPEED, intMaxSpeed, 0);
     }//GEN-LAST:event_TF_MAX_SPEEDKeyReleased
 
     private void TF_STREET_SPEED_LIMKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_STREET_SPEED_LIMKeyReleased
-        if (RB_UNIT_KILOMETERS.isSelected()) {
-            intStreetSpeed = Integer.parseInt(TF_STREET_SPEED_LIM.getText());
-        }
-        if (RB_UNIT_MILES.isSelected()) {
-            intStreetSpeed = Integer.parseInt(TF_STREET_SPEED_LIM.getText()) * 16 / 10;
-        }
+        handleFieldKmValue(TF_STREET_SPEED_LIM, intMaxSpeed, 1);
     }//GEN-LAST:event_TF_STREET_SPEED_LIMKeyReleased
 
     private void TF_NUM_DATA_AUTO_DISPLAYKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_NUM_DATA_AUTO_DISPLAYKeyReleased
-        if (Integer.parseInt(TF_NUM_DATA_AUTO_DISPLAY.getText()) > 6) {
-            TF_NUM_DATA_AUTO_DISPLAY.setText("6");
-        }
-        if (Integer.parseInt(TF_NUM_DATA_AUTO_DISPLAY.getText()) == 0) {
-            TF_NUM_DATA_AUTO_DISPLAY.setText("1");
-        }
+        ensureFieldInRange(TF_NUM_DATA_AUTO_DISPLAY, 1, 6);
     }//GEN-LAST:event_TF_NUM_DATA_AUTO_DISPLAYKeyReleased
 
     private void CB_TORQUE_CALIBRATIONStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CB_TORQUE_CALIBRATIONStateChanged
-        TF_TORQ_ADC_OFFSET.setEnabled(CB_TORQUE_CALIBRATION.isSelected());
-        TF_TORQ_ADC_RANGE_ADJ.setEnabled(CB_TORQUE_CALIBRATION.isSelected());
-        TF_TORQ_ADC_ANGLE_ADJ.setEnabled(CB_TORQUE_CALIBRATION.isSelected());
-        TF_TORQUE_ADC_MAX.setEnabled(CB_TORQUE_CALIBRATION.isSelected());
-        CB_ADC_STEP_ESTIM.setEnabled(CB_TORQUE_CALIBRATION.isSelected());
-        TF_TORQ_PER_ADC_STEP_ADV.setEnabled(CB_TORQUE_CALIBRATION.isSelected());
+        updateTorqueCalibrationValues();
     }//GEN-LAST:event_CB_TORQUE_CALIBRATIONStateChanged
 
     private void TF_WALK_ASS_SPEED_LIMITKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_WALK_ASS_SPEED_LIMITKeyReleased
-        if (RB_UNIT_KILOMETERS.isSelected()) {
-            intWalkSpeedLimit = Integer.parseInt(TF_WALK_ASS_SPEED_LIMIT.getText());
-        }
-        if (RB_UNIT_MILES.isSelected()) {
-            intWalkSpeedLimit = Integer.parseInt(TF_WALK_ASS_SPEED_LIMIT.getText()) * 16 / 10;
-        }
+        handleFieldKmValue(TF_WALK_ASS_SPEED_LIMIT, intWalkSpeed, 0);
     }//GEN-LAST:event_TF_WALK_ASS_SPEED_LIMITKeyReleased
 
     private void TF_CRUISE_ASS_1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_CRUISE_ASS_1KeyReleased
-        if (RB_UNIT_KILOMETERS.isSelected()) {
-            intCruiseSpeed1 = Integer.parseInt(TF_CRUISE_ASS_1.getText());
-        }
-        if (RB_UNIT_MILES.isSelected()) {
-            intCruiseSpeed1 = Integer.parseInt(TF_CRUISE_ASS_1.getText()) * 16 / 10;
-        }
+        handleFieldKmValue(TF_CRUISE_ASS_1, intCruiseSpeed, 1);
     }//GEN-LAST:event_TF_CRUISE_ASS_1KeyReleased
 
     private void TF_CRUISE_ASS_2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_CRUISE_ASS_2KeyReleased
-        if (RB_UNIT_KILOMETERS.isSelected()) {
-            intCruiseSpeed2 = Integer.parseInt(TF_CRUISE_ASS_2.getText());
-        }
-        if (RB_UNIT_MILES.isSelected()) {
-            intCruiseSpeed2 = Integer.parseInt(TF_CRUISE_ASS_2.getText()) * 16 / 10;
-        }
+        handleFieldKmValue(TF_CRUISE_ASS_2, intCruiseSpeed, 2);
     }//GEN-LAST:event_TF_CRUISE_ASS_2KeyReleased
 
     private void TF_CRUISE_ASS_3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_CRUISE_ASS_3KeyReleased
-        if (RB_UNIT_KILOMETERS.isSelected()) {
-            intCruiseSpeed3 = Integer.parseInt(TF_CRUISE_ASS_3.getText());
-        }
-        if (RB_UNIT_MILES.isSelected()) {
-            intCruiseSpeed3 = Integer.parseInt(TF_CRUISE_ASS_3.getText()) * 16 / 10;
-        }
+        handleFieldKmValue(TF_CRUISE_ASS_3, intCruiseSpeed, 3);
     }//GEN-LAST:event_TF_CRUISE_ASS_3KeyReleased
 
     private void TF_CRUISE_ASS_4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_CRUISE_ASS_4KeyReleased
-        if (RB_UNIT_KILOMETERS.isSelected()) {
-            intCruiseSpeed4 = Integer.parseInt(TF_CRUISE_ASS_4.getText());
-        }
-        if (RB_UNIT_MILES.isSelected()) {
-            intCruiseSpeed4 = Integer.parseInt(TF_CRUISE_ASS_4.getText()) * 16 / 10;
-        }
+        handleFieldKmValue(TF_CRUISE_ASS_4, intCruiseSpeed, 4);
     }//GEN-LAST:event_TF_CRUISE_ASS_4KeyReleased
 
     private void TF_CRUISE_SPEED_ENAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_CRUISE_SPEED_ENAKeyReleased
-        if (RB_UNIT_KILOMETERS.isSelected()) {
-            intCruiseSpeed = Integer.parseInt(TF_CRUISE_SPEED_ENA.getText());
-        }
-        if (RB_UNIT_MILES.isSelected()) {
-            intCruiseSpeed = Integer.parseInt(TF_CRUISE_SPEED_ENA.getText()) * 16 / 10;
-        }
+        handleFieldKmValue(TF_CRUISE_SPEED_ENA, intCruiseSpeed, 0);
     }//GEN-LAST:event_TF_CRUISE_SPEED_ENAKeyReleased
 
     private void TF_TORQ_ADC_OFFSET_ADJKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_TORQ_ADC_OFFSET_ADJKeyReleased
-        int value = 0;
-        int length = TF_TORQ_ADC_OFFSET_ADJ.getText().length();
-        String sign = TF_TORQ_ADC_OFFSET_ADJ.getText().substring(0, 1);
-        String empty = TF_TORQ_ADC_OFFSET_ADJ.getText();
-
-        if (sign.equals("-")) {
-            value = Integer.parseInt(TF_TORQ_ADC_OFFSET_ADJ.getText().substring(1, length));
-        } else if (empty.equals("")) {
-            value = 0;
-        } else {
-            value = Integer.parseInt(TF_TORQ_ADC_OFFSET_ADJ.getText());
-        }
-
-        if ((value >= 0) && (value <= MIDDLE_OFFSET_ADJ)) {
-            if (empty.equals("")) {
-                intTorqueOffsetAdj = MIDDLE_OFFSET_ADJ;
-            } else if (sign.equals("-")) {
-                intTorqueOffsetAdj = MIDDLE_OFFSET_ADJ - value;
-            } else {
-                intTorqueOffsetAdj = MIDDLE_OFFSET_ADJ + value;
-                if (intTorqueOffsetAdj > OFFSET_MAX_VALUE) {
-                    intTorqueOffsetAdj = OFFSET_MAX_VALUE;
-                    TF_TORQ_ADC_OFFSET_ADJ.setText(String.valueOf(OFFSET_MAX_VALUE - MIDDLE_OFFSET_ADJ));
-                }
-            }
-        } else {
-            TF_TORQ_ADC_OFFSET_ADJ.setText("0");
-            intTorqueOffsetAdj = MIDDLE_OFFSET_ADJ;
+        intTorqueOffsetAdj = handleFieldValueWithAdjustment(TF_TORQ_ADC_OFFSET_ADJ, MIDDLE_OFFSET_ADJ);
+        if (intTorqueOffsetAdj > OFFSET_MAX_VALUE) {
+            intTorqueOffsetAdj = OFFSET_MAX_VALUE;
+            TF_TORQ_ADC_OFFSET_ADJ.setText(String.valueOf(OFFSET_MAX_VALUE - MIDDLE_OFFSET_ADJ));
         }
     }//GEN-LAST:event_TF_TORQ_ADC_OFFSET_ADJKeyReleased
 
@@ -4987,202 +4297,44 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     }//GEN-LAST:event_CB_FIELD_WEAKENING_ENABLEDStateChanged
 
     private void TF_WALK_ASS_SPEED_1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_WALK_ASS_SPEED_1KeyReleased
-        if (RB_UNIT_KILOMETERS.isSelected()) {
-            intWalkSpeed1 = Integer.parseInt(TF_WALK_ASS_SPEED_1.getText());
-        }
-        if (RB_UNIT_MILES.isSelected()) {
-            intWalkSpeed1 = Integer.parseInt(TF_WALK_ASS_SPEED_1.getText()) * 16 / 10;
-        }
+        handleFieldKmValue(TF_WALK_ASS_SPEED_1, intWalkSpeed, 1);
     }//GEN-LAST:event_TF_WALK_ASS_SPEED_1KeyReleased
 
     private void TF_WALK_ASS_SPEED_2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_WALK_ASS_SPEED_2KeyReleased
-        if (RB_UNIT_KILOMETERS.isSelected()) {
-            intWalkSpeed2 = Integer.parseInt(TF_WALK_ASS_SPEED_2.getText());
-        }
-        if (RB_UNIT_MILES.isSelected()) {
-            intWalkSpeed2 = Integer.parseInt(TF_WALK_ASS_SPEED_2.getText()) * 16 / 10;
-        }
+        handleFieldKmValue(TF_WALK_ASS_SPEED_2, intWalkSpeed, 2);
     }//GEN-LAST:event_TF_WALK_ASS_SPEED_2KeyReleased
 
     private void TF_WALK_ASS_SPEED_3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_WALK_ASS_SPEED_3KeyReleased
-        if (RB_UNIT_KILOMETERS.isSelected()) {
-            intWalkSpeed3 = Integer.parseInt(TF_WALK_ASS_SPEED_3.getText());
-        }
-        if (RB_UNIT_MILES.isSelected()) {
-            intWalkSpeed3 = Integer.parseInt(TF_WALK_ASS_SPEED_3.getText()) * 16 / 10;
-        }
+        handleFieldKmValue(TF_WALK_ASS_SPEED_3, intWalkSpeed, 3);
     }//GEN-LAST:event_TF_WALK_ASS_SPEED_3KeyReleased
 
     private void TF_WALK_ASS_SPEED_4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_WALK_ASS_SPEED_4KeyReleased
-        if (RB_UNIT_KILOMETERS.isSelected()) {
-            intWalkSpeed4 = Integer.parseInt(TF_WALK_ASS_SPEED_4.getText());
-        }
-        if (RB_UNIT_MILES.isSelected()) {
-            intWalkSpeed4 = Integer.parseInt(TF_WALK_ASS_SPEED_4.getText()) * 16 / 10;
-        }
+        handleFieldKmValue(TF_WALK_ASS_SPEED_4, intWalkSpeed, 4);
     }//GEN-LAST:event_TF_WALK_ASS_SPEED_4KeyReleased
 
     private void RB_UNIT_MILESStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_RB_UNIT_MILESStateChanged
-        if (RB_UNIT_MILES.isSelected()) {
-            jLabel_MAX_SPEED.setText("Max speed offroad mode (mph)");
-            jLabel_STREET_SPEED_LIM.setText("Street speed limit (mph)");
-            jLabelCruiseSpeedUnits.setText("mph");
-            jLabelWalkSpeedUnits.setText("mph x10");
-            TF_MAX_SPEED.setText(String.valueOf((intMaxSpeed * 10 + 5) / 16));
-            TF_STREET_SPEED_LIM.setText(String.valueOf((intStreetSpeed * 10 + 5) / 16));
-            TF_WALK_ASS_SPEED_1.setText(String.valueOf((intWalkSpeed1 * 10 + 5) / 16));
-            TF_WALK_ASS_SPEED_2.setText(String.valueOf((intWalkSpeed2 * 10 + 5) / 16));
-            TF_WALK_ASS_SPEED_3.setText(String.valueOf((intWalkSpeed3 * 10 + 5) / 16));
-            TF_WALK_ASS_SPEED_4.setText(String.valueOf((intWalkSpeed4 * 10 + 5) / 16));
-            TF_WALK_ASS_SPEED_LIMIT.setText(String.valueOf((intWalkSpeedLimit * 10 + 5) / 16));
-            TF_CRUISE_SPEED_ENA.setText(String.valueOf((intCruiseSpeed * 10 + 5) / 16));
-            TF_CRUISE_ASS_1.setText(String.valueOf((intCruiseSpeed1 * 10 + 5) / 16));
-            TF_CRUISE_ASS_2.setText(String.valueOf((intCruiseSpeed2 * 10 + 5) / 16));
-            TF_CRUISE_ASS_3.setText(String.valueOf((intCruiseSpeed3 * 10 + 5) / 16));
-            TF_CRUISE_ASS_4.setText(String.valueOf((intCruiseSpeed4 * 10 + 5) / 16));
-        }
+        updateUnits();
     }//GEN-LAST:event_RB_UNIT_MILESStateChanged
 
-    private void RB_XH18StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_RB_XH18StateChanged
-        TF_BAT_CELL_5_6.setEnabled(RB_VLCD5.isSelected());
-        TF_BAT_CELL_4_6.setEnabled(RB_VLCD5.isSelected());
-        TF_BAT_CELL_3_6.setEnabled(RB_VLCD5.isSelected());
-        TF_BAT_CELL_2_6.setEnabled(RB_VLCD5.isSelected());
-        TF_BAT_CELL_1_6.setEnabled(RB_VLCD5.isSelected());
-        TF_BAT_CELL_3_4.setEnabled(!(RB_VLCD5.isSelected()));
-        TF_BAT_CELL_2_4.setEnabled(!(RB_VLCD5.isSelected()));
-        TF_BAT_CELL_1_4.setEnabled(!(RB_VLCD5.isSelected()));
-    }//GEN-LAST:event_RB_XH18StateChanged
-
-    private void RB_VLCD5StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_RB_VLCD5StateChanged
-        TF_BAT_CELL_5_6.setEnabled(RB_VLCD5.isSelected());
-        TF_BAT_CELL_4_6.setEnabled(RB_VLCD5.isSelected());
-        TF_BAT_CELL_3_6.setEnabled(RB_VLCD5.isSelected());
-        TF_BAT_CELL_2_6.setEnabled(RB_VLCD5.isSelected());
-        TF_BAT_CELL_1_6.setEnabled(RB_VLCD5.isSelected());
-        TF_BAT_CELL_3_4.setEnabled(!(RB_VLCD5.isSelected()));
-        TF_BAT_CELL_2_4.setEnabled(!(RB_VLCD5.isSelected()));
-        TF_BAT_CELL_1_4.setEnabled(!(RB_VLCD5.isSelected()));
-    }//GEN-LAST:event_RB_VLCD5StateChanged
-
-    private void RB_VLCD6StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_RB_VLCD6StateChanged
-        TF_BAT_CELL_5_6.setEnabled(RB_VLCD5.isSelected());
-        TF_BAT_CELL_4_6.setEnabled(RB_VLCD5.isSelected());
-        TF_BAT_CELL_3_6.setEnabled(RB_VLCD5.isSelected());
-        TF_BAT_CELL_2_6.setEnabled(RB_VLCD5.isSelected());
-        TF_BAT_CELL_1_6.setEnabled(RB_VLCD5.isSelected());
-        TF_BAT_CELL_3_4.setEnabled(!(RB_VLCD5.isSelected()));
-        TF_BAT_CELL_2_4.setEnabled(!(RB_VLCD5.isSelected()));
-        TF_BAT_CELL_1_4.setEnabled(!(RB_VLCD5.isSelected()));
-    }//GEN-LAST:event_RB_VLCD6StateChanged
-
     private void TF_TORQ_ADC_RANGE_ADJKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_TORQ_ADC_RANGE_ADJKeyReleased
-        int value = 0;
-        int length = TF_TORQ_ADC_RANGE_ADJ.getText().length();
-        String sign = TF_TORQ_ADC_RANGE_ADJ.getText().substring(0, 1);
-        String empty = TF_TORQ_ADC_RANGE_ADJ.getText();
-
-        if (sign.equals("-")) {
-            value = Integer.parseInt(TF_TORQ_ADC_RANGE_ADJ.getText().substring(1, length));
-        } else if (empty.equals("")) {
-            value = 0;
-        } else {
-            value = Integer.parseInt(TF_TORQ_ADC_RANGE_ADJ.getText());
-        }
-
-        if ((value >= 0) && (value <= MIDDLE_RANGE_ADJ)) {
-            if (empty.equals("")) {
-                intTorqueRangeAdj = MIDDLE_RANGE_ADJ;
-            } else if (sign.equals("-")) {
-                intTorqueRangeAdj = MIDDLE_RANGE_ADJ - value;
-            } else {
-                intTorqueRangeAdj = MIDDLE_RANGE_ADJ + value;
-            }
-        } else {
-            TF_TORQ_ADC_RANGE_ADJ.setText("0");
-            intTorqueRangeAdj = MIDDLE_RANGE_ADJ;
-        }
+        intTorqueRangeAdj = handleFieldValueWithAdjustment(TF_TORQ_ADC_RANGE_ADJ, MIDDLE_RANGE_ADJ);
     }//GEN-LAST:event_TF_TORQ_ADC_RANGE_ADJKeyReleased
 
     private void TF_TORQ_ADC_OFFSETKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_TORQ_ADC_OFFSETKeyReleased
-        if (CB_ADC_STEP_ESTIM.isSelected()) {
-            intTorqueAdcOffset = Integer.parseInt(TF_TORQ_ADC_OFFSET.getText());
-            intTorqueAdcMax = Integer.parseInt(TF_TORQUE_ADC_MAX.getText());
-            intTorqueAdcOnWeight = intTorqueAdcOffset + ((intTorqueAdcMax - intTorqueAdcOffset) * 75) / 100;
-            intTorqueAdcStepCalc = (WEIGHT_ON_PEDAL * 167) / (intTorqueAdcOnWeight - intTorqueAdcOffset);
-            TF_TORQ_PER_ADC_STEP.setText(String.valueOf(intTorqueAdcStepCalc));
-        }
+        updateTorqueCalibrationValues();
     }//GEN-LAST:event_TF_TORQ_ADC_OFFSETKeyReleased
 
     private void TF_TORQUE_ADC_MAXKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_TORQUE_ADC_MAXKeyReleased
-        if (CB_ADC_STEP_ESTIM.isSelected()) {
-            intTorqueAdcOffset = Integer.parseInt(TF_TORQ_ADC_OFFSET.getText());
-            intTorqueAdcMax = Integer.parseInt(TF_TORQUE_ADC_MAX.getText());
-            intTorqueAdcOnWeight = intTorqueAdcOffset + ((intTorqueAdcMax - intTorqueAdcOffset) * 75) / 100;
-            intTorqueAdcStepCalc = (WEIGHT_ON_PEDAL * 167) / (intTorqueAdcOnWeight - intTorqueAdcOffset);
-            TF_TORQ_PER_ADC_STEP.setText(String.valueOf(intTorqueAdcStepCalc));
-        }
+        updateTorqueCalibrationValues();
     }//GEN-LAST:event_TF_TORQUE_ADC_MAXKeyReleased
 
     private void TF_TORQ_ADC_ANGLE_ADJKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_TORQ_ADC_ANGLE_ADJKeyReleased
-        int value = 0;
-        int length = TF_TORQ_ADC_ANGLE_ADJ.getText().length();
-        String sign = TF_TORQ_ADC_ANGLE_ADJ.getText().substring(0, 1);
-        String empty = TF_TORQ_ADC_ANGLE_ADJ.getText();
-
-        if (sign.equals("-")) {
-            value = Integer.parseInt(TF_TORQ_ADC_ANGLE_ADJ.getText().substring(1, length));
-        } else if (empty.equals("")) {
-            value = 0;
-        } else {
-            value = Integer.parseInt(TF_TORQ_ADC_ANGLE_ADJ.getText());
-        }
-
-        if ((value >= 0) && (value <= MIDDLE_ANGLE_ADJ)) {
-            if (empty.equals("")) {
-                intTorqueAngleAdj = MIDDLE_ANGLE_ADJ;
-            } else if (sign.equals("-")) {
-                intTorqueAngleAdj = MIDDLE_ANGLE_ADJ - value;
-            } else {
-                intTorqueAngleAdj = MIDDLE_ANGLE_ADJ + value;
-            }
-        } else {
-            TF_TORQ_ADC_ANGLE_ADJ.setText("0");
-            intTorqueAngleAdj = MIDDLE_ANGLE_ADJ;
-        }
+        intTorqueAngleAdj = handleFieldValueWithAdjustment(TF_TORQ_ADC_ANGLE_ADJ, MIDDLE_ANGLE_ADJ);
     }//GEN-LAST:event_TF_TORQ_ADC_ANGLE_ADJKeyReleased
 
     private void RB_UNIT_KILOMETERSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_RB_UNIT_KILOMETERSStateChanged
-        if (RB_UNIT_KILOMETERS.isSelected()) {
-            jLabel_MAX_SPEED.setText("Max speed offroad mode (km/h)");
-            jLabel_STREET_SPEED_LIM.setText("Street speed limit (km/h)");
-            jLabelCruiseSpeedUnits.setText("km/h");
-            jLabelWalkSpeedUnits.setText("km/h x10");
-            TF_MAX_SPEED.setText(String.valueOf(intMaxSpeed));
-            TF_STREET_SPEED_LIM.setText(String.valueOf(intStreetSpeed));
-            TF_WALK_ASS_SPEED_1.setText(String.valueOf(intWalkSpeed1));
-            TF_WALK_ASS_SPEED_2.setText(String.valueOf(intWalkSpeed2));
-            TF_WALK_ASS_SPEED_3.setText(String.valueOf(intWalkSpeed3));
-            TF_WALK_ASS_SPEED_4.setText(String.valueOf(intWalkSpeed4));
-            TF_WALK_ASS_SPEED_LIMIT.setText(String.valueOf(intWalkSpeedLimit));
-            TF_CRUISE_SPEED_ENA.setText(String.valueOf(intCruiseSpeed));
-            TF_CRUISE_ASS_1.setText(String.valueOf(intCruiseSpeed1));
-            TF_CRUISE_ASS_2.setText(String.valueOf(intCruiseSpeed2));
-            TF_CRUISE_ASS_3.setText(String.valueOf(intCruiseSpeed3));
-            TF_CRUISE_ASS_4.setText(String.valueOf(intCruiseSpeed4));
-        }
+        updateUnits();
     }//GEN-LAST:event_RB_UNIT_KILOMETERSStateChanged
-
-    private void RB_850CStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_RB_850CStateChanged
-        TF_BAT_CELL_5_6.setEnabled(RB_850C.isSelected());
-        TF_BAT_CELL_4_6.setEnabled(RB_850C.isSelected());
-        TF_BAT_CELL_3_6.setEnabled(RB_850C.isSelected());
-        TF_BAT_CELL_2_6.setEnabled(RB_850C.isSelected());
-        TF_BAT_CELL_1_6.setEnabled(RB_850C.isSelected());
-        TF_BAT_CELL_3_4.setEnabled(!(RB_850C.isSelected()));
-        TF_BAT_CELL_2_4.setEnabled(!(RB_850C.isSelected()));
-        TF_BAT_CELL_1_4.setEnabled(!(RB_850C.isSelected()));
-    }//GEN-LAST:event_RB_850CStateChanged
 
     private void BTN_CANCELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_CANCELActionPerformed
         if (compileWorker != null) {
@@ -5191,23 +4343,13 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_BTN_CANCELActionPerformed
 
-    private void TF_BOOST_TORQUE_FACTORActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TF_BOOST_TORQUE_FACTORActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TF_BOOST_TORQUE_FACTORActionPerformed
-
     private void CB_ADC_STEP_ESTIMStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CB_ADC_STEP_ESTIMStateChanged
-        TF_TORQ_PER_ADC_STEP.setEnabled(!CB_ADC_STEP_ESTIM.isSelected());
-
-        if (CB_ADC_STEP_ESTIM.isSelected()) {
-            intTorqueAdcOffset = Integer.parseInt(TF_TORQ_ADC_OFFSET.getText());
-            intTorqueAdcMax = Integer.parseInt(TF_TORQUE_ADC_MAX.getText());
-            intTorqueAdcOnWeight = intTorqueAdcOffset + ((intTorqueAdcMax - intTorqueAdcOffset) * 75) / 100;
-            intTorqueAdcStepCalc = (WEIGHT_ON_PEDAL * 167) / (intTorqueAdcOnWeight - intTorqueAdcOffset);
-            TF_TORQ_PER_ADC_STEP.setText(String.valueOf(intTorqueAdcStepCalc));
-        } else {
-            TF_TORQ_PER_ADC_STEP.setText(String.valueOf(intTorqueAdcStep));
-        }
+        updateTorqueCalibrationValues();
     }//GEN-LAST:event_CB_ADC_STEP_ESTIMStateChanged
+
+    private void CMB_DISPLAY_TYPEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CMB_DISPLAY_TYPEActionPerformed
+        setBatteryFieldsEnabled((DisplayType) CMB_DISPLAY_TYPE.getSelectedItem());
+    }//GEN-LAST:event_CMB_DISPLAY_TYPEActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BTN_CANCEL;
@@ -5236,9 +4378,9 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     private javax.swing.JCheckBox CB_TOR_SENSOR_ADV;
     private javax.swing.JCheckBox CB_WALK_ASSIST;
     private javax.swing.JCheckBox CB_WALK_TIME_ENA;
+    private javax.swing.JComboBox<DisplayType> CMB_DISPLAY_TYPE;
     private javax.swing.JLabel LB_COMPILE_OUTPUT;
     private javax.swing.JLabel LB_LAST_COMMIT;
-    private javax.swing.JRadioButton RB_850C;
     private javax.swing.JRadioButton RB_ADC_OPTION_DIS;
     private javax.swing.JRadioButton RB_BOOST_AT_ZERO_CADENCE;
     private javax.swing.JRadioButton RB_BOOST_AT_ZERO_SPEED;
@@ -5261,9 +4403,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     private javax.swing.JRadioButton RB_TORQUE_ON_START;
     private javax.swing.JRadioButton RB_UNIT_KILOMETERS;
     private javax.swing.JRadioButton RB_UNIT_MILES;
-    private javax.swing.JRadioButton RB_VLCD5;
-    private javax.swing.JRadioButton RB_VLCD6;
-    private javax.swing.JRadioButton RB_XH18;
     private javax.swing.JTextArea TA_COMPILE_OUTPUT;
     private javax.swing.JTextField TF_ADC_THROTTLE_MAX;
     private javax.swing.JTextField TF_ADC_THROTTLE_MIN;
@@ -5355,15 +4494,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     private javax.swing.JTextField TF_WALK_ASS_SPEED_LIMIT;
     private javax.swing.JTextField TF_WALK_ASS_TIME;
     private javax.swing.JTextField TF_WHEEL_CIRCUMF;
-    private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.ButtonGroup buttonGroup2;
-    private javax.swing.ButtonGroup buttonGroup3;
-    private javax.swing.ButtonGroup buttonGroup4;
-    private javax.swing.ButtonGroup buttonGroup5;
-    private javax.swing.ButtonGroup buttonGroup6;
-    private javax.swing.ButtonGroup buttonGroup7;
-    private javax.swing.ButtonGroup buttonGroup8;
-    private javax.swing.ButtonGroup buttonGroup9;
     private javax.swing.JList<FileContainer> expSet;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler10;
@@ -5376,6 +4506,14 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     private javax.swing.Box.Filler filler7;
     private javax.swing.Box.Filler filler8;
     private javax.swing.Box.Filler filler9;
+    private javax.swing.ButtonGroup groupAssistOnStart;
+    private javax.swing.ButtonGroup groupDisplayMode;
+    private javax.swing.ButtonGroup groupMotorV;
+    private javax.swing.ButtonGroup groupOptAdc;
+    private javax.swing.ButtonGroup groupStartupBoost;
+    private javax.swing.ButtonGroup groupStartupDisplay;
+    private javax.swing.ButtonGroup groupStartupSoc;
+    private javax.swing.ButtonGroup groupUnits;
     private javax.swing.JLabel headerBatterySettings;
     private javax.swing.JLabel headerBikeSettings;
     private javax.swing.JLabel headerCadenceAssist;
@@ -5384,13 +4522,13 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     private javax.swing.JLabel headerEmtbAssist;
     private javax.swing.JLabel headerHybridAssist;
     private javax.swing.JLabel headerLights;
+    private javax.swing.JLabel headerOtherSettings;
     private javax.swing.JLabel headerPowerAssist;
     private javax.swing.JLabel headerStreetMode;
     private javax.swing.JLabel headerTorqueAssist;
     private javax.swing.JLabel headerWalkAssist;
     private javax.swing.JLabel headingMotorSettings;
     private javax.swing.JLabel jLabel100;
-    private javax.swing.JLabel jLabel101;
     private javax.swing.JLabel jLabel102;
     private javax.swing.JLabel jLabel103;
     private javax.swing.JLabel jLabel104;
@@ -5496,14 +4634,11 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel_WALK_ASS_SPEED_LIMIT;
     private javax.swing.JLabel jLabel_WALK_ASS_TIME;
     private javax.swing.JLabel jLabel_WHEEL_CIRCUMF;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel_BOOST_AT_ZERO;
     private javax.swing.JPanel jPanel_MOTOR_V;
-    private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private java.awt.Label labelTitle;
     private javax.swing.JLabel labelUnits;
@@ -5514,8 +4649,9 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     private javax.swing.JList<FileContainer> provSet;
     private javax.swing.JPanel rowCompileActions;
     private javax.swing.JPanel rowDisplayMode;
-    private javax.swing.JPanel rowDisplayType;
     private javax.swing.JPanel rowOptADC;
+    private javax.swing.JPanel rowSocCalc;
+    private javax.swing.JPanel rowStartupData;
     private javax.swing.JPanel rowTorSensorAdv;
     private javax.swing.JPanel rowUnits;
     private javax.swing.JScrollPane scrollCompileOutput;
