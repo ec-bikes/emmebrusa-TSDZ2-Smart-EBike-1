@@ -23,13 +23,10 @@ import java.util.Date;
 import javax.swing.ListSelectionModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+
 import javax.swing.JOptionPane;
 import javax.swing.JList;
-import java.io.File;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -43,6 +40,42 @@ import java.util.Collections;
 
 public class TSDZ2_Configurator extends javax.swing.JFrame {
 
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(TSDZ2_Configurator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(TSDZ2_Configurator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(TSDZ2_Configurator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(TSDZ2_Configurator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(() -> {
+            new TSDZ2_Configurator().setVisible(true);
+        });
+    }
+
+    private static final String COMMITS_FILE = "commits.txt";
+    private static final String CONFIG_H_FILE = "src/controller/config.h";
+    private static final String EXPERIMENTAL_SETTINGS_DIR = "experimental settings";
+    private static final String PROVEN_SETTINGS_DIR = "proven settings";
+
+    private String rootPath;
     private File experimentalSettingsDir;
     private File lastSettingsFile = null;
 
@@ -68,10 +101,10 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         }
     }
 
-    String[] displayDataArray = {"motor temperature", "battery SOC rem. %", "battery voltage", "battery current", "motor power", "adc throttle 8b", "adc torque sensor 10b", "pedal cadence rpm", "human power", "adc pedal torque delta", "consumed Wh"};
-    String[] lightModeArray = {"<br>lights ON", "<br>lights FLASHING", "lights ON and BRAKE-FLASHING brak.", "lights FLASHING and ON when braking", "lights FLASHING BRAKE-FLASHING brak.", "lights ON and ON always braking", "lights ON and BRAKE-FLASHING alw.br.", "lights FLASHING and ON always braking", "lights FLASHING BRAKE-FLASHING alw.br.", "assist without pedal rotation", "assist with sensors error", "field weakening"};
+    private static final String[] displayDataArray = {"motor temperature", "battery SOC rem. %", "battery voltage", "battery current", "motor power", "adc throttle 8b", "adc torque sensor 10b", "pedal cadence rpm", "human power", "adc pedal torque delta", "consumed Wh"};
+    private static final String[] lightModeArray = {"<br>lights ON", "<br>lights FLASHING", "lights ON and BRAKE-FLASHING brak.", "lights FLASHING and ON when braking", "lights FLASHING BRAKE-FLASHING brak.", "lights ON and ON always braking", "lights ON and BRAKE-FLASHING alw.br.", "lights FLASHING and ON always braking", "lights FLASHING BRAKE-FLASHING alw.br.", "assist without pedal rotation", "assist with sensors error", "field weakening"};
 
-    public int[] intAdcPedalTorqueAngleAdjArray = {160, 138, 120, 107, 96, 88, 80, 74, 70, 66, 63, 59, 56, 52, 50, 47, 44, 42, 39, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16};
+    private static final int[] intAdcPedalTorqueAngleAdjArray = {160, 138, 120, 107, 96, 88, 80, 74, 70, 66, 63, 59, 56, 52, 50, 47, 44, 42, 39, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16};
 
     public int intMaxSpeed;
     public int intStreetSpeed;
@@ -97,11 +130,11 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     String strTorqueRangeAdj;
     String strTorqueAngleAdj;
 
-    public static final int WEIGHT_ON_PEDAL = 25; // kg
-    public static final int MIDDLE_OFFSET_ADJ = 20;
-    public static final int OFFSET_MAX_VALUE = 34; // MIDDLE_OFFSET_ADJ * 2 - 6 (ADC_TORQUE_SENSOR_CALIBRATION_OFFSET)
-    public static final int MIDDLE_RANGE_ADJ = 20;
-    public static final int MIDDLE_ANGLE_ADJ = 20;
+    private static final int WEIGHT_ON_PEDAL = 25; // kg
+    private static final int MIDDLE_OFFSET_ADJ = 20;
+    private static final int OFFSET_MAX_VALUE = 34; // MIDDLE_OFFSET_ADJ * 2 - 6 (ADC_TORQUE_SENSOR_CALIBRATION_OFFSET)
+    private static final int MIDDLE_RANGE_ADJ = 20;
+    private static final int MIDDLE_ANGLE_ADJ = 20;
 
     public void loadSettings(File f) throws IOException {
 
@@ -361,14 +394,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
             TF_CRUISE_ASS_3.setText(String.valueOf((intCruiseSpeed3 * 10 + 5) / 16));
             TF_CRUISE_ASS_4.setText(String.valueOf((intCruiseSpeed4 * 10 + 5) / 16));
         }
-
-        try {
-            BufferedReader br = new BufferedReader(new FileReader("commits.txt"));
-            LB_LAST_COMMIT.setText("<html>" + br.readLine() + "</html>");
-            br.close();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, " " + ex);
-        }
     }
 
     public void AddListItem(File newFile) {
@@ -377,43 +402,47 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         expSet.setSelectedIndex(0);
         expSet.repaint();
-        // JOptionPane.showMessageDialog(null,experimentalSettingsFilesModel.toString(),"Titel", JOptionPane.PLAIN_MESSAGE);
     }
 
     public TSDZ2_Configurator() {
-        //  Font defaultFont = (Font) UIManager.getLookAndFeelDefaults().get("Label.font");
-//         this.boldFont = new Font(defaultFont.getName(), Font.BOLD, defaultFont.getSize());
-//         this.redColor = new Color(255,0,0);
-//         UIManager.getLookAndFeelDefaults().put("defaultFont", new Font(defaultFont.getName(), Font.PLAIN, defaultFont.getSize()));
-//         UIManager.getLookAndFeelDefaults().put("defaultFont", new Font("Tahoma", Font.PLAIN, defaultFont.getSize()));
 
-        // UIManager.getLookAndFeelDefaults().put("Label.font", new Font(defaultFont.getName(), Font.PLAIN, 12));
-//        Font defaultFont = new Font("Tahoma", Font.PLAIN, 13);
-//        Enumeration keys = UIManager.getDefaults().keys();
-//        while (keys.hasMoreElements()) {
-//          Object key = keys.nextElement();
-//          Object value = UIManager.get(key);
-//          if (value instanceof javax.swing.plaf.FontUIResource) {
-//            UIManager.put(key, defaultFont);
-//          }
-//        }
         initComponents();
 
         this.setLocationRelativeTo(null);
 
-        // update lists
-        experimentalSettingsDir = new File(Paths.get(".").toAbsolutePath().normalize().toString());
+        // Try to find the git repo root
+        File currentDir = new File(Paths.get(".").toAbsolutePath().normalize().toString());
+        File rootDir = currentDir;
 
-        while (!Arrays.asList(experimentalSettingsDir.list()).contains("experimental settings")) {
-            experimentalSettingsDir = experimentalSettingsDir.getParentFile();
+        while (rootDir != null && !Arrays.asList(rootDir.list()).contains(CompileWorker.COMPILE_SCRIPT_SH)) {
+            rootDir = rootDir.getParentFile();
         }
-        File provenSettingsDir = new File(experimentalSettingsDir.getAbsolutePath() + File.separator + "proven settings");
-        experimentalSettingsDir = new File(experimentalSettingsDir.getAbsolutePath() + File.separator + "experimental settings");
+        if (rootDir == null) {
+            JOptionPane.showMessageDialog(this, "Could not find the root path of the OSF git repo.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
+            return;
+        }
+        rootPath = rootDir.getAbsolutePath();
 
+        // Update the latest commit
+        File commitsFile = new File(Paths.get(rootPath, COMMITS_FILE).toString());
+        if (commitsFile.exists()) {
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(commitsFile.getAbsolutePath()));
+                LB_LAST_COMMIT.setText("<html>" + br.readLine() + "</html>");
+                br.close();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.toString());
+            }
+        }
+
+        // Read the proven settings
+        File provenSettingsDir = new File(Paths.get(rootPath, PROVEN_SETTINGS_DIR).toString());
         File[] provenSettingsFiles = provenSettingsDir.listFiles();
         Arrays.sort(provenSettingsFiles);
         for (File file : provenSettingsFiles) {
-            provenSettingsFilesModel.addElement(new TSDZ2_Configurator.FileContainer(file));
+            provenSettingsFilesModel.addElement(new FileContainer(file));
 
             if (lastSettingsFile == null) {
                 lastSettingsFile = file;
@@ -424,10 +453,12 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
             }
         }
 
+        // Read the experimental settings
+        experimentalSettingsDir = new File(Paths.get(rootPath, EXPERIMENTAL_SETTINGS_DIR).toString());
         File[] experimentalSettingsFiles = experimentalSettingsDir.listFiles();
         Arrays.sort(experimentalSettingsFiles, Collections.reverseOrder());
         for (File file : experimentalSettingsFiles) {
-            experimentalSettingsFilesModel.addElement(new TSDZ2_Configurator.FileContainer(file));
+            experimentalSettingsFilesModel.addElement(new FileContainer(file));
             if (lastSettingsFile == null) {
                 lastSettingsFile = file;
             } else {
@@ -460,14 +491,13 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
                 try {
                     int selectedIndex = expSet.getSelectedIndex();
                     experimentalSettingsList.setSelectedIndex(selectedIndex);
+                    provenSettingsList.clearSelection();
                     loadSettings(((FileContainer) experimentalSettingsList.getSelectedValue()).file);
                     experimentalSettingsList.clearSelection();
                 } catch (IOException ex) {
                     Logger.getLogger(TSDZ2_Configurator.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 experimentalSettingsList.clearSelection();
-
-                //updateDependiencies(false);
             }
         });
 
@@ -477,13 +507,13 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
                 try {
                     int selectedIndex = provSet.getSelectedIndex();
                     provenSettingsList.setSelectedIndex(selectedIndex);
+                    experimentalSettingsList.clearSelection();
                     loadSettings(((FileContainer) provenSettingsList.getSelectedValue()).file);
                     provenSettingsList.clearSelection();
                 } catch (IOException ex) {
                     Logger.getLogger(TSDZ2_Configurator.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 provenSettingsList.clearSelection();
-                //updateDependiencies(false);
             }
         });
 
@@ -495,12 +525,17 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
                 PrintWriter iWriter = null;
                 PrintWriter pWriter = null;
 
-                File newFile = new File(experimentalSettingsDir + File.separator + new SimpleDateFormat("yyyyMMdd-HHmmssz").format(new Date()) + ".ini");
+                String newFileName = new SimpleDateFormat("yyyyMMdd-HHmmssz").format(new Date()) + ".ini";
+                String newFilePath = Paths.get(experimentalSettingsDir.getAbsolutePath(), newFileName).toString();
+                String configHPath = Paths.get(rootPath, CONFIG_H_FILE).toString();
+                TA_COMPILE_OUTPUT.setText("Writing settings to " + newFilePath + " and " + configHPath);
+
                 try {
+                    File newFile = new File(newFilePath);
                     AddListItem(newFile);
 
                     iWriter = new PrintWriter(new BufferedWriter(new FileWriter(newFile)));
-                    pWriter = new PrintWriter(new BufferedWriter(new FileWriter("src/controller/config.h")));
+                    pWriter = new PrintWriter(new BufferedWriter(new FileWriter(configHPath)));
                     pWriter.println("/*\r\n"
                             + " * config.h\r\n"
                             + " *\r\n"
@@ -1277,7 +1312,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
                     }
                 }
 
-                compileAndFlash(newFile.getName());
+                compileAndFlash(newFileName);
             }
         }); // end of jButton1.addActionListener
 
@@ -1297,7 +1332,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         BTN_COMPILE.setEnabled(false);
         BTN_CANCEL.setEnabled(true);
 
-        compileWorker = new CompileWorker(TA_COMPILE_OUTPUT, fileName);
+        compileWorker = new CompileWorker(TA_COMPILE_OUTPUT, fileName, rootPath);
         compileWorker.execute();
 
         compileWorker.addPropertyChangeListener(
@@ -5158,41 +5193,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     private void BTN_SAVEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_SAVEActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_BTN_SAVEActionPerformed
-
-    /*
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TSDZ2_Configurator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TSDZ2_Configurator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TSDZ2_Configurator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TSDZ2_Configurator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TSDZ2_Configurator().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BTN_CANCEL;

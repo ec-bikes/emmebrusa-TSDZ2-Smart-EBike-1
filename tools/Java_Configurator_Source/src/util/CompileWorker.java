@@ -134,18 +134,13 @@ public class CompileWorker extends SwingWorker<CompileWorker.ResultType, String>
                 // shell scripts relying on non-builtin commands, the PATH needs to be updated to
                 // account for the package manager (such as homebrew) or other custom setup.
                 // Usually this is configured in the profile or rc file for the OS-default shell.
-                String osShell = System.getenv("SHELL");
-                // get name of shell (zsh is default on newer macOS versions)
-                shell = osShell != null ? osShell.substring(osShell.lastIndexOf('/') + 1) : "bash";
-
-                // try to infer the correct shell profile file
-                String home = System.getProperty("user.home");
-                String shellProfile = shell == "zsh" ? ".zprofile" : shell == "bash" ? ".bash_profile" : ".profile";
-                String shellRc = shell == "zsh" ? ".zshrc" : shell == "bash" ? ".bashrc" : ".profile";
-                if (new File(Paths.get(home, shellProfile).toAbsolutePath().toString()).exists()) {
-                    preCommand = ". ~/" + shellProfile + " &&";
-                } else if (new File(Paths.get(home, shellRc).toAbsolutePath().toString()).exists()) {
-                    preCommand = ". ~/" + shellRc + " &&";
+                // (zsh is default on newer macOS versions.)
+                String sourceFormat = ". ~/%s &>/dev/null; ";
+                if (System.getenv("SHELL").endsWith("/zsh")) {
+                    shell = "zsh";
+                    preCommand = String.format(sourceFormat + sourceFormat, ".zprofile", ".zshrc");
+                } else {
+                    preCommand = String.format(sourceFormat + sourceFormat, ".bash_profile", ".bashrc");
                 }
             }
 

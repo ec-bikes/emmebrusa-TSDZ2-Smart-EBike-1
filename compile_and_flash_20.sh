@@ -3,7 +3,7 @@ set -e
 
 version="20.1C.2-3"
 # optional first arg: date
-settings_date="${$1-$(date +%Y%m%d-%H%M%S)}"
+settings_date="${1-$(date +%Y%m%d-%H%M%S)}"
 # optional second arg: --gui (when running from configurator)
 is_gui=$([ "$2" == "--gui" ] && echo "yes" || echo "no")
 
