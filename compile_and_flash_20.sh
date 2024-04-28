@@ -12,10 +12,12 @@ backup_folder="$(pwd)/releases/backup"
 
 function check_command {
 	if ! builtin type -P "$1" &> /dev/null; then
-		echo "Required command "$1" was not found. Please ensure this command is installed and in your PATH."
+		echo "Required command '$1' was not found. Please ensure this command is installed and in your PATH."
 		if [ "$is_gui" == "yes" ]; then
-			echo "PATH when running from the configurator: $PATH"
-			echo "If you think $1 is installed, try running '$0' from a terminal."
+			# It's possible the PATH is set in a profile or rc file that the configurator didn't source.
+			echo "If '$1' is installed, try running '$0' from a terminal (the PATH might be wrong in the configurator)."
+			echo
+			echo "PATH used: $PATH"
 		fi
 		exit 1
 	fi
@@ -44,6 +46,7 @@ mkdir -p "$release_folder"
 yes | cp -rf ../../bin/main.ihx "$release_folder/TSDZ2-$version-$settings_date.hex"
 
 backup=no
+# don't hang asking for input if running from configurator
 if [ "$is_gui" == "no" ]; then
 	while true; do
 		read -p "Do you want to backup the firmware ? [y/N]" yn

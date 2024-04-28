@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.file.Paths;
 import java.util.Locale;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
@@ -39,7 +38,7 @@ public class CompileWorker extends SwingWorker<CompileWorker.ResultType, String>
     }
 
     @Override
-    public CompileWorker.ResultType doInBackground() {
+    public ResultType doInBackground() {
         ProcessBuilder processBuilder = getProcessBuilder();
         if (processBuilder == null) {
             resultType = ResultType.ERROR;
@@ -48,7 +47,7 @@ public class CompileWorker extends SwingWorker<CompileWorker.ResultType, String>
             return resultType;
         }
 
-        textArea.append("\nRunning: " + String.join(" ", processBuilder.command()));
+        textArea.append("\nRunning: " + String.join(" ", processBuilder.command()) + "\n");
 
         // Ensure the correct working directory
         processBuilder.directory(new File(rootDir));
@@ -63,19 +62,12 @@ public class CompileWorker extends SwingWorker<CompileWorker.ResultType, String>
                 System.out.println(line);
                 publish(line);
                 if (isCancelled()) {
-                    br.close();
-                    isr.close();
                     resultType = ResultType.CANCEL;
                     return resultType;
                 }
             }
             int exitCode = process.waitFor();
-
-            if (exitCode == 0) {
-                resultType = ResultType.SUCCESS;
-            } else {
-                resultType = ResultType.ERROR;
-            }
+            resultType = exitCode == 0 ? ResultType.SUCCESS : ResultType.ERROR;
         } catch (IOException | InterruptedException e1) {
             e1.printStackTrace(System.err);
             resultType = ResultType.ERROR;
@@ -121,10 +113,6 @@ public class CompileWorker extends SwingWorker<CompileWorker.ResultType, String>
         String OS = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
         boolean isMac = OS.contains("mac") || OS.contains("darwin");
 
-        if (!isMac && OS.contains("win")) {
-            return new ProcessBuilder("cmd", "/c", "start", COMPILE_SCRIPT_BAT, fileName);
-        }
-
         if (isMac || OS.contains("nux")) {
             String shell = "bash";
             String preCommand = "";
@@ -148,6 +136,10 @@ public class CompileWorker extends SwingWorker<CompileWorker.ResultType, String>
             return new ProcessBuilder(
                     "/bin/" + shell,
                     "-c", String.format("%s sh %s %s --gui", preCommand, COMPILE_SCRIPT_SH, fileName));
+        }
+
+        if (OS.contains("win")) {
+            return new ProcessBuilder("cmd", "/c", "start", COMPILE_SCRIPT_BAT, fileName);
         }
 
         return null;
