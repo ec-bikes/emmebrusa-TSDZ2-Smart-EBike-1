@@ -22,7 +22,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.ListSelectionModel;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 import javax.swing.JList;
@@ -79,9 +78,9 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     private File experimentalSettingsDir;
     private File lastSettingsFile = null;
 
-    private DefaultListModel provenSettingsFilesModel = new DefaultListModel();
-    private DefaultListModel experimentalSettingsFilesModel = new DefaultListModel();
-    private JList experimentalSettingsList = new JList(experimentalSettingsFilesModel);
+    private DefaultListModel<FileContainer> provenSettingsFilesModel = new DefaultListModel<>();
+    private DefaultListModel<FileContainer> experimentalSettingsFilesModel = new DefaultListModel<>();
+    private JList<FileContainer> experimentalSettingsList = new JList<>(experimentalSettingsFilesModel);
     private CompileWorker compileWorker;
 
     public class FileContainer {
@@ -475,7 +474,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         expSet.setModel(experimentalSettingsFilesModel);
 
-        JList provenSettingsList = new JList(provenSettingsFilesModel);
+        JList<FileContainer> provenSettingsList = new JList<>(provenSettingsFilesModel);
         provenSettingsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         provenSettingsList.setLayoutOrientation(JList.VERTICAL);
         provenSettingsList.setVisibleRowCount(-1);
@@ -492,7 +491,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
                     int selectedIndex = expSet.getSelectedIndex();
                     experimentalSettingsList.setSelectedIndex(selectedIndex);
                     provenSettingsList.clearSelection();
-                    loadSettings(((FileContainer) experimentalSettingsList.getSelectedValue()).file);
+                    loadSettings(experimentalSettingsList.getSelectedValue().file);
                     experimentalSettingsList.clearSelection();
                 } catch (IOException ex) {
                     Logger.getLogger(TSDZ2_Configurator.class.getName()).log(Level.SEVERE, null, ex);
@@ -508,7 +507,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
                     int selectedIndex = provSet.getSelectedIndex();
                     provenSettingsList.setSelectedIndex(selectedIndex);
                     experimentalSettingsList.clearSelection();
-                    loadSettings(((FileContainer) provenSettingsList.getSelectedValue()).file);
+                    loadSettings(provenSettingsList.getSelectedValue().file);
                     provenSettingsList.clearSelection();
                 } catch (IOException ex) {
                     Logger.getLogger(TSDZ2_Configurator.class.getName()).log(Level.SEVERE, null, ex);
@@ -517,9 +516,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
             }
         });
 
-        BTN_COMPILE.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent arg0) {
+        BTN_COMPILE.addActionListener((ActionEvent arg0) -> {
                 BTN_COMPILE.setEnabled(false);
 
                 PrintWriter iWriter = null;
@@ -1313,8 +1310,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
                 }
 
                 compileAndFlash(newFileName);
-            }
-        }); // end of jButton1.addActionListener
+        });
 
         if (lastSettingsFile != null) {
             try {
@@ -1329,7 +1325,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     }
 
     private void compileAndFlash(String fileName) {
-        BTN_COMPILE.setEnabled(false);
         BTN_CANCEL.setEnabled(true);
 
         compileWorker = new CompileWorker(TA_COMPILE_OUTPUT, fileName, rootPath);
@@ -4524,11 +4519,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         panelRightColumn.add(jLabelExpSettings, gridBagConstraints);
 
-        expSet.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         expSet.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         expSet.setFocusCycleRoot(true);
         scrollExpSettings.setViewportView(expSet);
@@ -4551,11 +4541,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
         panelRightColumn.add(jLabelProvenSettings, gridBagConstraints);
 
-        provSet.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         scrollProvenSettings.setViewportView(provSet);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -4620,10 +4605,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TA_COMPILE_OUTPUT.setEditable(false);
         TA_COMPILE_OUTPUT.setBackground(new java.awt.Color(255, 255, 255));
-        TA_COMPILE_OUTPUT.setColumns(20);
         TA_COMPILE_OUTPUT.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
         TA_COMPILE_OUTPUT.setLineWrap(true);
-        TA_COMPILE_OUTPUT.setRows(5);
         TA_COMPILE_OUTPUT.setWrapStyleWord(true);
         scrollCompileOutput.setViewportView(TA_COMPILE_OUTPUT);
 
@@ -4643,7 +4626,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
                             .addComponent(labelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 885, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(panelRightColumn, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)))
+                        .addComponent(panelRightColumn, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -4791,7 +4774,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         try {
             int index = Integer.parseInt(TF_LIGHT_MODE_ON_START.getText());
             if ((index >= 0) && (index <= 8)) {
-                jLabel_LIGHT_MODE_ON_START.setText("<html>Lights mode on startup " + lightModeArray[Integer.parseInt(TF_LIGHT_MODE_ON_START.getText())] + "</html>");
+                jLabel_LIGHT_MODE_ON_START.setText("<html>Lights mode on startup - " + lightModeArray[Integer.parseInt(TF_LIGHT_MODE_ON_START.getText())] + "</html>");
             } else {
                 jLabel_LIGHT_MODE_ON_START.setText("Lights mode on startup");
             }
@@ -5381,7 +5364,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup7;
     private javax.swing.ButtonGroup buttonGroup8;
     private javax.swing.ButtonGroup buttonGroup9;
-    private javax.swing.JList<String> expSet;
+    private javax.swing.JList<FileContainer> expSet;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler10;
     private javax.swing.Box.Filler filler11;
@@ -5528,7 +5511,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     private javax.swing.JPanel panelAssistanceSettings;
     private javax.swing.JPanel panelBasicSettings;
     private javax.swing.JPanel panelRightColumn;
-    private javax.swing.JList<String> provSet;
+    private javax.swing.JList<FileContainer> provSet;
     private javax.swing.JPanel rowCompileActions;
     private javax.swing.JPanel rowDisplayMode;
     private javax.swing.JPanel rowDisplayType;
