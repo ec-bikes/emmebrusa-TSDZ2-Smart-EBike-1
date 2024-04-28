@@ -1683,7 +1683,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         jLabelVersion = new javax.swing.JLabel();
         LB_LAST_COMMIT = new javax.swing.JLabel();
         rowCompileActions = new javax.swing.JPanel();
-        BTN_SAVE = new javax.swing.JButton();
         BTN_COMPILE = new javax.swing.JButton();
         BTN_CANCEL = new javax.swing.JButton();
         LB_COMPILE_OUTPUT = new javax.swing.JLabel();
@@ -1694,7 +1693,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TSDZ2 Parameter Configurator 4.3 for Open Source Firmware v20.1C.2-2");
-        setMaximumSize(new java.awt.Dimension(1196, 758));
         setMinimumSize(new java.awt.Dimension(1196, 758));
         setResizable(false);
         setSize(new java.awt.Dimension(1196, 758));
@@ -1714,7 +1712,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelMotorSettingsLayout.rowHeights = new int[] {0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0};
         subPanelMotorSettings.setLayout(subPanelMotorSettingsLayout);
 
-        headingMotorSettings.setFont(headingMotorSettings.getFont().deriveFont(headingMotorSettings.getFont().getStyle() | java.awt.Font.BOLD));
+        headingMotorSettings.setFont(headingMotorSettings.getFont().deriveFont(headingMotorSettings.getFont().getStyle() | java.awt.Font.BOLD, headingMotorSettings.getFont().getSize()+2));
         headingMotorSettings.setText("Motor settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -1723,6 +1721,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelMotorSettings.add(headingMotorSettings, gridBagConstraints);
 
+        jLabel_MOTOR_V.setFont(jLabel_MOTOR_V.getFont().deriveFont(jLabel_MOTOR_V.getFont().getStyle() | java.awt.Font.BOLD));
         jLabel_MOTOR_V.setForeground(new java.awt.Color(255, 0, 0));
         jLabel_MOTOR_V.setText("Motor type");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1731,6 +1730,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelMotorSettings.add(jLabel_MOTOR_V, gridBagConstraints);
 
+        jLabel_MOTOR_ACC.setFont(jLabel_MOTOR_ACC.getFont().deriveFont(jLabel_MOTOR_ACC.getFont().getStyle() | java.awt.Font.BOLD));
         jLabel_MOTOR_ACC.setForeground(new java.awt.Color(255, 0, 0));
         jLabel_MOTOR_ACC.setText("Motor acceleration (%)");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1749,6 +1749,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelMotorSettings.add(TF_MOTOR_ACC, gridBagConstraints);
 
+        jLabel_MOTOR_FAST_STOP.setFont(jLabel_MOTOR_FAST_STOP.getFont().deriveFont(jLabel_MOTOR_FAST_STOP.getFont().getStyle() | java.awt.Font.BOLD));
         jLabel_MOTOR_FAST_STOP.setForeground(new java.awt.Color(255, 0, 0));
         jLabel_MOTOR_FAST_STOP.setText("Motor deceleration (%)");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2050,7 +2051,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelBatterySettingsLayout.rowHeights = new int[] {0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0};
         subPanelBatterySettings.setLayout(subPanelBatterySettingsLayout);
 
-        headerBatterySettings.setFont(headerBatterySettings.getFont().deriveFont(headerBatterySettings.getFont().getStyle() | java.awt.Font.BOLD));
+        headerBatterySettings.setFont(headerBatterySettings.getFont().deriveFont(headerBatterySettings.getFont().getStyle() | java.awt.Font.BOLD, headerBatterySettings.getFont().getSize()+2));
         headerBatterySettings.setText("Battery settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2059,6 +2060,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelBatterySettings.add(headerBatterySettings, gridBagConstraints);
 
+        jLabel_BAT_CUR_MAX.setFont(jLabel_BAT_CUR_MAX.getFont().deriveFont(jLabel_BAT_CUR_MAX.getFont().getStyle() | java.awt.Font.BOLD));
         jLabel_BAT_CUR_MAX.setForeground(new java.awt.Color(255, 0, 0));
         jLabel_BAT_CUR_MAX.setText("Battery current max (A)");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2077,6 +2079,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelBatterySettings.add(TF_BAT_CUR_MAX, gridBagConstraints);
 
+        jLabel_BATT_POW_MAX.setFont(jLabel_BATT_POW_MAX.getFont().deriveFont(jLabel_BATT_POW_MAX.getFont().getStyle() | java.awt.Font.BOLD));
         jLabel_BATT_POW_MAX.setForeground(new java.awt.Color(255, 0, 0));
         jLabel_BATT_POW_MAX.setText("Battery power max (W)");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2095,6 +2098,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelBatterySettings.add(TF_BATT_POW_MAX, gridBagConstraints);
 
+        jLabel_BATT_CAPACITY.setFont(jLabel_BATT_CAPACITY.getFont().deriveFont(jLabel_BATT_CAPACITY.getFont().getStyle() | java.awt.Font.BOLD));
         jLabel_BATT_CAPACITY.setForeground(new java.awt.Color(255, 0, 0));
         jLabel_BATT_CAPACITY.setText("Battery capacity (Wh)");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2113,6 +2117,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelBatterySettings.add(TF_BATT_CAPACITY, gridBagConstraints);
 
+        jLabel_BATT_NUM_CELLS.setFont(jLabel_BATT_NUM_CELLS.getFont().deriveFont(jLabel_BATT_NUM_CELLS.getFont().getStyle() | java.awt.Font.BOLD));
         jLabel_BATT_NUM_CELLS.setForeground(new java.awt.Color(255, 0, 0));
         jLabel_BATT_NUM_CELLS.setText("Battery cells number");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2165,6 +2170,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelBatterySettings.add(TF_BATT_CAPACITY_CAL, gridBagConstraints);
 
+        jLabel_BATT_VOLT_CUT_OFF.setFont(jLabel_BATT_VOLT_CUT_OFF.getFont().deriveFont(jLabel_BATT_VOLT_CUT_OFF.getFont().getStyle() | java.awt.Font.BOLD));
         jLabel_BATT_VOLT_CUT_OFF.setForeground(new java.awt.Color(255, 0, 0));
         jLabel_BATT_VOLT_CUT_OFF.setText("Battery voltage cut off (V)");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2183,7 +2189,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelBatterySettings.add(TF_BATT_VOLT_CUT_OFF, gridBagConstraints);
 
-        headerDisplaySettings.setFont(headerDisplaySettings.getFont().deriveFont(headerDisplaySettings.getFont().getStyle() | java.awt.Font.BOLD));
+        headerDisplaySettings.setFont(headerDisplaySettings.getFont().deriveFont(headerDisplaySettings.getFont().getStyle() | java.awt.Font.BOLD, headerDisplaySettings.getFont().getSize()+2));
         headerDisplaySettings.setText("Display settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2192,6 +2198,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelBatterySettings.add(headerDisplaySettings, gridBagConstraints);
 
+        jLabelDisplayType.setFont(jLabelDisplayType.getFont().deriveFont(jLabelDisplayType.getFont().getStyle() | java.awt.Font.BOLD));
         jLabelDisplayType.setForeground(new java.awt.Color(255, 0, 0));
         jLabelDisplayType.setText("Type");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2328,7 +2335,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelBatterySettings.add(rowUnits, gridBagConstraints);
 
-        headerBikeSettings.setFont(headerBikeSettings.getFont().deriveFont(headerBikeSettings.getFont().getStyle() | java.awt.Font.BOLD));
+        headerBikeSettings.setFont(headerBikeSettings.getFont().deriveFont(headerBikeSettings.getFont().getStyle() | java.awt.Font.BOLD, headerBikeSettings.getFont().getSize()+2));
         headerBikeSettings.setText("Bike settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2369,6 +2376,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelBatterySettings.add(jLabel_MAX_SPEED, gridBagConstraints);
 
+        jLabel_WHEEL_CIRCUMF.setFont(jLabel_WHEEL_CIRCUMF.getFont().deriveFont(jLabel_WHEEL_CIRCUMF.getFont().getStyle() | java.awt.Font.BOLD));
         jLabel_WHEEL_CIRCUMF.setForeground(new java.awt.Color(255, 0, 0));
         jLabel_WHEEL_CIRCUMF.setText("Wheel circumference (mm)");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2389,10 +2397,10 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         java.awt.GridBagLayout subPanelFunctionSettingsLayout = new java.awt.GridBagLayout();
         subPanelFunctionSettingsLayout.columnWidths = new int[] {0};
-        subPanelFunctionSettingsLayout.rowHeights = new int[] {0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0};
+        subPanelFunctionSettingsLayout.rowHeights = new int[] {0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0};
         subPanelFunctionSettings.setLayout(subPanelFunctionSettingsLayout);
 
-        jLabel39.setFont(jLabel39.getFont().deriveFont(jLabel39.getFont().getStyle() | java.awt.Font.BOLD));
+        jLabel39.setFont(jLabel39.getFont().deriveFont(jLabel39.getFont().getStyle() | java.awt.Font.BOLD, jLabel39.getFont().getSize()+2));
         jLabel39.setText("Function settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2607,7 +2615,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         jPanelPowerAssistLayout.rowHeights = new int[] {0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0};
         subPanelPowerAssist.setLayout(jPanelPowerAssistLayout);
 
-        headerPowerAssist.setFont(headerPowerAssist.getFont().deriveFont(headerPowerAssist.getFont().getStyle() | java.awt.Font.BOLD));
+        headerPowerAssist.setFont(headerPowerAssist.getFont().deriveFont(headerPowerAssist.getFont().getStyle() | java.awt.Font.BOLD, headerPowerAssist.getFont().getSize()+1));
         headerPowerAssist.setText("Power assist mode");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2627,6 +2635,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_POWER_ASS_1.setText("70");
         TF_POWER_ASS_1.setToolTipText("<html>% Human power<br>\nMax value 500\n</html>");
+        TF_POWER_ASS_1.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_POWER_ASS_1.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -2644,6 +2653,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_POWER_ASS_2.setText("120");
         TF_POWER_ASS_2.setToolTipText("<html>% Human power<br>\nMax value 500\n</html>");
+        TF_POWER_ASS_2.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_POWER_ASS_2.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -2661,6 +2671,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_POWER_ASS_3.setText("210");
         TF_POWER_ASS_3.setToolTipText("<html>% Human power<br>\nMax value 500\n</html>");
+        TF_POWER_ASS_3.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_POWER_ASS_3.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -2678,6 +2689,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_POWER_ASS_4.setText("300");
         TF_POWER_ASS_4.setToolTipText("<html>% Human power<br>\nMax value 500\n</html>");
+        TF_POWER_ASS_4.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_POWER_ASS_4.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -2710,7 +2722,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         jPanel12Layout.rowHeights = new int[] {0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0};
         subPanelTorqueAssist.setLayout(jPanel12Layout);
 
-        headerTorqueAssist.setFont(headerTorqueAssist.getFont().deriveFont(headerTorqueAssist.getFont().getStyle() | java.awt.Font.BOLD));
+        headerTorqueAssist.setFont(headerTorqueAssist.getFont().deriveFont(headerTorqueAssist.getFont().getStyle() | java.awt.Font.BOLD, headerTorqueAssist.getFont().getSize()+1));
         headerTorqueAssist.setText("Torque assist mode");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2730,6 +2742,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_TORQUE_ASS_1.setText("70");
         TF_TORQUE_ASS_1.setToolTipText("Max value 254");
+        TF_TORQUE_ASS_1.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_TORQUE_ASS_1.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -2747,6 +2760,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_TORQUE_ASS_2.setText("100");
         TF_TORQUE_ASS_2.setToolTipText("Max value 254");
+        TF_TORQUE_ASS_2.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_TORQUE_ASS_2.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -2764,6 +2778,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_TORQUE_ASS_3.setText("130");
         TF_TORQUE_ASS_3.setToolTipText("Max value 254");
+        TF_TORQUE_ASS_3.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_TORQUE_ASS_3.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -2781,6 +2796,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_TORQUE_ASS_4.setText("160");
         TF_TORQUE_ASS_4.setToolTipText("Max value 254");
+        TF_TORQUE_ASS_4.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_TORQUE_ASS_4.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -2813,7 +2829,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelCadenceAssistLayout.rowHeights = new int[] {0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0};
         subPanelCadenceAssist.setLayout(subPanelCadenceAssistLayout);
 
-        headerCadenceAssist.setFont(headerCadenceAssist.getFont().deriveFont(headerCadenceAssist.getFont().getStyle() | java.awt.Font.BOLD));
+        headerCadenceAssist.setFont(headerCadenceAssist.getFont().deriveFont(headerCadenceAssist.getFont().getStyle() | java.awt.Font.BOLD, headerCadenceAssist.getFont().getSize()+1));
         headerCadenceAssist.setText("Cadence assist mode");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2833,6 +2849,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_CADENCE_ASS_1.setText("70");
         TF_CADENCE_ASS_1.setToolTipText("Max value 254");
+        TF_CADENCE_ASS_1.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_CADENCE_ASS_1.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -2850,6 +2867,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_CADENCE_ASS_2.setText("100");
         TF_CADENCE_ASS_2.setToolTipText("Max value 254");
+        TF_CADENCE_ASS_2.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_CADENCE_ASS_2.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -2867,6 +2885,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_CADENCE_ASS_3.setText("130");
         TF_CADENCE_ASS_3.setToolTipText("Max value 254");
+        TF_CADENCE_ASS_3.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_CADENCE_ASS_3.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -2884,6 +2903,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_CADENCE_ASS_4.setText("160");
         TF_CADENCE_ASS_4.setToolTipText("Max value 254");
+        TF_CADENCE_ASS_4.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_CADENCE_ASS_4.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -2916,7 +2936,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelEmtbAssistLayout.rowHeights = new int[] {0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0};
         subPanelEmtbAssist.setLayout(subPanelEmtbAssistLayout);
 
-        headerEmtbAssist.setFont(headerEmtbAssist.getFont().deriveFont(headerEmtbAssist.getFont().getStyle() | java.awt.Font.BOLD));
+        headerEmtbAssist.setFont(headerEmtbAssist.getFont().deriveFont(headerEmtbAssist.getFont().getStyle() | java.awt.Font.BOLD, headerEmtbAssist.getFont().getSize()+1));
         headerEmtbAssist.setText("eMTB assist mode");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2936,6 +2956,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_EMTB_ASS_1.setText("6");
         TF_EMTB_ASS_1.setToolTipText("<html>Sensitivity<br>\nbetween 0 to 20\n</html>");
+        TF_EMTB_ASS_1.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_EMTB_ASS_1.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -2953,6 +2974,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_EMTB_ASS_2.setText("9");
         TF_EMTB_ASS_2.setToolTipText("<html>Sensitivity<br>\nbetween 0 to 20\n</html>");
+        TF_EMTB_ASS_2.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_EMTB_ASS_2.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -2970,6 +2992,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_EMTB_ASS_3.setText("12");
         TF_EMTB_ASS_3.setToolTipText("<html>Sensitivity<br>\nbetween 0 to 20\n</html>");
+        TF_EMTB_ASS_3.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_EMTB_ASS_3.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -2987,6 +3010,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_EMTB_ASS_4.setText("15");
         TF_EMTB_ASS_4.setToolTipText("<html>Sensitivity<br>\nbetween 0 to 20\n</html>");
+        TF_EMTB_ASS_4.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_EMTB_ASS_4.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -3019,7 +3043,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelWalkAssistLayout.rowHeights = new int[] {0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0};
         subPanelWalkAssist.setLayout(subPanelWalkAssistLayout);
 
-        headerWalkAssist.setFont(headerWalkAssist.getFont().deriveFont(headerWalkAssist.getFont().getStyle() | java.awt.Font.BOLD));
+        headerWalkAssist.setFont(headerWalkAssist.getFont().deriveFont(headerWalkAssist.getFont().getStyle() | java.awt.Font.BOLD, headerWalkAssist.getFont().getSize()+1));
         headerWalkAssist.setText("Walk assist mode");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -3046,6 +3070,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         TF_WALK_ASS_SPEED_1.setText("35");
         TF_WALK_ASS_SPEED_1.setToolTipText("<html>km/h x10 or mph x10<br>\nValue 35 to 50 (3.5 to 5.0 km/h)\n</html>");
         TF_WALK_ASS_SPEED_1.setEnabled(CB_WALK_ASSIST.isSelected());
+        TF_WALK_ASS_SPEED_1.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_1.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -3069,6 +3094,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         TF_WALK_ASS_SPEED_2.setText("40");
         TF_WALK_ASS_SPEED_2.setToolTipText("<html>km/h x10 or mph x10<br>\nValue 35 to 50 (3.5 to 5.0 km/h)\n</html>");
         TF_WALK_ASS_SPEED_2.setEnabled(CB_WALK_ASSIST.isSelected());
+        TF_WALK_ASS_SPEED_2.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_2.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -3092,6 +3118,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         TF_WALK_ASS_SPEED_3.setText("45");
         TF_WALK_ASS_SPEED_3.setToolTipText("<html>km/h x10 or mph x10<br>\nValue 35 to 50 (3.5 to 5.0 km/h)\n</html>");
         TF_WALK_ASS_SPEED_3.setEnabled(CB_WALK_ASSIST.isSelected());
+        TF_WALK_ASS_SPEED_3.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_3.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_3.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -3115,6 +3142,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         TF_WALK_ASS_SPEED_4.setText("50");
         TF_WALK_ASS_SPEED_4.setToolTipText("<html>km/h x10 or mph x10<br>\nValue 35 to 50 (3.5 to 5.0 km/h)\n</html>");
         TF_WALK_ASS_SPEED_4.setEnabled(CB_WALK_ASSIST.isSelected());
+        TF_WALK_ASS_SPEED_4.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_4.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_4.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -3138,6 +3166,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         TF_WALK_ASS_SPEED_LIMIT.setText("60");
         TF_WALK_ASS_SPEED_LIMIT.setToolTipText("<html>km/h x10 or mph x10<br>\nMax value 60 (in EU 6 km/h)\n</html>");
         TF_WALK_ASS_SPEED_LIMIT.setEnabled(CB_WALK_ASSIST.isSelected());
+        TF_WALK_ASS_SPEED_LIMIT.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_LIMIT.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_LIMIT.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -3161,6 +3190,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         TF_WALK_ASS_TIME.setText("60");
         TF_WALK_ASS_TIME.setToolTipText("Max value 255 (0.1 s)\n\n");
         TF_WALK_ASS_TIME.setEnabled(CB_WALK_TIME_ENA.isSelected() && CB_BRAKE_SENSOR.isSelected() && CB_WALK_ASSIST.isSelected());
+        TF_WALK_ASS_TIME.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_TIME.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
@@ -3198,7 +3228,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelStreetModeLayout.rowHeights = new int[] {0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0};
         subPanelStreetMode.setLayout(subPanelStreetModeLayout);
 
-        headerStreetMode.setFont(headerStreetMode.getFont().deriveFont(headerStreetMode.getFont().getStyle() | java.awt.Font.BOLD));
+        headerStreetMode.setFont(headerStreetMode.getFont().deriveFont(headerStreetMode.getFont().getStyle() | java.awt.Font.BOLD, headerStreetMode.getFont().getSize()+1));
         headerStreetMode.setText("Street mode");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -3218,6 +3248,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_STREET_SPEED_LIM.setText("25");
         TF_STREET_SPEED_LIM.setToolTipText("<html>km/h or mph<br>\nMax value in EU 25 km/h\n</html>");
+        TF_STREET_SPEED_LIM.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_STREET_SPEED_LIM.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_STREET_SPEED_LIM.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -3230,6 +3261,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelStreetMode.add(TF_STREET_SPEED_LIM, gridBagConstraints);
 
+        jLabel_STREET_POWER_LIM.setFont(jLabel_STREET_POWER_LIM.getFont().deriveFont(jLabel_STREET_POWER_LIM.getFont().getStyle() | java.awt.Font.BOLD));
         jLabel_STREET_POWER_LIM.setForeground(new java.awt.Color(255, 0, 0));
         jLabel_STREET_POWER_LIM.setText("Street power limit (W)");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -3243,6 +3275,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         TF_STREET_POWER_LIM.setText("500");
         TF_STREET_POWER_LIM.setToolTipText("<html>Max nominal value in EU 250 W<br>\nMax peak value approx. 500 W\n</html>");
         TF_STREET_POWER_LIM.setEnabled(CB_STREET_POWER_LIM.isSelected());
+        TF_STREET_POWER_LIM.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_STREET_POWER_LIM.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
@@ -3309,7 +3342,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelCruiseModeLayout.rowHeights = new int[] {0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0};
         subPanelCruiseMode.setLayout(subPanelCruiseModeLayout);
 
-        headerCruiseMode.setFont(headerCruiseMode.getFont().deriveFont(headerCruiseMode.getFont().getStyle() | java.awt.Font.BOLD));
+        headerCruiseMode.setFont(headerCruiseMode.getFont().deriveFont(headerCruiseMode.getFont().getStyle() | java.awt.Font.BOLD, headerCruiseMode.getFont().getSize()+1));
         headerCruiseMode.setText("Cruise mode");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -3335,6 +3368,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_CRUISE_ASS_1.setText("15");
         TF_CRUISE_ASS_1.setToolTipText("<html>km/h or mph<br>\nMax value in EU 25 km/h\n</html>");
+        TF_CRUISE_ASS_1.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_CRUISE_ASS_1.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_CRUISE_ASS_1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -3357,6 +3391,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_CRUISE_ASS_2.setText("18");
         TF_CRUISE_ASS_2.setToolTipText("<html>km/h or mph<br>\nMax value in EU 25 km/h\n</html>");
+        TF_CRUISE_ASS_2.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_CRUISE_ASS_2.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_CRUISE_ASS_2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -3379,6 +3414,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_CRUISE_ASS_3.setText("21");
         TF_CRUISE_ASS_3.setToolTipText("<html>km/h or mph<br>\nMax value in EU 25 km/h\n</html>");
+        TF_CRUISE_ASS_3.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_CRUISE_ASS_3.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_CRUISE_ASS_3.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -3401,6 +3437,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_CRUISE_ASS_4.setText("24");
         TF_CRUISE_ASS_4.setToolTipText("<html>km/h or mph<br>\nMax value in EU 25 km/h\n</html>");
+        TF_CRUISE_ASS_4.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_CRUISE_ASS_4.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_CRUISE_ASS_4.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -3423,6 +3460,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         TF_CRUISE_SPEED_ENA.setText("10");
         TF_CRUISE_SPEED_ENA.setToolTipText("Min speed to enable cruise (km/h or mph)");
+        TF_CRUISE_SPEED_ENA.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_CRUISE_SPEED_ENA.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_CRUISE_SPEED_ENA.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -3460,7 +3498,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelLightsHybridLayout.rowHeights = new int[] {0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0};
         subPanelLightsHybrid.setLayout(subPanelLightsHybridLayout);
 
-        headerLights.setFont(headerLights.getFont().deriveFont(headerLights.getFont().getStyle() | java.awt.Font.BOLD));
+        headerLights.setFont(headerLights.getFont().deriveFont(headerLights.getFont().getStyle() | java.awt.Font.BOLD, headerLights.getFont().getSize()+1));
         headerLights.setText("Lights configuration");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -3470,18 +3508,21 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelLightsHybrid.add(headerLights, gridBagConstraints);
 
-        jLabel_LIGHT_MODE_ON_START.setText("Lights mode on startup");
+        jLabel_LIGHT_MODE_ON_START.setText("<html>Lights mode on startup<br/>mode name");
         jLabel_LIGHT_MODE_ON_START.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel_LIGHT_MODE_ON_START.setMinimumSize(new java.awt.Dimension(160, 34));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.5;
         subPanelLightsHybrid.add(jLabel_LIGHT_MODE_ON_START, gridBagConstraints);
 
         TF_LIGHT_MODE_ON_START.setText("0");
         TF_LIGHT_MODE_ON_START.setToolTipText("<html>With lights button ON<br>\n0 - lights ON<br>\n1 - lights FLASHING<br>\n2 - lights ON and BRAKE-FLASHING when braking<br>\n3 - lights FLASHING and ON when braking<br>\n4 - lights FLASHING and BRAKE-FLASHING when braking<br>\n5 - lights ON and ON when braking, even with the light button OFF<br>\n6 - lights ON and BRAKE-FLASHING when braking, even with the light button OFF<br>\n7 - lights FLASHING and ON when braking, even with the light button OFF<br>\n8 - lights FLASHING and BRAKE-FLASHING when braking, even with the light button OFF\n</html>");
         TF_LIGHT_MODE_ON_START.setEnabled(CB_LIGHTS.isSelected());
+        TF_LIGHT_MODE_ON_START.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_LIGHT_MODE_ON_START.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_LIGHT_MODE_ON_START.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -3492,21 +3533,24 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weightx = 0.5;
         subPanelLightsHybrid.add(TF_LIGHT_MODE_ON_START, gridBagConstraints);
 
-        jLabel_LIGHT_MODE_1.setText("Lights mode 1");
+        jLabel_LIGHT_MODE_1.setText("<html>Mode 1 -<br/>mode name very long goes here");
         jLabel_LIGHT_MODE_1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel_LIGHT_MODE_1.setMinimumSize(new java.awt.Dimension(160, 34));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.5;
         subPanelLightsHybrid.add(jLabel_LIGHT_MODE_1, gridBagConstraints);
 
         TF_LIGHT_MODE_1.setText("6");
         TF_LIGHT_MODE_1.setToolTipText("<html>With lights button ON<br>\n0 - lights ON<br>\n1 - lights FLASHING<br>\n2 - lights ON and BRAKE-FLASHING when braking<br>\n3 - lights FLASHING and ON when braking<br>\n4 - lights FLASHING and BRAKE-FLASHING when braking<br>\n5 - lights ON and ON when braking, even with the light button OFF<br>\n6 - lights ON and BRAKE-FLASHING when braking, even with the light button OFF<br>\n7 - lights FLASHING and ON when braking, even with the light button OFF<br>\n8 - lights FLASHING and BRAKE-FLASHING when braking, even with the light button OFF\n</html>");
         TF_LIGHT_MODE_1.setEnabled(CB_LIGHTS.isSelected());
+        TF_LIGHT_MODE_1.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_LIGHT_MODE_1.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_LIGHT_MODE_1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -3517,21 +3561,24 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weightx = 0.5;
         subPanelLightsHybrid.add(TF_LIGHT_MODE_1, gridBagConstraints);
 
-        jLabel_LIGHT_MODE_2.setText("Lights mode 2");
+        jLabel_LIGHT_MODE_2.setText("<html>Mode 2 -<br/>mode name very long goes here");
         jLabel_LIGHT_MODE_2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel_LIGHT_MODE_2.setMinimumSize(new java.awt.Dimension(160, 34));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 6;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.5;
         subPanelLightsHybrid.add(jLabel_LIGHT_MODE_2, gridBagConstraints);
 
         TF_LIGHT_MODE_2.setText("7");
         TF_LIGHT_MODE_2.setToolTipText("<html>With lights button ON<br>\n0 - lights ON<br>\n1 - lights FLASHING<br>\n2 - lights ON and BRAKE-FLASHING when braking<br>\n3 - lights FLASHING and ON when braking<br>\n4 - lights FLASHING and BRAKE-FLASHING when braking<br>\n5 - lights ON and ON when braking, even with the light button OFF<br>\n6 - lights ON and BRAKE-FLASHING when braking, even with the light button OFF<br>\n7 - lights FLASHING and ON when braking, even with the light button OFF<br>\n8 - lights FLASHING and BRAKE-FLASHING when braking, even with the light button OFF<br>\nor alternative option settings<br>\n9 - assistance without pedal rotation\n</html>");
         TF_LIGHT_MODE_2.setEnabled(CB_LIGHTS.isSelected());
+        TF_LIGHT_MODE_2.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_LIGHT_MODE_2.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_LIGHT_MODE_2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -3542,21 +3589,24 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 6;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weightx = 0.5;
         subPanelLightsHybrid.add(TF_LIGHT_MODE_2, gridBagConstraints);
 
-        jLabel_LIGHT_MODE_3.setText("Lights mode 3");
+        jLabel_LIGHT_MODE_3.setText("<html>Mode 3 -<br/>mode name very long goes here");
         jLabel_LIGHT_MODE_3.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel_LIGHT_MODE_3.setMinimumSize(new java.awt.Dimension(160, 34));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 8;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.5;
         subPanelLightsHybrid.add(jLabel_LIGHT_MODE_3, gridBagConstraints);
 
         TF_LIGHT_MODE_3.setText("1");
         TF_LIGHT_MODE_3.setToolTipText("<html>With lights button ON<br>\n0 - lights ON<br>\n1 - lights FLASHING<br>\n2 - lights ON and BRAKE-FLASHING when braking<br>\n3 - lights FLASHING and ON when braking<br>\n4 - lights FLASHING and BRAKE-FLASHING when braking<br>\n5 - lights ON and ON when braking, even with the light button OFF<br>\n6 - lights ON and BRAKE-FLASHING when braking, even with the light button OFF<br>\n7 - lights FLASHING and ON when braking, even with the light button OFF<br>\n8 - lights FLASHING and BRAKE-FLASHING when braking, even with the light button OFF<br>\nor alternative option settings<br>\n10 - assistance with sensors error\n</html>");
         TF_LIGHT_MODE_3.setEnabled(CB_LIGHTS.isSelected());
+        TF_LIGHT_MODE_3.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_LIGHT_MODE_3.setPreferredSize(new java.awt.Dimension(45, 23));
         TF_LIGHT_MODE_3.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -3567,10 +3617,10 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 8;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weightx = 0.5;
         subPanelLightsHybrid.add(TF_LIGHT_MODE_3, gridBagConstraints);
 
-        headerHybridAssist.setFont(headerHybridAssist.getFont().deriveFont(headerHybridAssist.getFont().getStyle() | java.awt.Font.BOLD));
+        headerHybridAssist.setFont(headerHybridAssist.getFont().deriveFont(headerHybridAssist.getFont().getStyle() | java.awt.Font.BOLD, headerHybridAssist.getFont().getSize()+1));
         headerHybridAssist.setText("Hybrid assist mode");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -3615,7 +3665,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         jPanel11Layout.rowHeights = new int[] {0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0};
         jPanel11.setLayout(jPanel11Layout);
 
-        jLabel35.setFont(jLabel35.getFont().deriveFont(jLabel35.getFont().getStyle() | java.awt.Font.BOLD));
+        jLabel35.setFont(jLabel35.getFont().deriveFont(jLabel35.getFont().getStyle() | java.awt.Font.BOLD, jLabel35.getFont().getSize()+2));
         jLabel35.setText("Battery cells settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -3851,7 +3901,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         jPanel18Layout.rowHeights = new int[] {0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0};
         jPanel18.setLayout(jPanel18Layout);
 
-        jLabel86.setFont(jLabel86.getFont().deriveFont(jLabel86.getFont().getStyle() | java.awt.Font.BOLD));
+        jLabel86.setFont(jLabel86.getFont().deriveFont(jLabel86.getFont().getStyle() | java.awt.Font.BOLD, jLabel86.getFont().getSize()+2));
         jLabel86.setText("Display advanced settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -4109,7 +4159,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelDataOtherLayout.rowHeights = new int[] {0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0};
         subPanelDataOther.setLayout(subPanelDataOtherLayout);
 
-        jLabel101.setFont(jLabel101.getFont().deriveFont(jLabel101.getFont().getStyle() | java.awt.Font.BOLD));
+        jLabel101.setFont(jLabel101.getFont().deriveFont(jLabel101.getFont().getStyle() | java.awt.Font.BOLD, jLabel101.getFont().getSize()+2));
         jLabel101.setText("Other function settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -4420,6 +4470,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridy = 6;
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
         subPanelDataOther.add(jPanel1, gridBagConstraints);
 
         jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
@@ -4465,6 +4516,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         panelRightColumnLayout.rowHeights = new int[] {0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0};
         panelRightColumn.setLayout(panelRightColumnLayout);
 
+        jLabelExpSettings.setFont(jLabelExpSettings.getFont().deriveFont(jLabelExpSettings.getFont().getStyle() | java.awt.Font.BOLD, jLabelExpSettings.getFont().getSize()+2));
         jLabelExpSettings.setText("Proven Settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -4490,11 +4542,13 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weighty = 1.0;
         panelRightColumn.add(scrollExpSettings, gridBagConstraints);
 
+        jLabelProvenSettings.setFont(jLabelProvenSettings.getFont().deriveFont(jLabelProvenSettings.getFont().getStyle() | java.awt.Font.BOLD, jLabelProvenSettings.getFont().getSize()+2));
         jLabelProvenSettings.setText("Experimental Settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
         panelRightColumn.add(jLabelProvenSettings, gridBagConstraints);
 
         provSet.setModel(new javax.swing.AbstractListModel<String>() {
@@ -4529,31 +4583,16 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         panelRightColumn.add(LB_LAST_COMMIT, gridBagConstraints);
 
         java.awt.GridBagLayout rowCompileActionsLayout = new java.awt.GridBagLayout();
-        rowCompileActionsLayout.columnWidths = new int[] {0, 8, 0, 8, 0};
+        rowCompileActionsLayout.columnWidths = new int[] {0, 8, 0};
         rowCompileActionsLayout.rowHeights = new int[] {0};
         rowCompileActions.setLayout(rowCompileActionsLayout);
-
-        BTN_SAVE.setText("Save");
-        BTN_SAVE.setEnabled(false);
-        BTN_SAVE.setMargin(new java.awt.Insets(4, 8, 4, 8));
-        BTN_SAVE.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BTN_SAVEActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        rowCompileActions.add(BTN_SAVE, gridBagConstraints);
 
         BTN_COMPILE.setFont(BTN_COMPILE.getFont().deriveFont(BTN_COMPILE.getFont().getStyle() | java.awt.Font.BOLD));
         BTN_COMPILE.setText("Compile & Flash");
         BTN_COMPILE.setMargin(new java.awt.Insets(4, 8, 4, 8));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         rowCompileActions.add(BTN_COMPILE, gridBagConstraints);
 
         BTN_CANCEL.setText("Cancel");
@@ -4565,18 +4604,16 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         rowCompileActions.add(BTN_CANCEL, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 12;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         panelRightColumn.add(rowCompileActions, gridBagConstraints);
 
-        LB_COMPILE_OUTPUT.setFont(LB_COMPILE_OUTPUT.getFont().deriveFont(LB_COMPILE_OUTPUT.getFont().getSize()+3f));
+        LB_COMPILE_OUTPUT.setFont(LB_COMPILE_OUTPUT.getFont().deriveFont(LB_COMPILE_OUTPUT.getFont().getStyle() | java.awt.Font.BOLD, LB_COMPILE_OUTPUT.getFont().getSize()+3));
         LB_COMPILE_OUTPUT.setText("Output from flashing");
 
         scrollCompileOutput.setHorizontalScrollBar(null);
@@ -4599,15 +4636,14 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(scrollCompileOutput)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(LB_COMPILE_OUTPUT)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(LB_COMPILE_OUTPUT)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 870, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(panelRightColumn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 6, Short.MAX_VALUE)))
+                            .addComponent(labelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 885, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(panelRightColumn, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -4620,11 +4656,11 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
                         .addComponent(labelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(LB_COMPILE_OUTPUT)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollCompileOutput, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addComponent(scrollCompileOutput, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.getAccessibleContext().setAccessibleName("MotorConfiguration");
@@ -5190,14 +5226,9 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_CB_ADC_STEP_ESTIMStateChanged
 
-    private void BTN_SAVEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_SAVEActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BTN_SAVEActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BTN_CANCEL;
     private javax.swing.JButton BTN_COMPILE;
-    private javax.swing.JButton BTN_SAVE;
     private javax.swing.JCheckBox CB_ADC_STEP_ESTIM;
     private javax.swing.JCheckBox CB_ASS_WITHOUT_PED;
     private javax.swing.JCheckBox CB_AUTO_DISPLAY_DATA;
