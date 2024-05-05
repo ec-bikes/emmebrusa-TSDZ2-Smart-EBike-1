@@ -179,9 +179,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_MOTOR_ACC">
+                <Component class="components.IntField" name="TF_MOTOR_ACC">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="25"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;MAX VALUE&lt;br&gt;&#xa;36 volt motor, 36 volt battery = 35&lt;br&gt;&#xa;36 volt motor, 48 volt battery = 5&lt;br&gt;&#xa;36 volt motor, 52 volt battery = 0&lt;br&gt;&#xa;48 volt motor, 36 volt battery = 45&lt;br&gt;&#xa;48 volt motor, 48 volt battery = 35&lt;br&gt;&#xa;48 volt motor, 52 volt battery = 30&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -214,9 +213,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_MOTOR_DEC">
+                <Component class="components.IntField" name="TF_MOTOR_DEC">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="0"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Max value 100&lt;br&gt;&#xa;Recommended range 0 to 50&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -241,9 +239,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_ASS_WITHOUT_PED_THRES">
+                <Component class="components.IntField" name="TF_ASS_WITHOUT_PED_THRES">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="20"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Max value 100&lt;br&gt;&#xa;Recommended range 10 to 30&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -255,9 +252,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_TORQ_PER_ADC_STEP">
+                <Component class="components.IntField" name="TF_TORQ_PER_ADC_STEP">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="67"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&#xa;Default value 67&lt;br&gt;&#xa;Optional calibration&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -279,9 +275,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_TORQ_PER_ADC_STEP_ADV">
+                <Component class="components.IntField" name="TF_TORQ_PER_ADC_STEP_ADV">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="34"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&#xa;Default value 34&lt;br&gt;&#xa;Optional calibration&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -303,9 +298,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_TORQ_ADC_OFFSET_ADJ">
+                <Component class="components.IntField" name="TF_TORQ_ADC_OFFSET_ADJ">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="0"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&#xa;Value -20 to 14&lt;br&gt;&#xa;Default 0&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -330,9 +324,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_TORQ_ADC_RANGE_ADJ">
+                <Component class="components.IntField" name="TF_TORQ_ADC_RANGE_ADJ">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="0"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&#xa;Value -20 to 20&lt;br&gt;&#xa;Default 0&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -357,9 +350,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_TORQ_ADC_ANGLE_ADJ">
+                <Component class="components.IntField" name="TF_TORQ_ADC_ANGLE_ADJ">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="0"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&#xa;Value -20 to 20&lt;br&gt;&#xa;Default 0&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -384,9 +376,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_TORQ_ADC_OFFSET">
+                <Component class="components.IntField" name="TF_TORQ_ADC_OFFSET">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="150"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&#xa;Insert value read on calibration&lt;br&gt;&#xa;Max 250&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -411,9 +402,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_TORQUE_ADC_MAX">
+                <Component class="components.IntField" name="TF_TORQUE_ADC_MAX">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="300"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&#xa;Insert value read on calibration&lt;br&gt;&#xa;Max 500&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -438,9 +428,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_BOOST_TORQUE_FACTOR">
+                <Component class="components.IntField" name="TF_BOOST_TORQUE_FACTOR">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="300"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Max value 500&lt;br&gt;&#xa;Recommended range 200 to 300&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -462,9 +451,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_BOOST_CADENCE_STEP">
+                <Component class="components.IntField" name="TF_BOOST_CADENCE_STEP">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="20"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Max value 50&lt;br&gt;&#xa;Recommended range 20 to 30&lt;br&gt;&#xa;(high values short effect)&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -506,6 +494,7 @@
                         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                           <ComponentRef name="groupStartupBoost"/>
                         </Property>
+                        <Property name="selected" type="boolean" value="true"/>
                         <Property name="text" type="java.lang.String" value="cadence"/>
                       </Properties>
                     </Component>
@@ -974,7 +963,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="26_TF_MOTOR_ACC">
-                      <CodeVariable name="TF_MOTOR_ACC" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_MOTOR_ACC" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_MOTOR_ACC"/>
@@ -1125,7 +1114,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="37_TF_MOTOR_DEC">
-                      <CodeVariable name="TF_MOTOR_DEC" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_MOTOR_DEC" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_MOTOR_DEC"/>
@@ -1276,7 +1265,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="48_TF_ASS_WITHOUT_PED_THRES">
-                      <CodeVariable name="TF_ASS_WITHOUT_PED_THRES" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_ASS_WITHOUT_PED_THRES" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_ASS_WITHOUT_PED_THRES"/>
@@ -1345,7 +1334,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="53_TF_TORQ_PER_ADC_STEP">
-                      <CodeVariable name="TF_TORQ_PER_ADC_STEP" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_TORQ_PER_ADC_STEP" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_TORQ_PER_ADC_STEP"/>
@@ -1496,7 +1485,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="64_TF_TORQ_PER_ADC_STEP_ADV">
-                      <CodeVariable name="TF_TORQ_PER_ADC_STEP_ADV" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_TORQ_PER_ADC_STEP_ADV" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_TORQ_PER_ADC_STEP_ADV"/>
@@ -1647,7 +1636,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="75_TF_TORQ_ADC_OFFSET_ADJ">
-                      <CodeVariable name="TF_TORQ_ADC_OFFSET_ADJ" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_TORQ_ADC_OFFSET_ADJ" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_TORQ_ADC_OFFSET_ADJ"/>
@@ -1798,7 +1787,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="86_TF_TORQ_ADC_RANGE_ADJ">
-                      <CodeVariable name="TF_TORQ_ADC_RANGE_ADJ" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_TORQ_ADC_RANGE_ADJ" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_TORQ_ADC_RANGE_ADJ"/>
@@ -1949,7 +1938,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="97_TF_TORQ_ADC_ANGLE_ADJ">
-                      <CodeVariable name="TF_TORQ_ADC_ANGLE_ADJ" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_TORQ_ADC_ANGLE_ADJ" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_TORQ_ADC_ANGLE_ADJ"/>
@@ -2100,7 +2089,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="108_TF_TORQ_ADC_OFFSET">
-                      <CodeVariable name="TF_TORQ_ADC_OFFSET" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_TORQ_ADC_OFFSET" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_TORQ_ADC_OFFSET"/>
@@ -2251,7 +2240,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="119_TF_TORQUE_ADC_MAX">
-                      <CodeVariable name="TF_TORQUE_ADC_MAX" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_TORQUE_ADC_MAX" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_TORQUE_ADC_MAX"/>
@@ -2402,7 +2391,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="130_TF_BOOST_TORQUE_FACTOR">
-                      <CodeVariable name="TF_BOOST_TORQUE_FACTOR" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_BOOST_TORQUE_FACTOR" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_BOOST_TORQUE_FACTOR"/>
@@ -2553,7 +2542,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="141_TF_BOOST_CADENCE_STEP">
-                      <CodeVariable name="TF_BOOST_CADENCE_STEP" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_BOOST_CADENCE_STEP" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_BOOST_CADENCE_STEP"/>
@@ -2920,9 +2909,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_BAT_CUR_MAX">
+                <Component class="components.FloatField" name="TF_BAT_CUR_MAX">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="17"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Max value&lt;br&gt;&#xa;17 A for 36 V&lt;br&gt;&#xa;12 A for 48 V&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -2952,9 +2940,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_BATT_POW_MAX">
+                <Component class="components.IntField" name="TF_BATT_POW_MAX">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="500"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Motor power limit in offroad mode&lt;br&gt;&#xa;Max value depends on the rated&lt;br&gt;&#xa;motor power and the battery capacity&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -2984,9 +2971,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_BATT_CAPACITY">
+                <Component class="components.IntField" name="TF_BATT_CAPACITY">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="630"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;To calculate&lt;br&gt;&#xa;Battery Volt x Ah&#xa;&lt;/html&gt;&#xa;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -3019,9 +3005,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_BATT_NUM_CELLS">
+                <Component class="components.IntField" name="TF_BATT_NUM_CELLS">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="10"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt; 7 for 24 V battery&lt;br&gt;&#xa;10 for 36 V battery&lt;br&gt;&#xa;13 for 48 V battery&lt;br&gt;&#xa;14 for 52 V battery&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -3043,9 +3028,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_BATT_VOLT_CAL">
+                <Component class="components.IntField" name="TF_BATT_VOLT_CAL">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="100"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;For calibrate voltage displayed&lt;br&gt;&#xa;Indicative value 95 to 105&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -3067,9 +3051,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_BATT_CAPACITY_CAL">
+                <Component class="components.IntField" name="TF_BATT_CAPACITY_CAL">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="100"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Starting to 100%&lt;br&gt;&#xa;with the% remaining when battery is low&lt;br&gt;&#xa;calculate the actual%&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -3099,9 +3082,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_BATT_VOLT_CUT_OFF">
+                <Component class="components.IntField" name="TF_BATT_VOLT_CUT_OFF">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="29"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Indicative value 29 for 36 V&lt;br&gt;&#xa;38 for 48 V, It depends on the&lt;br&gt;&#xa;characteristics of the battery&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -3208,6 +3190,7 @@
                         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                           <ComponentRef name="groupDisplayMode"/>
                         </Property>
+                        <Property name="selected" type="boolean" value="true"/>
                         <Property name="text" type="java.lang.String" value="Working on"/>
                       </Properties>
                     </Component>
@@ -3289,9 +3272,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_WHEEL_CIRCUMF">
+                <Component class="components.IntField" name="TF_WHEEL_CIRCUMF">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="2260"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Indicative values:&lt;br&gt;&#xa;26-inch wheel = 2050 mm&lt;br&gt;&#xa;27-inch wheel = 2150 mm&lt;br&gt;&#xa;27.5 inch wheel = 2215 mm&lt;br&gt;&#xa;28-inch wheel = 2250 mm&lt;br&gt;&#xa;29-inch wheel = 2300 mmV&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -3303,9 +3285,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_MAX_SPEED">
+                <Component class="components.IntField" name="TF_MAX_SPEED">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="25"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;km/h or mph&lt;br&gt;&#xa;Max value in EU 25 km/h&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -3632,7 +3613,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="185_TF_BAT_CUR_MAX">
-                      <CodeVariable name="TF_BAT_CUR_MAX" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_BAT_CUR_MAX" type="8194" declaredType="components.FloatField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_BAT_CUR_MAX"/>
@@ -3783,7 +3764,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="196_TF_BATT_POW_MAX">
-                      <CodeVariable name="TF_BATT_POW_MAX" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_BATT_POW_MAX" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_BATT_POW_MAX"/>
@@ -3934,7 +3915,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="207_TF_BATT_CAPACITY">
-                      <CodeVariable name="TF_BATT_CAPACITY" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_BATT_CAPACITY" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_BATT_CAPACITY"/>
@@ -4085,7 +4066,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="218_TF_BATT_NUM_CELLS">
-                      <CodeVariable name="TF_BATT_NUM_CELLS" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_BATT_NUM_CELLS" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_BATT_NUM_CELLS"/>
@@ -4236,7 +4217,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="229_TF_BATT_VOLT_CAL">
-                      <CodeVariable name="TF_BATT_VOLT_CAL" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_BATT_VOLT_CAL" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_BATT_VOLT_CAL"/>
@@ -4387,7 +4368,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="240_TF_BATT_CAPACITY_CAL">
-                      <CodeVariable name="TF_BATT_CAPACITY_CAL" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_BATT_CAPACITY_CAL" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_BATT_CAPACITY_CAL"/>
@@ -4538,7 +4519,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="251_TF_BATT_VOLT_CUT_OFF">
-                      <CodeVariable name="TF_BATT_VOLT_CUT_OFF" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_BATT_VOLT_CUT_OFF" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_BATT_VOLT_CUT_OFF"/>
@@ -5224,7 +5205,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="301_TF_WHEEL_CIRCUMF">
-                      <CodeVariable name="TF_WHEEL_CIRCUMF" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_WHEEL_CIRCUMF" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_WHEEL_CIRCUMF"/>
@@ -5293,7 +5274,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="306_TF_MAX_SPEED">
-                      <CodeVariable name="TF_MAX_SPEED" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_MAX_SPEED" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_MAX_SPEED"/>
@@ -5624,6 +5605,7 @@
                         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                           <ComponentRef name="groupOptAdc"/>
                         </Property>
+                        <Property name="selected" type="boolean" value="true"/>
                         <Property name="text" type="java.lang.String" value="None"/>
                       </Properties>
                       <Events>
@@ -7336,9 +7318,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_POWER_ASS_1">
+                <Component class="components.IntField" name="TF_POWER_ASS_1">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="70"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;% Human power&lt;br&gt;&#xa;Max value 500&#xa;&lt;/html&gt;"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -7363,9 +7344,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_POWER_ASS_2">
+                <Component class="components.IntField" name="TF_POWER_ASS_2">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="120"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;% Human power&lt;br&gt;&#xa;Max value 500&#xa;&lt;/html&gt;"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -7390,9 +7370,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_POWER_ASS_3">
+                <Component class="components.IntField" name="TF_POWER_ASS_3">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="210"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;% Human power&lt;br&gt;&#xa;Max value 500&#xa;&lt;/html&gt;"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -7417,9 +7396,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_POWER_ASS_4">
+                <Component class="components.IntField" name="TF_POWER_ASS_4">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="300"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;% Human power&lt;br&gt;&#xa;Max value 500&#xa;&lt;/html&gt;"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -7439,6 +7417,7 @@
                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                       <ComponentRef name="groupAssistOnStart"/>
                     </Property>
+                    <Property name="selected" type="boolean" value="true"/>
                     <Property name="text" type="java.lang.String" value="Enable on startup"/>
                   </Properties>
                   <Constraints>
@@ -7744,7 +7723,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="449_TF_POWER_ASS_1">
-                      <CodeVariable name="TF_POWER_ASS_1" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_POWER_ASS_1" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_POWER_ASS_1"/>
@@ -7895,7 +7874,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="460_TF_POWER_ASS_2">
-                      <CodeVariable name="TF_POWER_ASS_2" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_POWER_ASS_2" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_POWER_ASS_2"/>
@@ -8046,7 +8025,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="471_TF_POWER_ASS_3">
-                      <CodeVariable name="TF_POWER_ASS_3" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_POWER_ASS_3" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_POWER_ASS_3"/>
@@ -8197,7 +8176,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="482_TF_POWER_ASS_4">
-                      <CodeVariable name="TF_POWER_ASS_4" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_POWER_ASS_4" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_POWER_ASS_4"/>
@@ -8336,9 +8315,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_TORQUE_ASS_1">
+                <Component class="components.IntField" name="TF_TORQUE_ASS_1">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="70"/>
                     <Property name="toolTipText" type="java.lang.String" value="Max value 254"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -8363,9 +8341,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_TORQUE_ASS_2">
+                <Component class="components.IntField" name="TF_TORQUE_ASS_2">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="100"/>
                     <Property name="toolTipText" type="java.lang.String" value="Max value 254"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -8390,9 +8367,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_TORQUE_ASS_3">
+                <Component class="components.IntField" name="TF_TORQUE_ASS_3">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="130"/>
                     <Property name="toolTipText" type="java.lang.String" value="Max value 254"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -8417,9 +8393,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_TORQUE_ASS_4">
+                <Component class="components.IntField" name="TF_TORQUE_ASS_4">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="160"/>
                     <Property name="toolTipText" type="java.lang.String" value="Max value 254"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -8744,7 +8719,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="511_TF_TORQUE_ASS_1">
-                      <CodeVariable name="TF_TORQUE_ASS_1" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_TORQUE_ASS_1" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_TORQUE_ASS_1"/>
@@ -8895,7 +8870,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="522_TF_TORQUE_ASS_2">
-                      <CodeVariable name="TF_TORQUE_ASS_2" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_TORQUE_ASS_2" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_TORQUE_ASS_2"/>
@@ -9046,7 +9021,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="533_TF_TORQUE_ASS_3">
-                      <CodeVariable name="TF_TORQUE_ASS_3" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_TORQUE_ASS_3" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_TORQUE_ASS_3"/>
@@ -9197,7 +9172,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="544_TF_TORQUE_ASS_4">
-                      <CodeVariable name="TF_TORQUE_ASS_4" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_TORQUE_ASS_4" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_TORQUE_ASS_4"/>
@@ -9336,9 +9311,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_CADENCE_ASS_1">
+                <Component class="components.IntField" name="TF_CADENCE_ASS_1">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="70"/>
                     <Property name="toolTipText" type="java.lang.String" value="Max value 254"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -9363,9 +9337,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_CADENCE_ASS_2">
+                <Component class="components.IntField" name="TF_CADENCE_ASS_2">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="100"/>
                     <Property name="toolTipText" type="java.lang.String" value="Max value 254"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -9390,9 +9363,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_CADENCE_ASS_3">
+                <Component class="components.IntField" name="TF_CADENCE_ASS_3">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="130"/>
                     <Property name="toolTipText" type="java.lang.String" value="Max value 254"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -9417,9 +9389,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_CADENCE_ASS_4">
+                <Component class="components.IntField" name="TF_CADENCE_ASS_4">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="160"/>
                     <Property name="toolTipText" type="java.lang.String" value="Max value 254"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -9744,7 +9715,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="573_TF_CADENCE_ASS_1">
-                      <CodeVariable name="TF_CADENCE_ASS_1" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_CADENCE_ASS_1" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_CADENCE_ASS_1"/>
@@ -9895,7 +9866,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="584_TF_CADENCE_ASS_2">
-                      <CodeVariable name="TF_CADENCE_ASS_2" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_CADENCE_ASS_2" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_CADENCE_ASS_2"/>
@@ -10046,7 +10017,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="595_TF_CADENCE_ASS_3">
-                      <CodeVariable name="TF_CADENCE_ASS_3" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_CADENCE_ASS_3" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_CADENCE_ASS_3"/>
@@ -10197,7 +10168,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="606_TF_CADENCE_ASS_4">
-                      <CodeVariable name="TF_CADENCE_ASS_4" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_CADENCE_ASS_4" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_CADENCE_ASS_4"/>
@@ -10336,9 +10307,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_EMTB_ASS_1">
+                <Component class="components.IntField" name="TF_EMTB_ASS_1">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="6"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Sensitivity&lt;br&gt;&#xa;between 0 to 20&#xa;&lt;/html&gt;"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -10363,9 +10333,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_EMTB_ASS_2">
+                <Component class="components.IntField" name="TF_EMTB_ASS_2">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="9"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Sensitivity&lt;br&gt;&#xa;between 0 to 20&#xa;&lt;/html&gt;"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -10390,9 +10359,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_EMTB_ASS_3">
+                <Component class="components.IntField" name="TF_EMTB_ASS_3">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="12"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Sensitivity&lt;br&gt;&#xa;between 0 to 20&#xa;&lt;/html&gt;"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -10417,9 +10385,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_EMTB_ASS_4">
+                <Component class="components.IntField" name="TF_EMTB_ASS_4">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="15"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Sensitivity&lt;br&gt;&#xa;between 0 to 20&#xa;&lt;/html&gt;"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -10744,7 +10711,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="635_TF_EMTB_ASS_1">
-                      <CodeVariable name="TF_EMTB_ASS_1" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_EMTB_ASS_1" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_EMTB_ASS_1"/>
@@ -10895,7 +10862,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="646_TF_EMTB_ASS_2">
-                      <CodeVariable name="TF_EMTB_ASS_2" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_EMTB_ASS_2" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_EMTB_ASS_2"/>
@@ -11046,7 +11013,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="657_TF_EMTB_ASS_3">
-                      <CodeVariable name="TF_EMTB_ASS_3" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_EMTB_ASS_3" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_EMTB_ASS_3"/>
@@ -11197,7 +11164,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="668_TF_EMTB_ASS_4">
-                      <CodeVariable name="TF_EMTB_ASS_4" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_EMTB_ASS_4" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_EMTB_ASS_4"/>
@@ -11346,9 +11313,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_WALK_ASS_SPEED_1">
+                <Component class="components.IntField" name="TF_WALK_ASS_SPEED_1">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="35"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;km/h x10 or mph x10&lt;br&gt;&#xa;Value 35 to 50 (3.5 to 5.0 km/h)&#xa;&lt;/html&gt;"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -11376,9 +11342,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_WALK_ASS_SPEED_2">
+                <Component class="components.IntField" name="TF_WALK_ASS_SPEED_2">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="40"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;km/h x10 or mph x10&lt;br&gt;&#xa;Value 35 to 50 (3.5 to 5.0 km/h)&#xa;&lt;/html&gt;"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -11406,9 +11371,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_WALK_ASS_SPEED_3">
+                <Component class="components.IntField" name="TF_WALK_ASS_SPEED_3">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="45"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;km/h x10 or mph x10&lt;br&gt;&#xa;Value 35 to 50 (3.5 to 5.0 km/h)&#xa;&lt;/html&gt;"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -11436,9 +11400,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_WALK_ASS_SPEED_4">
+                <Component class="components.IntField" name="TF_WALK_ASS_SPEED_4">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="50"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;km/h x10 or mph x10&lt;br&gt;&#xa;Value 35 to 50 (3.5 to 5.0 km/h)&#xa;&lt;/html&gt;"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -11466,9 +11429,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_WALK_ASS_SPEED_LIMIT">
+                <Component class="components.IntField" name="TF_WALK_ASS_SPEED_LIMIT">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="60"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;km/h x10 or mph x10&lt;br&gt;&#xa;Max value 60 (in EU 6 km/h)&#xa;&lt;/html&gt;"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -11496,9 +11458,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_WALK_ASS_TIME">
+                <Component class="components.IntField" name="TF_WALK_ASS_TIME">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="60"/>
                     <Property name="toolTipText" type="java.lang.String" value="Max value 255 (0.1 s)&#xa;&#xa;"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -11880,7 +11841,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="701_TF_WALK_ASS_SPEED_1">
-                      <CodeVariable name="TF_WALK_ASS_SPEED_1" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_WALK_ASS_SPEED_1" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_WALK_ASS_SPEED_1"/>
@@ -12031,7 +11992,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="712_TF_WALK_ASS_SPEED_2">
-                      <CodeVariable name="TF_WALK_ASS_SPEED_2" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_WALK_ASS_SPEED_2" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_WALK_ASS_SPEED_2"/>
@@ -12182,7 +12143,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="723_TF_WALK_ASS_SPEED_3">
-                      <CodeVariable name="TF_WALK_ASS_SPEED_3" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_WALK_ASS_SPEED_3" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_WALK_ASS_SPEED_3"/>
@@ -12333,7 +12294,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="734_TF_WALK_ASS_SPEED_4">
-                      <CodeVariable name="TF_WALK_ASS_SPEED_4" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_WALK_ASS_SPEED_4" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_WALK_ASS_SPEED_4"/>
@@ -12484,7 +12445,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="745_TF_WALK_ASS_SPEED_LIMIT">
-                      <CodeVariable name="TF_WALK_ASS_SPEED_LIMIT" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_WALK_ASS_SPEED_LIMIT" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_WALK_ASS_SPEED_LIMIT"/>
@@ -12635,7 +12596,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="756_TF_WALK_ASS_TIME">
-                      <CodeVariable name="TF_WALK_ASS_TIME" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_WALK_ASS_TIME" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_WALK_ASS_TIME"/>
@@ -12761,9 +12722,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_STREET_SPEED_LIM">
+                <Component class="components.IntField" name="TF_STREET_SPEED_LIM">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="25"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;km/h or mph&lt;br&gt;&#xa;Max value in EU 25 km/h&#xa;&lt;/html&gt;"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -12799,9 +12759,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_STREET_POWER_LIM">
+                <Component class="components.IntField" name="TF_STREET_POWER_LIM">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="500"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Max nominal value in EU 250 W&lt;br&gt;&#xa;Max peak value approx. 500 W&#xa;&lt;/html&gt;"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -13166,7 +13125,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="784_TF_STREET_SPEED_LIM">
-                      <CodeVariable name="TF_STREET_SPEED_LIM" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_STREET_SPEED_LIM" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_STREET_SPEED_LIM"/>
@@ -13330,7 +13289,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="796_TF_STREET_POWER_LIM">
-                      <CodeVariable name="TF_STREET_POWER_LIM" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_STREET_POWER_LIM" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_STREET_POWER_LIM"/>
@@ -13781,9 +13740,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_CRUISE_ASS_1">
+                <Component class="components.IntField" name="TF_CRUISE_ASS_1">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="15"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;km/h or mph&lt;br&gt;&#xa;Max value in EU 25 km/h&#xa;&lt;/html&gt;"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -13811,9 +13769,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_CRUISE_ASS_2">
+                <Component class="components.IntField" name="TF_CRUISE_ASS_2">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="18"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;km/h or mph&lt;br&gt;&#xa;Max value in EU 25 km/h&#xa;&lt;/html&gt;"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -13841,9 +13798,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_CRUISE_ASS_3">
+                <Component class="components.IntField" name="TF_CRUISE_ASS_3">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="21"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;km/h or mph&lt;br&gt;&#xa;Max value in EU 25 km/h&#xa;&lt;/html&gt;"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -13871,9 +13827,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_CRUISE_ASS_4">
+                <Component class="components.IntField" name="TF_CRUISE_ASS_4">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="24"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;km/h or mph&lt;br&gt;&#xa;Max value in EU 25 km/h&#xa;&lt;/html&gt;"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -13901,9 +13856,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_CRUISE_SPEED_ENA">
+                <Component class="components.IntField" name="TF_CRUISE_SPEED_ENA">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="10"/>
                     <Property name="toolTipText" type="java.lang.String" value="Min speed to enable cruise (km/h or mph)"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -14285,7 +14239,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="851_TF_CRUISE_ASS_1">
-                      <CodeVariable name="TF_CRUISE_ASS_1" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_CRUISE_ASS_1" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_CRUISE_ASS_1"/>
@@ -14436,7 +14390,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="862_TF_CRUISE_ASS_2">
-                      <CodeVariable name="TF_CRUISE_ASS_2" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_CRUISE_ASS_2" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_CRUISE_ASS_2"/>
@@ -14587,7 +14541,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="873_TF_CRUISE_ASS_3">
-                      <CodeVariable name="TF_CRUISE_ASS_3" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_CRUISE_ASS_3" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_CRUISE_ASS_3"/>
@@ -14738,7 +14692,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="884_TF_CRUISE_ASS_4">
-                      <CodeVariable name="TF_CRUISE_ASS_4" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_CRUISE_ASS_4" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_CRUISE_ASS_4"/>
@@ -14889,7 +14843,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="895_TF_CRUISE_SPEED_ENA">
-                      <CodeVariable name="TF_CRUISE_SPEED_ENA" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_CRUISE_SPEED_ENA" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_CRUISE_SPEED_ENA"/>
@@ -15032,9 +14986,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_LIGHT_MODE_ON_START">
+                <Component class="components.IntField" name="TF_LIGHT_MODE_ON_START">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="0"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;With lights button ON&lt;br&gt;&#xa;0 - lights ON&lt;br&gt;&#xa;1 - lights FLASHING&lt;br&gt;&#xa;2 - lights ON and BRAKE-FLASHING when braking&lt;br&gt;&#xa;3 - lights FLASHING and ON when braking&lt;br&gt;&#xa;4 - lights FLASHING and BRAKE-FLASHING when braking&lt;br&gt;&#xa;5 - lights ON and ON when braking, even with the light button OFF&lt;br&gt;&#xa;6 - lights ON and BRAKE-FLASHING when braking, even with the light button OFF&lt;br&gt;&#xa;7 - lights FLASHING and ON when braking, even with the light button OFF&lt;br&gt;&#xa;8 - lights FLASHING and BRAKE-FLASHING when braking, even with the light button OFF&#xa;&lt;/html&gt;"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -15066,9 +15019,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_LIGHT_MODE_1">
+                <Component class="components.IntField" name="TF_LIGHT_MODE_1">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="6"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;With lights button ON&lt;br&gt;&#xa;0 - lights ON&lt;br&gt;&#xa;1 - lights FLASHING&lt;br&gt;&#xa;2 - lights ON and BRAKE-FLASHING when braking&lt;br&gt;&#xa;3 - lights FLASHING and ON when braking&lt;br&gt;&#xa;4 - lights FLASHING and BRAKE-FLASHING when braking&lt;br&gt;&#xa;5 - lights ON and ON when braking, even with the light button OFF&lt;br&gt;&#xa;6 - lights ON and BRAKE-FLASHING when braking, even with the light button OFF&lt;br&gt;&#xa;7 - lights FLASHING and ON when braking, even with the light button OFF&lt;br&gt;&#xa;8 - lights FLASHING and BRAKE-FLASHING when braking, even with the light button OFF&#xa;&lt;/html&gt;"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -15100,9 +15052,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_LIGHT_MODE_2">
+                <Component class="components.IntField" name="TF_LIGHT_MODE_2">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="7"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;With lights button ON&lt;br&gt;&#xa;0 - lights ON&lt;br&gt;&#xa;1 - lights FLASHING&lt;br&gt;&#xa;2 - lights ON and BRAKE-FLASHING when braking&lt;br&gt;&#xa;3 - lights FLASHING and ON when braking&lt;br&gt;&#xa;4 - lights FLASHING and BRAKE-FLASHING when braking&lt;br&gt;&#xa;5 - lights ON and ON when braking, even with the light button OFF&lt;br&gt;&#xa;6 - lights ON and BRAKE-FLASHING when braking, even with the light button OFF&lt;br&gt;&#xa;7 - lights FLASHING and ON when braking, even with the light button OFF&lt;br&gt;&#xa;8 - lights FLASHING and BRAKE-FLASHING when braking, even with the light button OFF&lt;br&gt;&#xa;or alternative option settings&lt;br&gt;&#xa;9 - assistance without pedal rotation&#xa;&lt;/html&gt;"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -15134,9 +15085,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_LIGHT_MODE_3">
+                <Component class="components.IntField" name="TF_LIGHT_MODE_3">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="1"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;With lights button ON&lt;br&gt;&#xa;0 - lights ON&lt;br&gt;&#xa;1 - lights FLASHING&lt;br&gt;&#xa;2 - lights ON and BRAKE-FLASHING when braking&lt;br&gt;&#xa;3 - lights FLASHING and ON when braking&lt;br&gt;&#xa;4 - lights FLASHING and BRAKE-FLASHING when braking&lt;br&gt;&#xa;5 - lights ON and ON when braking, even with the light button OFF&lt;br&gt;&#xa;6 - lights ON and BRAKE-FLASHING when braking, even with the light button OFF&lt;br&gt;&#xa;7 - lights FLASHING and ON when braking, even with the light button OFF&lt;br&gt;&#xa;8 - lights FLASHING and BRAKE-FLASHING when braking, even with the light button OFF&lt;br&gt;&#xa;or alternative option settings&lt;br&gt;&#xa;10 - assistance with sensors error&#xa;&lt;/html&gt;"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -15506,7 +15456,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="926_TF_LIGHT_MODE_ON_START">
-                      <CodeVariable name="TF_LIGHT_MODE_ON_START" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_LIGHT_MODE_ON_START" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_LIGHT_MODE_ON_START"/>
@@ -15683,7 +15633,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="939_TF_LIGHT_MODE_1">
-                      <CodeVariable name="TF_LIGHT_MODE_1" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_LIGHT_MODE_1" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_LIGHT_MODE_1"/>
@@ -15860,7 +15810,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="952_TF_LIGHT_MODE_2">
-                      <CodeVariable name="TF_LIGHT_MODE_2" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_LIGHT_MODE_2" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_LIGHT_MODE_2"/>
@@ -16037,7 +15987,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="965_TF_LIGHT_MODE_3">
-                      <CodeVariable name="TF_LIGHT_MODE_3" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_LIGHT_MODE_3" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_LIGHT_MODE_3"/>
@@ -17261,9 +17211,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_BAT_CELL_OVER">
+                <Component class="components.FloatField" name="TF_BAT_CELL_OVER">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="4.35"/>
                     <Property name="toolTipText" type="java.lang.String" value="Value 4.25 to 4.35"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -17285,9 +17234,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_BAT_CELL_SOC">
+                <Component class="components.FloatField" name="TF_BAT_CELL_SOC">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="4.05"/>
                     <Property name="toolTipText" type="java.lang.String" value="Value 4.00 to 4.10"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -17309,9 +17257,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_BAT_CELL_FULL">
+                <Component class="components.FloatField" name="TF_BAT_CELL_FULL">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="3.95"/>
                     <Property name="toolTipText" type="java.lang.String" value="Value 3.90 to 4.00"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -17336,9 +17283,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_BAT_CELL_3_4">
+                <Component class="components.FloatField" name="TF_BAT_CELL_3_4">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="3.70"/>
                     <Property name="toolTipText" type="java.lang.String" value="Value empty to full"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -17360,9 +17306,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_BAT_CELL_2_4">
+                <Component class="components.FloatField" name="TF_BAT_CELL_2_4">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="3.45"/>
                     <Property name="toolTipText" type="java.lang.String" value="Value empty to full"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -17384,9 +17329,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_BAT_CELL_1_4">
+                <Component class="components.FloatField" name="TF_BAT_CELL_1_4">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="3.25"/>
                     <Property name="toolTipText" type="java.lang.String" value="Value empty to full"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -17408,9 +17352,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_BAT_CELL_5_6">
+                <Component class="components.FloatField" name="TF_BAT_CELL_5_6">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="3.85"/>
                     <Property name="toolTipText" type="java.lang.String" value="Value empty to full"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -17432,9 +17375,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_BAT_CELL_4_6">
+                <Component class="components.FloatField" name="TF_BAT_CELL_4_6">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="3.70"/>
                     <Property name="toolTipText" type="java.lang.String" value="Value empty to full"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -17456,9 +17398,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_BAT_CELL_3_6">
+                <Component class="components.FloatField" name="TF_BAT_CELL_3_6">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="3.55"/>
                     <Property name="toolTipText" type="java.lang.String" value="Value empty to full"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -17480,9 +17421,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_BAT_CELL_2_6">
+                <Component class="components.FloatField" name="TF_BAT_CELL_2_6">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="3.40"/>
                     <Property name="toolTipText" type="java.lang.String" value="Value empty to full"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -17504,9 +17444,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_BAT_CELL_1_6">
+                <Component class="components.FloatField" name="TF_BAT_CELL_1_6">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="3.25"/>
                     <Property name="toolTipText" type="java.lang.String" value="Value empty to full"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -17528,9 +17467,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_BAT_CELL_EMPTY">
+                <Component class="components.FloatField" name="TF_BAT_CELL_EMPTY">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="2.90"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Indicative value 2.90&lt;br&gt;&#xa;It depends on the&lt;br&gt;&#xa;characteristics of the cells&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -17839,7 +17777,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1068_TF_BAT_CELL_OVER">
-                      <CodeVariable name="TF_BAT_CELL_OVER" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_BAT_CELL_OVER" type="8194" declaredType="components.FloatField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_BAT_CELL_OVER"/>
@@ -17990,7 +17928,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1079_TF_BAT_CELL_SOC">
-                      <CodeVariable name="TF_BAT_CELL_SOC" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_BAT_CELL_SOC" type="8194" declaredType="components.FloatField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_BAT_CELL_SOC"/>
@@ -18141,7 +18079,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1090_TF_BAT_CELL_FULL">
-                      <CodeVariable name="TF_BAT_CELL_FULL" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_BAT_CELL_FULL" type="8194" declaredType="components.FloatField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_BAT_CELL_FULL"/>
@@ -18292,7 +18230,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1101_TF_BAT_CELL_3_4">
-                      <CodeVariable name="TF_BAT_CELL_3_4" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_BAT_CELL_3_4" type="8194" declaredType="components.FloatField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_BAT_CELL_3_4"/>
@@ -18443,7 +18381,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1112_TF_BAT_CELL_2_4">
-                      <CodeVariable name="TF_BAT_CELL_2_4" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_BAT_CELL_2_4" type="8194" declaredType="components.FloatField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_BAT_CELL_2_4"/>
@@ -18594,7 +18532,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1123_TF_BAT_CELL_1_4">
-                      <CodeVariable name="TF_BAT_CELL_1_4" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_BAT_CELL_1_4" type="8194" declaredType="components.FloatField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_BAT_CELL_1_4"/>
@@ -18745,7 +18683,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1134_TF_BAT_CELL_5_6">
-                      <CodeVariable name="TF_BAT_CELL_5_6" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_BAT_CELL_5_6" type="8194" declaredType="components.FloatField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_BAT_CELL_5_6"/>
@@ -18896,7 +18834,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1145_TF_BAT_CELL_4_6">
-                      <CodeVariable name="TF_BAT_CELL_4_6" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_BAT_CELL_4_6" type="8194" declaredType="components.FloatField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_BAT_CELL_4_6"/>
@@ -19047,7 +18985,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1156_TF_BAT_CELL_3_6">
-                      <CodeVariable name="TF_BAT_CELL_3_6" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_BAT_CELL_3_6" type="8194" declaredType="components.FloatField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_BAT_CELL_3_6"/>
@@ -19198,7 +19136,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1167_TF_BAT_CELL_2_6">
-                      <CodeVariable name="TF_BAT_CELL_2_6" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_BAT_CELL_2_6" type="8194" declaredType="components.FloatField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_BAT_CELL_2_6"/>
@@ -19349,7 +19287,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1178_TF_BAT_CELL_1_6">
-                      <CodeVariable name="TF_BAT_CELL_1_6" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_BAT_CELL_1_6" type="8194" declaredType="components.FloatField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_BAT_CELL_1_6"/>
@@ -19500,7 +19438,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1189_TF_BAT_CELL_EMPTY">
-                      <CodeVariable name="TF_BAT_CELL_EMPTY" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_BAT_CELL_EMPTY" type="8194" declaredType="components.FloatField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_BAT_CELL_EMPTY"/>
@@ -19544,9 +19482,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_DATA_1">
+                <Component class="components.IntField" name="TF_DATA_1">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="1"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;0 - motor temperature (&#xb0;C)&lt;br&gt;&#xa;  1 - battery SOC remaining (%)&lt;br&gt;&#xa;  2 - battery voltage (V)&lt;br&gt;&#xa;  3 - battery current (A)&lt;br&gt;&#xa;  4 - motor power (Watt/10)&lt;br&gt;&#xa;  5 - adc throttle (8 bit)&lt;br&gt;&#xa;  6 - adc torque sensor (10 bit)&lt;br&gt;&#xa;  7 - pedal cadence (rpm)&lt;br&gt;&#xa;  8 - human power(W/10)&lt;br&gt;&#xa;  9 - pedal torque adc delta&lt;br&gt;&#xa;10 - consumed Wh/10&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -19571,9 +19508,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_DATA_2">
+                <Component class="components.IntField" name="TF_DATA_2">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="2"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;0 - motor temperature (&#xb0;C)&lt;br&gt;&#xa;  1 - battery SOC remaining (%)&lt;br&gt;&#xa;  2 - battery voltage (V)&lt;br&gt;&#xa;  3 - battery current (A)&lt;br&gt;&#xa;  4 - motor power (Watt/10)&lt;br&gt;&#xa;  5 - adc throttle (8 bit)&lt;br&gt;&#xa;  6 - adc torque sensor (10 bit)&lt;br&gt;&#xa;  7 - pedal cadence (rpm)&lt;br&gt;&#xa;  8 - human power(W/10)&lt;br&gt;&#xa;  9 - pedal torque adc delta&lt;br&gt;&#xa;10 - consumed Wh/10&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -19598,9 +19534,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_DATA_3">
+                <Component class="components.IntField" name="TF_DATA_3">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="5"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;0 - motor temperature (&#xb0;C)&lt;br&gt;&#xa;  1 - battery SOC remaining (%)&lt;br&gt;&#xa;  2 - battery voltage (V)&lt;br&gt;&#xa;  3 - battery current (A)&lt;br&gt;&#xa;  4 - motor power (Watt/10)&lt;br&gt;&#xa;  5 - adc throttle (8 bit)&lt;br&gt;&#xa;  6 - adc torque sensor (10 bit)&lt;br&gt;&#xa;  7 - pedal cadence (rpm)&lt;br&gt;&#xa;  8 - human power(W/10)&lt;br&gt;&#xa;  9 - pedal torque adc delta&lt;br&gt;&#xa;10 - consumed Wh/10&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -19625,9 +19560,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_DATA_4">
+                <Component class="components.IntField" name="TF_DATA_4">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="4"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;0 - motor temperature (&#xb0;C)&lt;br&gt;&#xa;  1 - battery SOC remaining (%)&lt;br&gt;&#xa;  2 - battery voltage (V)&lt;br&gt;&#xa;  3 - battery current (A)&lt;br&gt;&#xa;  4 - motor power (Watt/10)&lt;br&gt;&#xa;  5 - adc throttle (8 bit)&lt;br&gt;&#xa;  6 - adc torque sensor (10 bit)&lt;br&gt;&#xa;  7 - pedal cadence (rpm)&lt;br&gt;&#xa;  8 - human power(W/10)&lt;br&gt;&#xa;  9 - pedal torque adc delta&lt;br&gt;&#xa;10 - consumed Wh/10&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -19652,9 +19586,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_DATA_5">
+                <Component class="components.IntField" name="TF_DATA_5">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="7"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;0 - motor temperature (&#xb0;C)&lt;br&gt;&#xa;  1 - battery SOC remaining (%)&lt;br&gt;&#xa;  2 - battery voltage (V)&lt;br&gt;&#xa;  3 - battery current (A)&lt;br&gt;&#xa;  4 - motor power (Watt/10)&lt;br&gt;&#xa;  5 - adc throttle (8 bit)&lt;br&gt;&#xa;  6 - adc torque sensor (10 bit)&lt;br&gt;&#xa;  7 - pedal cadence (rpm)&lt;br&gt;&#xa;  8 - human power(W/10)&lt;br&gt;&#xa;  9 - pedal torque adc delta&lt;br&gt;&#xa;10 - consumed Wh/10&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -19679,9 +19612,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_DATA_6">
+                <Component class="components.IntField" name="TF_DATA_6">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="0"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;0 - motor temperature (&#xb0;C)&lt;br&gt;&#xa;  1 - battery SOC remaining (%)&lt;br&gt;&#xa;  2 - battery voltage (V)&lt;br&gt;&#xa;  3 - battery current (A)&lt;br&gt;&#xa;  4 - motor power (Watt/10)&lt;br&gt;&#xa;  5 - adc throttle (8 bit)&lt;br&gt;&#xa;  6 - adc torque sensor (10 bit)&lt;br&gt;&#xa;  7 - pedal cadence (rpm)&lt;br&gt;&#xa;  8 - human power(W/10)&lt;br&gt;&#xa;  9 - pedal torque adc delta&lt;br&gt;&#xa;10 - consumed Wh/10&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -19706,9 +19638,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_DELAY_DATA_1">
+                <Component class="components.IntField" name="TF_DELAY_DATA_1">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="50"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Max value 255 (0.1 sec)&lt;br&gt;&#xa;continuous display at zero value&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -19730,9 +19661,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_DELAY_DATA_2">
+                <Component class="components.IntField" name="TF_DELAY_DATA_2">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="50"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Max value 255 (0.1 sec)&lt;br&gt;&#xa;continuous display at zero value&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -19754,9 +19684,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_DELAY_DATA_3">
+                <Component class="components.IntField" name="TF_DELAY_DATA_3">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="50"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Max value 255 (0.1 sec)&lt;br&gt;&#xa;continuous display at zero value&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -19778,9 +19707,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_DELAY_DATA_4">
+                <Component class="components.IntField" name="TF_DELAY_DATA_4">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="50"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Max value 255 (0.1 sec)&lt;br&gt;&#xa;continuous display at zero value&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -19802,9 +19730,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_DELAY_DATA_5">
+                <Component class="components.IntField" name="TF_DELAY_DATA_5">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="50"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Max value 255 (0.1 sec)&lt;br&gt;&#xa;continuous display at zero value&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -19826,9 +19753,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_DELAY_DATA_6">
+                <Component class="components.IntField" name="TF_DELAY_DATA_6">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="50"/>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Max value 255 (0.1 sec)&lt;br&gt;&#xa;continuous display at zero value&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -20140,7 +20066,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1211_TF_DATA_1">
-                      <CodeVariable name="TF_DATA_1" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_DATA_1" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_DATA_1"/>
@@ -20291,7 +20217,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1222_TF_DATA_2">
-                      <CodeVariable name="TF_DATA_2" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_DATA_2" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_DATA_2"/>
@@ -20442,7 +20368,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1233_TF_DATA_3">
-                      <CodeVariable name="TF_DATA_3" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_DATA_3" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_DATA_3"/>
@@ -20593,7 +20519,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1244_TF_DATA_4">
-                      <CodeVariable name="TF_DATA_4" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_DATA_4" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_DATA_4"/>
@@ -20744,7 +20670,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1255_TF_DATA_5">
-                      <CodeVariable name="TF_DATA_5" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_DATA_5" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_DATA_5"/>
@@ -20895,7 +20821,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1266_TF_DATA_6">
-                      <CodeVariable name="TF_DATA_6" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_DATA_6" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_DATA_6"/>
@@ -21046,7 +20972,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1277_TF_DELAY_DATA_1">
-                      <CodeVariable name="TF_DELAY_DATA_1" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_DELAY_DATA_1" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_DELAY_DATA_1"/>
@@ -21197,7 +21123,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1288_TF_DELAY_DATA_2">
-                      <CodeVariable name="TF_DELAY_DATA_2" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_DELAY_DATA_2" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_DELAY_DATA_2"/>
@@ -21348,7 +21274,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1299_TF_DELAY_DATA_3">
-                      <CodeVariable name="TF_DELAY_DATA_3" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_DELAY_DATA_3" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_DELAY_DATA_3"/>
@@ -21499,7 +21425,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1310_TF_DELAY_DATA_4">
-                      <CodeVariable name="TF_DELAY_DATA_4" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_DELAY_DATA_4" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_DELAY_DATA_4"/>
@@ -21650,7 +21576,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1321_TF_DELAY_DATA_5">
-                      <CodeVariable name="TF_DELAY_DATA_5" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_DELAY_DATA_5" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_DELAY_DATA_5"/>
@@ -21801,7 +21727,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1332_TF_DELAY_DATA_6">
-                      <CodeVariable name="TF_DELAY_DATA_6" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_DELAY_DATA_6" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_DELAY_DATA_6"/>
@@ -21830,9 +21756,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_NUM_DATA_AUTO_DISPLAY">
+                <Component class="components.IntField" name="TF_NUM_DATA_AUTO_DISPLAY">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="2"/>
                     <Property name="toolTipText" type="java.lang.String" value="Value 1 to 6"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -21860,9 +21785,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_DELAY_MENU">
+                <Component class="components.IntField" name="TF_DELAY_MENU">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="50"/>
                     <Property name="toolTipText" type="java.lang.String" value="Max value 60 (0.1 s)"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -21904,6 +21828,7 @@
                         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                           <ComponentRef name="groupStartupDisplay"/>
                         </Property>
+                        <Property name="selected" type="boolean" value="true"/>
                         <Property name="text" type="java.lang.String" value="Soc %"/>
                         <Property name="toolTipText" type="java.lang.String" value=""/>
                       </Properties>
@@ -21987,7 +21912,6 @@
                         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                           <ComponentRef name="groupStartupSoc"/>
                         </Property>
-                        <Property name="selected" type="boolean" value="true"/>
                         <Property name="text" type="java.lang.String" value="Wh"/>
                         <Property name="toolTipText" type="java.lang.String" value=""/>
                       </Properties>
@@ -22013,6 +21937,7 @@
                         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                           <ComponentRef name="groupStartupSoc"/>
                         </Property>
+                        <Property name="selected" type="boolean" value="true"/>
                         <Property name="text" type="java.lang.String" value="Auto"/>
                         <Property name="toolTipText" type="java.lang.String" value=""/>
                       </Properties>
@@ -22069,9 +21994,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_COASTER_BRAKE_THRESHOLD">
+                <Component class="components.IntField" name="TF_COASTER_BRAKE_THRESHOLD">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="30"/>
                     <Property name="toolTipText" type="java.lang.String" value="Max value 255 (s)"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -22106,9 +22030,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_ADC_THROTTLE_MIN">
+                <Component class="components.IntField" name="TF_ADC_THROTTLE_MIN">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="47"/>
                     <Property name="toolTipText" type="java.lang.String" value="Value 40 to 50"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -22133,9 +22056,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_ADC_THROTTLE_MAX">
+                <Component class="components.IntField" name="TF_ADC_THROTTLE_MAX">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="176"/>
                     <Property name="toolTipText" type="java.lang.String" value="Value 170 to 180"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -22170,9 +22092,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_ASSIST_THROTTLE_MIN">
+                <Component class="components.IntField" name="TF_ASSIST_THROTTLE_MIN">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="0"/>
                     <Property name="toolTipText" type="java.lang.String" value="Value 0 to 100"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -22197,9 +22118,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_ASSIST_THROTTLE_MAX">
+                <Component class="components.IntField" name="TF_ASSIST_THROTTLE_MAX">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="255"/>
                     <Property name="toolTipText" type="java.lang.String" value="Value MIN to 255"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -22234,9 +22154,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_TEMP_MIN_LIM">
+                <Component class="components.IntField" name="TF_TEMP_MIN_LIM">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="65"/>
                     <Property name="toolTipText" type="java.lang.String" value="Max value 75 (&#xb0;C)"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -22261,9 +22180,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_TEMP_MAX_LIM">
+                <Component class="components.IntField" name="TF_TEMP_MAX_LIM">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="80"/>
                     <Property name="toolTipText" type="java.lang.String" value="Max value 85 (&#xb0;C)"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -22288,9 +22206,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_MOTOR_BLOCK_TIME">
+                <Component class="components.IntField" name="TF_MOTOR_BLOCK_TIME">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="2"/>
                     <Property name="toolTipText" type="java.lang.String" value="Value 1 to 10 (0.1 s)"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -22315,9 +22232,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_MOTOR_BLOCK_CURR">
+                <Component class="components.IntField" name="TF_MOTOR_BLOCK_CURR">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="30"/>
                     <Property name="toolTipText" type="java.lang.String" value="Value 1 to 5 (0.1 A)"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -22342,9 +22258,8 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JTextField" name="TF_MOTOR_BLOCK_ERPS">
+                <Component class="components.IntField" name="TF_MOTOR_BLOCK_ERPS">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="20"/>
                     <Property name="toolTipText" type="java.lang.String" value="Value 10 to 30 (ERPS)"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[45, 23]"/>
@@ -22574,7 +22489,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1348_TF_NUM_DATA_AUTO_DISPLAY">
-                      <CodeVariable name="TF_NUM_DATA_AUTO_DISPLAY" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_NUM_DATA_AUTO_DISPLAY" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_NUM_DATA_AUTO_DISPLAY"/>
@@ -22738,7 +22653,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1360_TF_DELAY_MENU">
-                      <CodeVariable name="TF_DELAY_MENU" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_DELAY_MENU" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_DELAY_MENU"/>
@@ -23381,7 +23296,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1407_TF_COASTER_BRAKE_THRESHOLD">
-                      <CodeVariable name="TF_COASTER_BRAKE_THRESHOLD" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_COASTER_BRAKE_THRESHOLD" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_COASTER_BRAKE_THRESHOLD"/>
@@ -23601,7 +23516,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1423_TF_ADC_THROTTLE_MIN">
-                      <CodeVariable name="TF_ADC_THROTTLE_MIN" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_ADC_THROTTLE_MIN" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_ADC_THROTTLE_MIN"/>
@@ -23739,7 +23654,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1433_TF_ADC_THROTTLE_MAX">
-                      <CodeVariable name="TF_ADC_THROTTLE_MAX" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_ADC_THROTTLE_MAX" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_ADC_THROTTLE_MAX"/>
@@ -23959,7 +23874,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1449_TF_ASSIST_THROTTLE_MIN">
-                      <CodeVariable name="TF_ASSIST_THROTTLE_MIN" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_ASSIST_THROTTLE_MIN" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_ASSIST_THROTTLE_MIN"/>
@@ -24097,7 +24012,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1459_TF_ASSIST_THROTTLE_MAX">
-                      <CodeVariable name="TF_ASSIST_THROTTLE_MAX" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_ASSIST_THROTTLE_MAX" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_ASSIST_THROTTLE_MAX"/>
@@ -24356,7 +24271,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1478_TF_TEMP_MIN_LIM">
-                      <CodeVariable name="TF_TEMP_MIN_LIM" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_TEMP_MIN_LIM" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_TEMP_MIN_LIM"/>
@@ -24520,7 +24435,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1490_TF_TEMP_MAX_LIM">
-                      <CodeVariable name="TF_TEMP_MAX_LIM" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_TEMP_MAX_LIM" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_TEMP_MAX_LIM"/>
@@ -24684,7 +24599,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1502_TF_MOTOR_BLOCK_TIME">
-                      <CodeVariable name="TF_MOTOR_BLOCK_TIME" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_MOTOR_BLOCK_TIME" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_MOTOR_BLOCK_TIME"/>
@@ -24848,7 +24763,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1514_TF_MOTOR_BLOCK_CURR">
-                      <CodeVariable name="TF_MOTOR_BLOCK_CURR" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_MOTOR_BLOCK_CURR" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_MOTOR_BLOCK_CURR"/>
@@ -25012,7 +24927,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="1526_TF_MOTOR_BLOCK_ERPS">
-                      <CodeVariable name="TF_MOTOR_BLOCK_ERPS" type="8194" declaredType="javax.swing.JTextField"/>
+                      <CodeVariable name="TF_MOTOR_BLOCK_ERPS" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_MOTOR_BLOCK_ERPS"/>
