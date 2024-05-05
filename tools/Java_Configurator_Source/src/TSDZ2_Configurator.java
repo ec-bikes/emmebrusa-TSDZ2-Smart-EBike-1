@@ -346,8 +346,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
                 else {
                     CB_FIELD_WEAKENING_ENABLED.setText("Field weakening disabled - PWM 15.6 kHz"); }
          */
-        jLabelMOTOR_BLOCK_CURR.setVisible(false);
-        jLabelMOTOR_BLOCK_ERPS.setVisible(false);
+        jLabel_MOTOR_BLOCK_CURR.setVisible(false);
+        jLabel_MOTOR_BLOCK_ERPS.setVisible(false);
         TF_MOTOR_BLOCK_CURR.setVisible(false);
         TF_MOTOR_BLOCK_ERPS.setVisible(false);
 
@@ -1053,7 +1053,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         jLabel_MAX_SPEED = new javax.swing.JLabel();
         jLabel_WHEEL_CIRCUMF = new javax.swing.JLabel();
         subPanelFunctionSettings = new javax.swing.JPanel();
-        jLabel39 = new javax.swing.JLabel();
+        headerFunctionSettings = new javax.swing.JLabel();
         CB_LIGHTS = new javax.swing.JCheckBox();
         CB_WALK_ASSIST = new javax.swing.JCheckBox();
         CB_BRAKE_SENSOR = new javax.swing.JCheckBox();
@@ -1175,101 +1175,101 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         headerHybridAssist = new javax.swing.JLabel();
         RB_HYBRID_ON_START = new javax.swing.JRadioButton();
         panelAdvancedSettings = new javax.swing.JPanel();
-        jPanel11 = new javax.swing.JPanel();
-        jLabel35 = new javax.swing.JLabel();
-        jLabel36 = new javax.swing.JLabel();
-        TF_BAT_CELL_FULL = new javax.swing.JTextField();
-        jLabel37 = new javax.swing.JLabel();
+        subPanelBatteryCells = new javax.swing.JPanel();
+        headerBatteryCells = new javax.swing.JLabel();
+        jLabel_BAT_CELL_OVER = new javax.swing.JLabel();
         TF_BAT_CELL_OVER = new javax.swing.JTextField();
-        jLabel38 = new javax.swing.JLabel();
+        jLabel_BAT_CELL_SOC = new javax.swing.JLabel();
         TF_BAT_CELL_SOC = new javax.swing.JTextField();
-        jLabel40 = new javax.swing.JLabel();
+        jLabel_BAT_CELL_FULL = new javax.swing.JLabel();
+        TF_BAT_CELL_FULL = new javax.swing.JTextField();
+        jLabel_BAT_CELL_3_4 = new javax.swing.JLabel();
         TF_BAT_CELL_3_4 = new javax.swing.JTextField();
-        jLabel41 = new javax.swing.JLabel();
+        jLabel_BAT_CELL_2_4 = new javax.swing.JLabel();
         TF_BAT_CELL_2_4 = new javax.swing.JTextField();
-        jLabel42 = new javax.swing.JLabel();
+        jLabel_BAT_CELL_1_4 = new javax.swing.JLabel();
         TF_BAT_CELL_1_4 = new javax.swing.JTextField();
-        jLabel75 = new javax.swing.JLabel();
+        jLabel_BAT_CELL_5_6 = new javax.swing.JLabel();
         TF_BAT_CELL_5_6 = new javax.swing.JTextField();
-        jLabel81 = new javax.swing.JLabel();
+        jLabel_BAT_CELL_4_6 = new javax.swing.JLabel();
         TF_BAT_CELL_4_6 = new javax.swing.JTextField();
-        jLabel82 = new javax.swing.JLabel();
+        jLabel_BAT_CELL_3_6 = new javax.swing.JLabel();
         TF_BAT_CELL_3_6 = new javax.swing.JTextField();
+        jLabel_BAT_CELL_2_6 = new javax.swing.JLabel();
         TF_BAT_CELL_2_6 = new javax.swing.JTextField();
-        jLabel83 = new javax.swing.JLabel();
+        jLabel_BAT_CELL_1_6 = new javax.swing.JLabel();
         TF_BAT_CELL_1_6 = new javax.swing.JTextField();
-        jLabel84 = new javax.swing.JLabel();
+        jLabel_BAT_CELL_EMPTY = new javax.swing.JLabel();
         TF_BAT_CELL_EMPTY = new javax.swing.JTextField();
-        jLabel85 = new javax.swing.JLabel();
-        jPanel18 = new javax.swing.JPanel();
-        jLabel86 = new javax.swing.JLabel();
-        jLabel89 = new javax.swing.JLabel();
-        TF_DELAY_DATA_1 = new javax.swing.JTextField();
+        subPanelDisplayAdvanced = new javax.swing.JPanel();
+        headerDisplayAdvanced = new javax.swing.JLabel();
         jLabelData1 = new javax.swing.JLabel();
         TF_DATA_1 = new javax.swing.JTextField();
-        TF_DATA_2 = new javax.swing.JTextField();
         jLabelData2 = new javax.swing.JLabel();
-        TF_DATA_3 = new javax.swing.JTextField();
+        TF_DATA_2 = new javax.swing.JTextField();
         jLabelData3 = new javax.swing.JLabel();
+        TF_DATA_3 = new javax.swing.JTextField();
         jLabelData4 = new javax.swing.JLabel();
         TF_DATA_4 = new javax.swing.JTextField();
-        TF_DATA_5 = new javax.swing.JTextField();
         jLabelData5 = new javax.swing.JLabel();
+        TF_DATA_5 = new javax.swing.JTextField();
         jLabelData6 = new javax.swing.JLabel();
         TF_DATA_6 = new javax.swing.JTextField();
-        jLabel96 = new javax.swing.JLabel();
+        jLabel_DELAY_DATA_1 = new javax.swing.JLabel();
+        TF_DELAY_DATA_1 = new javax.swing.JTextField();
+        jLabel_DELAY_DATA_2 = new javax.swing.JLabel();
         TF_DELAY_DATA_2 = new javax.swing.JTextField();
-        jLabel97 = new javax.swing.JLabel();
+        jLabel_DELAY_DATA_3 = new javax.swing.JLabel();
         TF_DELAY_DATA_3 = new javax.swing.JTextField();
-        jLabel98 = new javax.swing.JLabel();
+        jLabel_DELAY_DATA_4 = new javax.swing.JLabel();
         TF_DELAY_DATA_4 = new javax.swing.JTextField();
-        jLabel99 = new javax.swing.JLabel();
+        jLabel_DELAY_DATA_5 = new javax.swing.JLabel();
         TF_DELAY_DATA_5 = new javax.swing.JTextField();
-        jLabel100 = new javax.swing.JLabel();
+        jLabel_DELAY_DATA_6 = new javax.swing.JLabel();
         TF_DELAY_DATA_6 = new javax.swing.JTextField();
         subPanelDataOther = new javax.swing.JPanel();
-        headerOtherSettings = new javax.swing.JLabel();
-        jLabel107 = new javax.swing.JLabel();
-        jLabel102 = new javax.swing.JLabel();
-        jLabel103 = new javax.swing.JLabel();
-        jLabel108 = new javax.swing.JLabel();
-        TF_ADC_THROTTLE_MIN = new javax.swing.JTextField();
-        TF_ADC_THROTTLE_MAX = new javax.swing.JTextField();
-        CB_TEMP_ERR_MIN_LIM = new javax.swing.JCheckBox();
-        jLabel104 = new javax.swing.JLabel();
-        TF_TEMP_MIN_LIM = new javax.swing.JTextField();
-        jLabel105 = new javax.swing.JLabel();
-        TF_TEMP_MAX_LIM = new javax.swing.JTextField();
-        jLabel106 = new javax.swing.JLabel();
-        TF_MOTOR_BLOCK_TIME = new javax.swing.JTextField();
-        TF_DELAY_MENU = new javax.swing.JTextField();
-        jLabel87 = new javax.swing.JLabel();
-        jLabel90 = new javax.swing.JLabel();
+        jLabel_NUM_DATA_AUTO_DISPLAY = new javax.swing.JLabel();
         TF_NUM_DATA_AUTO_DISPLAY = new javax.swing.JTextField();
-        jLabel109 = new javax.swing.JLabel();
-        TF_ASSIST_THROTTLE_MIN = new javax.swing.JTextField();
-        jLabel110 = new javax.swing.JLabel();
-        TF_ASSIST_THROTTLE_MAX = new javax.swing.JTextField();
-        jLabel91 = new javax.swing.JLabel();
-        jLabelCoasterBrakeThreshld = new javax.swing.JLabel();
-        TF_COASTER_BRAKE_THRESHOLD = new javax.swing.JTextField();
-        jLabel94 = new javax.swing.JLabel();
-        TF_MOTOR_BLOCK_ERPS = new javax.swing.JTextField();
-        TF_MOTOR_BLOCK_CURR = new javax.swing.JTextField();
-        jLabelMOTOR_BLOCK_CURR = new javax.swing.JLabel();
-        jLabelMOTOR_BLOCK_ERPS = new javax.swing.JLabel();
+        jLabel_DELAY_MENU = new javax.swing.JLabel();
+        TF_DELAY_MENU = new javax.swing.JTextField();
+        jLabelStartupData = new javax.swing.JLabel();
         rowStartupData = new javax.swing.JPanel();
         RB_STARTUP_SOC = new javax.swing.JRadioButton();
         filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 32767));
         RB_STARTUP_VOLTS = new javax.swing.JRadioButton();
         filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 32767));
         RB_STARTUP_NONE = new javax.swing.JRadioButton();
+        jLabelSocCalc = new javax.swing.JLabel();
         rowSocCalc = new javax.swing.JPanel();
         RB_SOC_WH = new javax.swing.JRadioButton();
         filler10 = new javax.swing.Box.Filler(new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 32767));
         RB_SOC_AUTO = new javax.swing.JRadioButton();
         filler11 = new javax.swing.Box.Filler(new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 32767));
         RB_SOC_VOLTS = new javax.swing.JRadioButton();
+        headerOtherSettings = new javax.swing.JLabel();
+        jLabel_COASTER_BRAKE_THRESHOLD = new javax.swing.JLabel();
+        TF_COASTER_BRAKE_THRESHOLD = new javax.swing.JTextField();
+        jLabel_ADC_THROTTLE = new javax.swing.JLabel();
+        jLabel_ADC_THROTTLE_MIN = new javax.swing.JLabel();
+        TF_ADC_THROTTLE_MIN = new javax.swing.JTextField();
+        jLabel_ADC_THROTTLE_MAX = new javax.swing.JLabel();
+        TF_ADC_THROTTLE_MAX = new javax.swing.JTextField();
+        jLabel_ASSIST_THROTTLE = new javax.swing.JLabel();
+        jLabel_ASSIST_THROTTLE_MIN = new javax.swing.JLabel();
+        TF_ASSIST_THROTTLE_MIN = new javax.swing.JTextField();
+        jLabel_ASSIST_THROTTLE_MAX = new javax.swing.JLabel();
+        TF_ASSIST_THROTTLE_MAX = new javax.swing.JTextField();
+        CB_TEMP_ERR_MIN_LIM = new javax.swing.JCheckBox();
+        jLabel_TEMP_MIN_LIM = new javax.swing.JLabel();
+        TF_TEMP_MIN_LIM = new javax.swing.JTextField();
+        jLabel_TEMP_MAX_LIM = new javax.swing.JLabel();
+        TF_TEMP_MAX_LIM = new javax.swing.JTextField();
+        jLabel_MOTOR_BLOCK_TIME = new javax.swing.JLabel();
+        TF_MOTOR_BLOCK_TIME = new javax.swing.JTextField();
+        jLabel_MOTOR_BLOCK_CURR = new javax.swing.JLabel();
+        TF_MOTOR_BLOCK_CURR = new javax.swing.JTextField();
+        jLabel_MOTOR_BLOCK_ERPS = new javax.swing.JLabel();
+        TF_MOTOR_BLOCK_ERPS = new javax.swing.JTextField();
         panelRightColumn = new javax.swing.JPanel();
         jLabelExpSettings = new javax.swing.JLabel();
         scrollExpSettings = new javax.swing.JScrollPane();
@@ -1927,13 +1927,13 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelFunctionSettingsLayout.rowHeights = new int[] {0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0};
         subPanelFunctionSettings.setLayout(subPanelFunctionSettingsLayout);
 
-        jLabel39.setFont(jLabel39.getFont().deriveFont(jLabel39.getFont().getStyle() | java.awt.Font.BOLD, jLabel39.getFont().getSize()+2));
-        jLabel39.setText("Function settings");
+        headerFunctionSettings.setFont(headerFunctionSettings.getFont().deriveFont(headerFunctionSettings.getFont().getStyle() | java.awt.Font.BOLD, headerFunctionSettings.getFont().getSize()+2));
+        headerFunctionSettings.setText("Function settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        subPanelFunctionSettings.add(jLabel39, gridBagConstraints);
+        subPanelFunctionSettings.add(headerFunctionSettings, gridBagConstraints);
 
         CB_LIGHTS.setText("Lights");
         CB_LIGHTS.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -3175,42 +3175,25 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         java.awt.GridBagLayout jPanel11Layout = new java.awt.GridBagLayout();
         jPanel11Layout.columnWidths = new int[] {0, 8, 0};
         jPanel11Layout.rowHeights = new int[] {0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0};
-        jPanel11.setLayout(jPanel11Layout);
+        subPanelBatteryCells.setLayout(jPanel11Layout);
 
-        jLabel35.setFont(jLabel35.getFont().deriveFont(jLabel35.getFont().getStyle() | java.awt.Font.BOLD, jLabel35.getFont().getSize()+2));
-        jLabel35.setText("Battery cells settings");
+        headerBatteryCells.setFont(headerBatteryCells.getFont().deriveFont(headerBatteryCells.getFont().getStyle() | java.awt.Font.BOLD, headerBatteryCells.getFont().getSize()+2));
+        headerBatteryCells.setText("Battery cells settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanel11.add(jLabel35, gridBagConstraints);
+        subPanelBatteryCells.add(headerBatteryCells, gridBagConstraints);
 
-        jLabel36.setText("Cell voltage full (V)");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        jPanel11.add(jLabel36, gridBagConstraints);
-
-        TF_BAT_CELL_FULL.setText("3.95");
-        TF_BAT_CELL_FULL.setToolTipText("Value 3.90 to 4.00");
-        TF_BAT_CELL_FULL.setPreferredSize(new java.awt.Dimension(45, 23));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel11.add(TF_BAT_CELL_FULL, gridBagConstraints);
-
-        jLabel37.setText("Overvoltage (V)");
+        jLabel_BAT_CELL_OVER.setText("Overvoltage (V)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanel11.add(jLabel37, gridBagConstraints);
+        subPanelBatteryCells.add(jLabel_BAT_CELL_OVER, gridBagConstraints);
 
         TF_BAT_CELL_OVER.setText("4.35");
         TF_BAT_CELL_OVER.setToolTipText("Value 4.25 to 4.35");
@@ -3219,15 +3202,15 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel11.add(TF_BAT_CELL_OVER, gridBagConstraints);
+        subPanelBatteryCells.add(TF_BAT_CELL_OVER, gridBagConstraints);
 
-        jLabel38.setText("Reset SOC percentage (V)");
+        jLabel_BAT_CELL_SOC.setText("Reset SOC percentage (V)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanel11.add(jLabel38, gridBagConstraints);
+        subPanelBatteryCells.add(jLabel_BAT_CELL_SOC, gridBagConstraints);
 
         TF_BAT_CELL_SOC.setText("4.05");
         TF_BAT_CELL_SOC.setToolTipText("Value 4.00 to 4.10");
@@ -3236,15 +3219,32 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel11.add(TF_BAT_CELL_SOC, gridBagConstraints);
+        subPanelBatteryCells.add(TF_BAT_CELL_SOC, gridBagConstraints);
 
-        jLabel40.setText("Cell voltage 3/4 (V)");
+        jLabel_BAT_CELL_FULL.setText("Cell voltage full (V)");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        subPanelBatteryCells.add(jLabel_BAT_CELL_FULL, gridBagConstraints);
+
+        TF_BAT_CELL_FULL.setText("3.95");
+        TF_BAT_CELL_FULL.setToolTipText("Value 3.90 to 4.00");
+        TF_BAT_CELL_FULL.setPreferredSize(new java.awt.Dimension(45, 23));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        subPanelBatteryCells.add(TF_BAT_CELL_FULL, gridBagConstraints);
+
+        jLabel_BAT_CELL_3_4.setText("Cell voltage 3/4 (V)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 8;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanel11.add(jLabel40, gridBagConstraints);
+        subPanelBatteryCells.add(jLabel_BAT_CELL_3_4, gridBagConstraints);
 
         TF_BAT_CELL_3_4.setText("3.70");
         TF_BAT_CELL_3_4.setToolTipText("Value empty to full");
@@ -3253,15 +3253,15 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 8;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel11.add(TF_BAT_CELL_3_4, gridBagConstraints);
+        subPanelBatteryCells.add(TF_BAT_CELL_3_4, gridBagConstraints);
 
-        jLabel41.setText("Cell voltage 2/4 (V)");
+        jLabel_BAT_CELL_2_4.setText("Cell voltage 2/4 (V)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanel11.add(jLabel41, gridBagConstraints);
+        subPanelBatteryCells.add(jLabel_BAT_CELL_2_4, gridBagConstraints);
 
         TF_BAT_CELL_2_4.setText("3.45");
         TF_BAT_CELL_2_4.setToolTipText("Value empty to full");
@@ -3270,15 +3270,15 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel11.add(TF_BAT_CELL_2_4, gridBagConstraints);
+        subPanelBatteryCells.add(TF_BAT_CELL_2_4, gridBagConstraints);
 
-        jLabel42.setText("Cell voltage 1/4 (V)");
+        jLabel_BAT_CELL_1_4.setText("Cell voltage 1/4 (V)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 12;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanel11.add(jLabel42, gridBagConstraints);
+        subPanelBatteryCells.add(jLabel_BAT_CELL_1_4, gridBagConstraints);
 
         TF_BAT_CELL_1_4.setText("3.25");
         TF_BAT_CELL_1_4.setToolTipText("Value empty to full");
@@ -3287,15 +3287,15 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 12;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel11.add(TF_BAT_CELL_1_4, gridBagConstraints);
+        subPanelBatteryCells.add(TF_BAT_CELL_1_4, gridBagConstraints);
 
-        jLabel75.setText("Cell voltage 5/6 (V)");
+        jLabel_BAT_CELL_5_6.setText("Cell voltage 5/6 (V)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 14;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanel11.add(jLabel75, gridBagConstraints);
+        subPanelBatteryCells.add(jLabel_BAT_CELL_5_6, gridBagConstraints);
 
         TF_BAT_CELL_5_6.setText("3.85");
         TF_BAT_CELL_5_6.setToolTipText("Value empty to full");
@@ -3304,15 +3304,15 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 14;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel11.add(TF_BAT_CELL_5_6, gridBagConstraints);
+        subPanelBatteryCells.add(TF_BAT_CELL_5_6, gridBagConstraints);
 
-        jLabel81.setText("Cell voltage 4/6 (V)");
+        jLabel_BAT_CELL_4_6.setText("Cell voltage 4/6 (V)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 16;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanel11.add(jLabel81, gridBagConstraints);
+        subPanelBatteryCells.add(jLabel_BAT_CELL_4_6, gridBagConstraints);
 
         TF_BAT_CELL_4_6.setText("3.70");
         TF_BAT_CELL_4_6.setToolTipText("Value empty to full");
@@ -3321,15 +3321,15 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 16;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel11.add(TF_BAT_CELL_4_6, gridBagConstraints);
+        subPanelBatteryCells.add(TF_BAT_CELL_4_6, gridBagConstraints);
 
-        jLabel82.setText("Cell voltage 3/6 (V)");
+        jLabel_BAT_CELL_3_6.setText("Cell voltage 3/6 (V)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 18;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanel11.add(jLabel82, gridBagConstraints);
+        subPanelBatteryCells.add(jLabel_BAT_CELL_3_6, gridBagConstraints);
 
         TF_BAT_CELL_3_6.setText("3.55");
         TF_BAT_CELL_3_6.setToolTipText("Value empty to full");
@@ -3338,7 +3338,15 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 18;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel11.add(TF_BAT_CELL_3_6, gridBagConstraints);
+        subPanelBatteryCells.add(TF_BAT_CELL_3_6, gridBagConstraints);
+
+        jLabel_BAT_CELL_2_6.setText("Cell voltage 2/6 (V)");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 20;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        subPanelBatteryCells.add(jLabel_BAT_CELL_2_6, gridBagConstraints);
 
         TF_BAT_CELL_2_6.setText("3.40");
         TF_BAT_CELL_2_6.setToolTipText("Value empty to full");
@@ -3347,15 +3355,15 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 20;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel11.add(TF_BAT_CELL_2_6, gridBagConstraints);
+        subPanelBatteryCells.add(TF_BAT_CELL_2_6, gridBagConstraints);
 
-        jLabel83.setText("Cell voltage 2/6 (V)");
+        jLabel_BAT_CELL_1_6.setText("Cell voltage 1/6 (V)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 20;
+        gridBagConstraints.gridy = 22;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanel11.add(jLabel83, gridBagConstraints);
+        subPanelBatteryCells.add(jLabel_BAT_CELL_1_6, gridBagConstraints);
 
         TF_BAT_CELL_1_6.setText("3.25");
         TF_BAT_CELL_1_6.setToolTipText("Value empty to full");
@@ -3364,15 +3372,15 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 22;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel11.add(TF_BAT_CELL_1_6, gridBagConstraints);
+        subPanelBatteryCells.add(TF_BAT_CELL_1_6, gridBagConstraints);
 
-        jLabel84.setText("Cell voltage 1/6 (V)");
+        jLabel_BAT_CELL_EMPTY.setText("Cell voltage empty (V)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 22;
+        gridBagConstraints.gridy = 24;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanel11.add(jLabel84, gridBagConstraints);
+        subPanelBatteryCells.add(jLabel_BAT_CELL_EMPTY, gridBagConstraints);
 
         TF_BAT_CELL_EMPTY.setText("2.90");
         TF_BAT_CELL_EMPTY.setToolTipText("<html>Indicative value 2.90<br>\nIt depends on the<br>\ncharacteristics of the cells\n</html>");
@@ -3381,15 +3389,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 24;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel11.add(TF_BAT_CELL_EMPTY, gridBagConstraints);
-
-        jLabel85.setText("Cell voltage empty (V)");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 24;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        jPanel11.add(jLabel85, gridBagConstraints);
+        subPanelBatteryCells.add(TF_BAT_CELL_EMPTY, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -3398,39 +3398,22 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 0);
-        panelAdvancedSettings.add(jPanel11, gridBagConstraints);
+        panelAdvancedSettings.add(subPanelBatteryCells, gridBagConstraints);
 
         java.awt.GridBagLayout jPanel18Layout = new java.awt.GridBagLayout();
         jPanel18Layout.columnWidths = new int[] {0, 8, 0};
         jPanel18Layout.rowHeights = new int[] {0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0};
-        jPanel18.setLayout(jPanel18Layout);
+        subPanelDisplayAdvanced.setLayout(jPanel18Layout);
 
-        jLabel86.setFont(jLabel86.getFont().deriveFont(jLabel86.getFont().getStyle() | java.awt.Font.BOLD, jLabel86.getFont().getSize()+2));
-        jLabel86.setText("Display advanced settings");
+        headerDisplayAdvanced.setFont(headerDisplayAdvanced.getFont().deriveFont(headerDisplayAdvanced.getFont().getStyle() | java.awt.Font.BOLD, headerDisplayAdvanced.getFont().getSize()+2));
+        headerDisplayAdvanced.setText("Display advanced settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanel18.add(jLabel86, gridBagConstraints);
-
-        jLabel89.setText("Time to displayed data 1 (0.1 s)");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 14;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        jPanel18.add(jLabel89, gridBagConstraints);
-
-        TF_DELAY_DATA_1.setText("50");
-        TF_DELAY_DATA_1.setToolTipText("<html>Max value 255 (0.1 sec)<br>\ncontinuous display at zero value\n</html>");
-        TF_DELAY_DATA_1.setPreferredSize(new java.awt.Dimension(45, 23));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 14;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel18.add(TF_DELAY_DATA_1, gridBagConstraints);
+        subPanelDisplayAdvanced.add(headerDisplayAdvanced, gridBagConstraints);
 
         jLabelData1.setText("Data 1");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -3438,7 +3421,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanel18.add(jLabelData1, gridBagConstraints);
+        subPanelDisplayAdvanced.add(jLabelData1, gridBagConstraints);
 
         TF_DATA_1.setText("1");
         TF_DATA_1.setToolTipText("<html>0 - motor temperature (°C)<br>\n  1 - battery SOC remaining (%)<br>\n  2 - battery voltage (V)<br>\n  3 - battery current (A)<br>\n  4 - motor power (Watt/10)<br>\n  5 - adc throttle (8 bit)<br>\n  6 - adc torque sensor (10 bit)<br>\n  7 - pedal cadence (rpm)<br>\n  8 - human power(W/10)<br>\n  9 - pedal torque adc delta<br>\n10 - consumed Wh/10\n</html>");
@@ -3452,7 +3435,15 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel18.add(TF_DATA_1, gridBagConstraints);
+        subPanelDisplayAdvanced.add(TF_DATA_1, gridBagConstraints);
+
+        jLabelData2.setText("Data 2");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        subPanelDisplayAdvanced.add(jLabelData2, gridBagConstraints);
 
         TF_DATA_2.setText("2");
         TF_DATA_2.setToolTipText("<html>0 - motor temperature (°C)<br>\n  1 - battery SOC remaining (%)<br>\n  2 - battery voltage (V)<br>\n  3 - battery current (A)<br>\n  4 - motor power (Watt/10)<br>\n  5 - adc throttle (8 bit)<br>\n  6 - adc torque sensor (10 bit)<br>\n  7 - pedal cadence (rpm)<br>\n  8 - human power(W/10)<br>\n  9 - pedal torque adc delta<br>\n10 - consumed Wh/10\n</html>");
@@ -3466,15 +3457,15 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel18.add(TF_DATA_2, gridBagConstraints);
+        subPanelDisplayAdvanced.add(TF_DATA_2, gridBagConstraints);
 
-        jLabelData2.setText("Data 2");
+        jLabelData3.setText("Data 3");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanel18.add(jLabelData2, gridBagConstraints);
+        subPanelDisplayAdvanced.add(jLabelData3, gridBagConstraints);
 
         TF_DATA_3.setText("5");
         TF_DATA_3.setToolTipText("<html>0 - motor temperature (°C)<br>\n  1 - battery SOC remaining (%)<br>\n  2 - battery voltage (V)<br>\n  3 - battery current (A)<br>\n  4 - motor power (Watt/10)<br>\n  5 - adc throttle (8 bit)<br>\n  6 - adc torque sensor (10 bit)<br>\n  7 - pedal cadence (rpm)<br>\n  8 - human power(W/10)<br>\n  9 - pedal torque adc delta<br>\n10 - consumed Wh/10\n</html>");
@@ -3488,15 +3479,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 6;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel18.add(TF_DATA_3, gridBagConstraints);
-
-        jLabelData3.setText("Data 3");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        jPanel18.add(jLabelData3, gridBagConstraints);
+        subPanelDisplayAdvanced.add(TF_DATA_3, gridBagConstraints);
 
         jLabelData4.setText("Data 4");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -3504,7 +3487,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridy = 8;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanel18.add(jLabelData4, gridBagConstraints);
+        subPanelDisplayAdvanced.add(jLabelData4, gridBagConstraints);
 
         TF_DATA_4.setText("4");
         TF_DATA_4.setToolTipText("<html>0 - motor temperature (°C)<br>\n  1 - battery SOC remaining (%)<br>\n  2 - battery voltage (V)<br>\n  3 - battery current (A)<br>\n  4 - motor power (Watt/10)<br>\n  5 - adc throttle (8 bit)<br>\n  6 - adc torque sensor (10 bit)<br>\n  7 - pedal cadence (rpm)<br>\n  8 - human power(W/10)<br>\n  9 - pedal torque adc delta<br>\n10 - consumed Wh/10\n</html>");
@@ -3518,7 +3501,15 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 8;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel18.add(TF_DATA_4, gridBagConstraints);
+        subPanelDisplayAdvanced.add(TF_DATA_4, gridBagConstraints);
+
+        jLabelData5.setText("Data 5");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        subPanelDisplayAdvanced.add(jLabelData5, gridBagConstraints);
 
         TF_DATA_5.setText("7");
         TF_DATA_5.setToolTipText("<html>0 - motor temperature (°C)<br>\n  1 - battery SOC remaining (%)<br>\n  2 - battery voltage (V)<br>\n  3 - battery current (A)<br>\n  4 - motor power (Watt/10)<br>\n  5 - adc throttle (8 bit)<br>\n  6 - adc torque sensor (10 bit)<br>\n  7 - pedal cadence (rpm)<br>\n  8 - human power(W/10)<br>\n  9 - pedal torque adc delta<br>\n10 - consumed Wh/10\n</html>");
@@ -3532,15 +3523,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel18.add(TF_DATA_5, gridBagConstraints);
-
-        jLabelData5.setText("Data 5");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        jPanel18.add(jLabelData5, gridBagConstraints);
+        subPanelDisplayAdvanced.add(TF_DATA_5, gridBagConstraints);
 
         jLabelData6.setText("Data 6");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -3548,7 +3531,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridy = 12;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanel18.add(jLabelData6, gridBagConstraints);
+        subPanelDisplayAdvanced.add(jLabelData6, gridBagConstraints);
 
         TF_DATA_6.setText("0");
         TF_DATA_6.setToolTipText("<html>0 - motor temperature (°C)<br>\n  1 - battery SOC remaining (%)<br>\n  2 - battery voltage (V)<br>\n  3 - battery current (A)<br>\n  4 - motor power (Watt/10)<br>\n  5 - adc throttle (8 bit)<br>\n  6 - adc torque sensor (10 bit)<br>\n  7 - pedal cadence (rpm)<br>\n  8 - human power(W/10)<br>\n  9 - pedal torque adc delta<br>\n10 - consumed Wh/10\n</html>");
@@ -3562,15 +3545,32 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 12;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel18.add(TF_DATA_6, gridBagConstraints);
+        subPanelDisplayAdvanced.add(TF_DATA_6, gridBagConstraints);
 
-        jLabel96.setText("Time to displayed data 2 (0.1 s)");
+        jLabel_DELAY_DATA_1.setText("Time to displayed data 1 (0.1 s)");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 14;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        subPanelDisplayAdvanced.add(jLabel_DELAY_DATA_1, gridBagConstraints);
+
+        TF_DELAY_DATA_1.setText("50");
+        TF_DELAY_DATA_1.setToolTipText("<html>Max value 255 (0.1 sec)<br>\ncontinuous display at zero value\n</html>");
+        TF_DELAY_DATA_1.setPreferredSize(new java.awt.Dimension(45, 23));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 14;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        subPanelDisplayAdvanced.add(TF_DELAY_DATA_1, gridBagConstraints);
+
+        jLabel_DELAY_DATA_2.setText("Time to displayed data 2 (0.1 s)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 16;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanel18.add(jLabel96, gridBagConstraints);
+        subPanelDisplayAdvanced.add(jLabel_DELAY_DATA_2, gridBagConstraints);
 
         TF_DELAY_DATA_2.setText("50");
         TF_DELAY_DATA_2.setToolTipText("<html>Max value 255 (0.1 sec)<br>\ncontinuous display at zero value\n</html>");
@@ -3579,15 +3579,15 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 16;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel18.add(TF_DELAY_DATA_2, gridBagConstraints);
+        subPanelDisplayAdvanced.add(TF_DELAY_DATA_2, gridBagConstraints);
 
-        jLabel97.setText("Time to displayed data 3 (0.1 s)");
+        jLabel_DELAY_DATA_3.setText("Time to displayed data 3 (0.1 s)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 18;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanel18.add(jLabel97, gridBagConstraints);
+        subPanelDisplayAdvanced.add(jLabel_DELAY_DATA_3, gridBagConstraints);
 
         TF_DELAY_DATA_3.setText("50");
         TF_DELAY_DATA_3.setToolTipText("<html>Max value 255 (0.1 sec)<br>\ncontinuous display at zero value\n</html>");
@@ -3596,15 +3596,15 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 18;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel18.add(TF_DELAY_DATA_3, gridBagConstraints);
+        subPanelDisplayAdvanced.add(TF_DELAY_DATA_3, gridBagConstraints);
 
-        jLabel98.setText("Time to displayed data 4 (0.1 s)");
+        jLabel_DELAY_DATA_4.setText("Time to displayed data 4 (0.1 s)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 20;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanel18.add(jLabel98, gridBagConstraints);
+        subPanelDisplayAdvanced.add(jLabel_DELAY_DATA_4, gridBagConstraints);
 
         TF_DELAY_DATA_4.setText("50");
         TF_DELAY_DATA_4.setToolTipText("<html>Max value 255 (0.1 sec)<br>\ncontinuous display at zero value\n</html>");
@@ -3613,15 +3613,15 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 20;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel18.add(TF_DELAY_DATA_4, gridBagConstraints);
+        subPanelDisplayAdvanced.add(TF_DELAY_DATA_4, gridBagConstraints);
 
-        jLabel99.setText("Time to displayed data 5 (0.1 s)");
+        jLabel_DELAY_DATA_5.setText("Time to displayed data 5 (0.1 s)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 22;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanel18.add(jLabel99, gridBagConstraints);
+        subPanelDisplayAdvanced.add(jLabel_DELAY_DATA_5, gridBagConstraints);
 
         TF_DELAY_DATA_5.setText("50");
         TF_DELAY_DATA_5.setToolTipText("<html>Max value 255 (0.1 sec)<br>\ncontinuous display at zero value\n</html>");
@@ -3630,15 +3630,15 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 22;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel18.add(TF_DELAY_DATA_5, gridBagConstraints);
+        subPanelDisplayAdvanced.add(TF_DELAY_DATA_5, gridBagConstraints);
 
-        jLabel100.setText("Time to displayed data 6 (0.1 s)");
+        jLabel_DELAY_DATA_6.setText("Time to displayed data 6 (0.1 s)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 24;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanel18.add(jLabel100, gridBagConstraints);
+        subPanelDisplayAdvanced.add(jLabel_DELAY_DATA_6, gridBagConstraints);
 
         TF_DELAY_DATA_6.setText("50");
         TF_DELAY_DATA_6.setToolTipText("<html>Max value 255 (0.1 sec)<br>\ncontinuous display at zero value\n</html>");
@@ -3647,7 +3647,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 24;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        jPanel18.add(TF_DELAY_DATA_6, gridBagConstraints);
+        subPanelDisplayAdvanced.add(TF_DELAY_DATA_6, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -3656,167 +3656,21 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
-        panelAdvancedSettings.add(jPanel18, gridBagConstraints);
+        panelAdvancedSettings.add(subPanelDisplayAdvanced, gridBagConstraints);
 
         java.awt.GridBagLayout subPanelDataOtherLayout = new java.awt.GridBagLayout();
         subPanelDataOtherLayout.columnWidths = new int[] {0, 8, 0, 8, 0, 8, 0, 8, 0};
         subPanelDataOtherLayout.rowHeights = new int[] {0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0, 4, 0};
         subPanelDataOther.setLayout(subPanelDataOtherLayout);
 
-        headerOtherSettings.setFont(headerOtherSettings.getFont().deriveFont(headerOtherSettings.getFont().getStyle() | java.awt.Font.BOLD, headerOtherSettings.getFont().getSize()+2));
-        headerOtherSettings.setText("Other function settings");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 10;
-        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(6, 0, 0, 0);
-        subPanelDataOther.add(headerOtherSettings, gridBagConstraints);
-
-        jLabel107.setText("ADC throttle value");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 14;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        subPanelDataOther.add(jLabel107, gridBagConstraints);
-
-        jLabel102.setText("min");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 14;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        subPanelDataOther.add(jLabel102, gridBagConstraints);
-
-        jLabel103.setText("Throttle assist value");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 16;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        subPanelDataOther.add(jLabel103, gridBagConstraints);
-
-        jLabel108.setText("min");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 16;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        subPanelDataOther.add(jLabel108, gridBagConstraints);
-
-        TF_ADC_THROTTLE_MIN.setText("47");
-        TF_ADC_THROTTLE_MIN.setToolTipText("Value 40 to 50");
-        TF_ADC_THROTTLE_MIN.setMinimumSize(new java.awt.Dimension(45, 23));
-        TF_ADC_THROTTLE_MIN.setPreferredSize(new java.awt.Dimension(45, 23));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 14;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        subPanelDataOther.add(TF_ADC_THROTTLE_MIN, gridBagConstraints);
-
-        TF_ADC_THROTTLE_MAX.setText("176");
-        TF_ADC_THROTTLE_MAX.setToolTipText("Value 170 to 180");
-        TF_ADC_THROTTLE_MAX.setMinimumSize(new java.awt.Dimension(45, 23));
-        TF_ADC_THROTTLE_MAX.setPreferredSize(new java.awt.Dimension(45, 23));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 8;
-        gridBagConstraints.gridy = 14;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        subPanelDataOther.add(TF_ADC_THROTTLE_MAX, gridBagConstraints);
-
-        CB_TEMP_ERR_MIN_LIM.setText("Temperature error with min limit");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 18;
-        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        subPanelDataOther.add(CB_TEMP_ERR_MIN_LIM, gridBagConstraints);
-
-        jLabel104.setText("Motor temperature min limit");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 20;
-        gridBagConstraints.gridwidth = 7;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        subPanelDataOther.add(jLabel104, gridBagConstraints);
-
-        TF_TEMP_MIN_LIM.setText("65");
-        TF_TEMP_MIN_LIM.setToolTipText("Max value 75 (°C)");
-        TF_TEMP_MIN_LIM.setMinimumSize(new java.awt.Dimension(45, 23));
-        TF_TEMP_MIN_LIM.setPreferredSize(new java.awt.Dimension(45, 23));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 8;
-        gridBagConstraints.gridy = 20;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        subPanelDataOther.add(TF_TEMP_MIN_LIM, gridBagConstraints);
-
-        jLabel105.setText("Motor temperature max limit");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 22;
-        gridBagConstraints.gridwidth = 7;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        subPanelDataOther.add(jLabel105, gridBagConstraints);
-
-        TF_TEMP_MAX_LIM.setText("80");
-        TF_TEMP_MAX_LIM.setToolTipText("Max value 85 (°C)");
-        TF_TEMP_MAX_LIM.setMinimumSize(new java.awt.Dimension(45, 23));
-        TF_TEMP_MAX_LIM.setPreferredSize(new java.awt.Dimension(45, 23));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 8;
-        gridBagConstraints.gridy = 22;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        subPanelDataOther.add(TF_TEMP_MAX_LIM, gridBagConstraints);
-
-        jLabel106.setText("Motor blocked error - threshold time");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 24;
-        gridBagConstraints.gridwidth = 7;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        subPanelDataOther.add(jLabel106, gridBagConstraints);
-
-        TF_MOTOR_BLOCK_TIME.setText("2");
-        TF_MOTOR_BLOCK_TIME.setToolTipText("Value 1 to 10 (0.1 s)");
-        TF_MOTOR_BLOCK_TIME.setMinimumSize(new java.awt.Dimension(45, 23));
-        TF_MOTOR_BLOCK_TIME.setPreferredSize(new java.awt.Dimension(45, 23));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 8;
-        gridBagConstraints.gridy = 24;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        subPanelDataOther.add(TF_MOTOR_BLOCK_TIME, gridBagConstraints);
-
-        TF_DELAY_MENU.setText("50");
-        TF_DELAY_MENU.setToolTipText("Max value 60 (0.1 s)");
-        TF_DELAY_MENU.setMinimumSize(new java.awt.Dimension(45, 23));
-        TF_DELAY_MENU.setPreferredSize(new java.awt.Dimension(45, 23));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 8;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        subPanelDataOther.add(TF_DELAY_MENU, gridBagConstraints);
-
-        jLabel87.setText("Time to menu items (0.1 s)");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 7;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        subPanelDataOther.add(jLabel87, gridBagConstraints);
-
-        jLabel90.setText("Number of data displayed at lights on");
+        jLabel_NUM_DATA_AUTO_DISPLAY.setText("Number of data displayed at lights on");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 7;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        subPanelDataOther.add(jLabel90, gridBagConstraints);
+        subPanelDataOther.add(jLabel_NUM_DATA_AUTO_DISPLAY, gridBagConstraints);
 
         TF_NUM_DATA_AUTO_DISPLAY.setText("2");
         TF_NUM_DATA_AUTO_DISPLAY.setToolTipText("Value 1 to 6");
@@ -3833,114 +3687,33 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelDataOther.add(TF_NUM_DATA_AUTO_DISPLAY, gridBagConstraints);
 
-        jLabel109.setText("max");
+        jLabel_DELAY_MENU.setText("Time to menu items (0.1 s)");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 6;
-        gridBagConstraints.gridy = 14;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        subPanelDataOther.add(jLabel109, gridBagConstraints);
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 7;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        subPanelDataOther.add(jLabel_DELAY_MENU, gridBagConstraints);
 
-        TF_ASSIST_THROTTLE_MIN.setText("0");
-        TF_ASSIST_THROTTLE_MIN.setToolTipText("Value 0 to 100");
-        TF_ASSIST_THROTTLE_MIN.setMinimumSize(new java.awt.Dimension(45, 23));
-        TF_ASSIST_THROTTLE_MIN.setPreferredSize(new java.awt.Dimension(45, 23));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 16;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        subPanelDataOther.add(TF_ASSIST_THROTTLE_MIN, gridBagConstraints);
-
-        jLabel110.setText("max");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 6;
-        gridBagConstraints.gridy = 16;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        subPanelDataOther.add(jLabel110, gridBagConstraints);
-
-        TF_ASSIST_THROTTLE_MAX.setText("255");
-        TF_ASSIST_THROTTLE_MAX.setToolTipText("Value MIN to 255");
-        TF_ASSIST_THROTTLE_MAX.setMinimumSize(new java.awt.Dimension(45, 23));
-        TF_ASSIST_THROTTLE_MAX.setPreferredSize(new java.awt.Dimension(45, 23));
+        TF_DELAY_MENU.setText("50");
+        TF_DELAY_MENU.setToolTipText("Max value 60 (0.1 s)");
+        TF_DELAY_MENU.setMinimumSize(new java.awt.Dimension(45, 23));
+        TF_DELAY_MENU.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 8;
-        gridBagConstraints.gridy = 16;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        subPanelDataOther.add(TF_ASSIST_THROTTLE_MAX, gridBagConstraints);
+        subPanelDataOther.add(TF_DELAY_MENU, gridBagConstraints);
 
-        jLabel91.setText("Data displayed on startup");
+        jLabelStartupData.setText("Data displayed on startup");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        subPanelDataOther.add(jLabel91, gridBagConstraints);
-
-        jLabelCoasterBrakeThreshld.setText("Coaster brake torque threshold");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 12;
-        gridBagConstraints.gridwidth = 7;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        subPanelDataOther.add(jLabelCoasterBrakeThreshld, gridBagConstraints);
-
-        TF_COASTER_BRAKE_THRESHOLD.setText("30");
-        TF_COASTER_BRAKE_THRESHOLD.setToolTipText("Max value 255 (s)");
-        TF_COASTER_BRAKE_THRESHOLD.setMinimumSize(new java.awt.Dimension(45, 23));
-        TF_COASTER_BRAKE_THRESHOLD.setPreferredSize(new java.awt.Dimension(45, 23));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 8;
-        gridBagConstraints.gridy = 12;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        subPanelDataOther.add(TF_COASTER_BRAKE_THRESHOLD, gridBagConstraints);
-
-        jLabel94.setText("Soc % calculation");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
-        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        subPanelDataOther.add(jLabel94, gridBagConstraints);
-
-        TF_MOTOR_BLOCK_ERPS.setText("20");
-        TF_MOTOR_BLOCK_ERPS.setToolTipText("Value 10 to 30 (ERPS)");
-        TF_MOTOR_BLOCK_ERPS.setMinimumSize(new java.awt.Dimension(45, 23));
-        TF_MOTOR_BLOCK_ERPS.setPreferredSize(new java.awt.Dimension(45, 23));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 8;
-        gridBagConstraints.gridy = 28;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        subPanelDataOther.add(TF_MOTOR_BLOCK_ERPS, gridBagConstraints);
-
-        TF_MOTOR_BLOCK_CURR.setText("30");
-        TF_MOTOR_BLOCK_CURR.setToolTipText("Value 1 to 5 (0.1 A)");
-        TF_MOTOR_BLOCK_CURR.setMinimumSize(new java.awt.Dimension(45, 23));
-        TF_MOTOR_BLOCK_CURR.setPreferredSize(new java.awt.Dimension(45, 23));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 8;
-        gridBagConstraints.gridy = 26;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        subPanelDataOther.add(TF_MOTOR_BLOCK_CURR, gridBagConstraints);
-
-        jLabelMOTOR_BLOCK_CURR.setText("Motor blocked error - threshold current");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 26;
-        gridBagConstraints.gridwidth = 7;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        subPanelDataOther.add(jLabelMOTOR_BLOCK_CURR, gridBagConstraints);
-
-        jLabelMOTOR_BLOCK_ERPS.setText("Motor blocked error - threshold ERPS");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 28;
-        gridBagConstraints.gridwidth = 7;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        subPanelDataOther.add(jLabelMOTOR_BLOCK_ERPS, gridBagConstraints);
+        subPanelDataOther.add(jLabelStartupData, gridBagConstraints);
 
         rowStartupData.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
 
@@ -3969,6 +3742,15 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
         subPanelDataOther.add(rowStartupData, gridBagConstraints);
 
+        jLabelSocCalc.setText("Soc % calculation");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        subPanelDataOther.add(jLabelSocCalc, gridBagConstraints);
+
         rowSocCalc.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
 
         groupStartupSoc.add(RB_SOC_WH);
@@ -3995,6 +3777,224 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelDataOther.add(rowSocCalc, gridBagConstraints);
+
+        headerOtherSettings.setFont(headerOtherSettings.getFont().deriveFont(headerOtherSettings.getFont().getStyle() | java.awt.Font.BOLD, headerOtherSettings.getFont().getSize()+2));
+        headerOtherSettings.setText("Other function settings");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 10;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(6, 0, 0, 0);
+        subPanelDataOther.add(headerOtherSettings, gridBagConstraints);
+
+        jLabel_COASTER_BRAKE_THRESHOLD.setText("Coaster brake torque threshold");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 12;
+        gridBagConstraints.gridwidth = 7;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        subPanelDataOther.add(jLabel_COASTER_BRAKE_THRESHOLD, gridBagConstraints);
+
+        TF_COASTER_BRAKE_THRESHOLD.setText("30");
+        TF_COASTER_BRAKE_THRESHOLD.setToolTipText("Max value 255 (s)");
+        TF_COASTER_BRAKE_THRESHOLD.setMinimumSize(new java.awt.Dimension(45, 23));
+        TF_COASTER_BRAKE_THRESHOLD.setPreferredSize(new java.awt.Dimension(45, 23));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 8;
+        gridBagConstraints.gridy = 12;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        subPanelDataOther.add(TF_COASTER_BRAKE_THRESHOLD, gridBagConstraints);
+
+        jLabel_ADC_THROTTLE.setText("ADC throttle value");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 14;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        subPanelDataOther.add(jLabel_ADC_THROTTLE, gridBagConstraints);
+
+        jLabel_ADC_THROTTLE_MIN.setText("min");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 14;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        subPanelDataOther.add(jLabel_ADC_THROTTLE_MIN, gridBagConstraints);
+
+        TF_ADC_THROTTLE_MIN.setText("47");
+        TF_ADC_THROTTLE_MIN.setToolTipText("Value 40 to 50");
+        TF_ADC_THROTTLE_MIN.setMinimumSize(new java.awt.Dimension(45, 23));
+        TF_ADC_THROTTLE_MIN.setPreferredSize(new java.awt.Dimension(45, 23));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 14;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        subPanelDataOther.add(TF_ADC_THROTTLE_MIN, gridBagConstraints);
+
+        jLabel_ADC_THROTTLE_MAX.setText("max");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 14;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        subPanelDataOther.add(jLabel_ADC_THROTTLE_MAX, gridBagConstraints);
+
+        TF_ADC_THROTTLE_MAX.setText("176");
+        TF_ADC_THROTTLE_MAX.setToolTipText("Value 170 to 180");
+        TF_ADC_THROTTLE_MAX.setMinimumSize(new java.awt.Dimension(45, 23));
+        TF_ADC_THROTTLE_MAX.setPreferredSize(new java.awt.Dimension(45, 23));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 8;
+        gridBagConstraints.gridy = 14;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        subPanelDataOther.add(TF_ADC_THROTTLE_MAX, gridBagConstraints);
+
+        jLabel_ASSIST_THROTTLE.setText("Throttle assist value");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 16;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        subPanelDataOther.add(jLabel_ASSIST_THROTTLE, gridBagConstraints);
+
+        jLabel_ASSIST_THROTTLE_MIN.setText("min");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 16;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        subPanelDataOther.add(jLabel_ASSIST_THROTTLE_MIN, gridBagConstraints);
+
+        TF_ASSIST_THROTTLE_MIN.setText("0");
+        TF_ASSIST_THROTTLE_MIN.setToolTipText("Value 0 to 100");
+        TF_ASSIST_THROTTLE_MIN.setMinimumSize(new java.awt.Dimension(45, 23));
+        TF_ASSIST_THROTTLE_MIN.setPreferredSize(new java.awt.Dimension(45, 23));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 16;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        subPanelDataOther.add(TF_ASSIST_THROTTLE_MIN, gridBagConstraints);
+
+        jLabel_ASSIST_THROTTLE_MAX.setText("max");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 16;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        subPanelDataOther.add(jLabel_ASSIST_THROTTLE_MAX, gridBagConstraints);
+
+        TF_ASSIST_THROTTLE_MAX.setText("255");
+        TF_ASSIST_THROTTLE_MAX.setToolTipText("Value MIN to 255");
+        TF_ASSIST_THROTTLE_MAX.setMinimumSize(new java.awt.Dimension(45, 23));
+        TF_ASSIST_THROTTLE_MAX.setPreferredSize(new java.awt.Dimension(45, 23));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 8;
+        gridBagConstraints.gridy = 16;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        subPanelDataOther.add(TF_ASSIST_THROTTLE_MAX, gridBagConstraints);
+
+        CB_TEMP_ERR_MIN_LIM.setText("Temperature error with min limit");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 18;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        subPanelDataOther.add(CB_TEMP_ERR_MIN_LIM, gridBagConstraints);
+
+        jLabel_TEMP_MIN_LIM.setText("Motor temperature min limit");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 20;
+        gridBagConstraints.gridwidth = 7;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        subPanelDataOther.add(jLabel_TEMP_MIN_LIM, gridBagConstraints);
+
+        TF_TEMP_MIN_LIM.setText("65");
+        TF_TEMP_MIN_LIM.setToolTipText("Max value 75 (°C)");
+        TF_TEMP_MIN_LIM.setMinimumSize(new java.awt.Dimension(45, 23));
+        TF_TEMP_MIN_LIM.setPreferredSize(new java.awt.Dimension(45, 23));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 8;
+        gridBagConstraints.gridy = 20;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        subPanelDataOther.add(TF_TEMP_MIN_LIM, gridBagConstraints);
+
+        jLabel_TEMP_MAX_LIM.setText("Motor temperature max limit");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 22;
+        gridBagConstraints.gridwidth = 7;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        subPanelDataOther.add(jLabel_TEMP_MAX_LIM, gridBagConstraints);
+
+        TF_TEMP_MAX_LIM.setText("80");
+        TF_TEMP_MAX_LIM.setToolTipText("Max value 85 (°C)");
+        TF_TEMP_MAX_LIM.setMinimumSize(new java.awt.Dimension(45, 23));
+        TF_TEMP_MAX_LIM.setPreferredSize(new java.awt.Dimension(45, 23));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 8;
+        gridBagConstraints.gridy = 22;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        subPanelDataOther.add(TF_TEMP_MAX_LIM, gridBagConstraints);
+
+        jLabel_MOTOR_BLOCK_TIME.setText("Motor blocked error - threshold time");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 24;
+        gridBagConstraints.gridwidth = 7;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        subPanelDataOther.add(jLabel_MOTOR_BLOCK_TIME, gridBagConstraints);
+
+        TF_MOTOR_BLOCK_TIME.setText("2");
+        TF_MOTOR_BLOCK_TIME.setToolTipText("Value 1 to 10 (0.1 s)");
+        TF_MOTOR_BLOCK_TIME.setMinimumSize(new java.awt.Dimension(45, 23));
+        TF_MOTOR_BLOCK_TIME.setPreferredSize(new java.awt.Dimension(45, 23));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 8;
+        gridBagConstraints.gridy = 24;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        subPanelDataOther.add(TF_MOTOR_BLOCK_TIME, gridBagConstraints);
+
+        jLabel_MOTOR_BLOCK_CURR.setText("Motor blocked error - threshold current");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 26;
+        gridBagConstraints.gridwidth = 7;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        subPanelDataOther.add(jLabel_MOTOR_BLOCK_CURR, gridBagConstraints);
+
+        TF_MOTOR_BLOCK_CURR.setText("30");
+        TF_MOTOR_BLOCK_CURR.setToolTipText("Value 1 to 5 (0.1 A)");
+        TF_MOTOR_BLOCK_CURR.setMinimumSize(new java.awt.Dimension(45, 23));
+        TF_MOTOR_BLOCK_CURR.setPreferredSize(new java.awt.Dimension(45, 23));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 8;
+        gridBagConstraints.gridy = 26;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        subPanelDataOther.add(TF_MOTOR_BLOCK_CURR, gridBagConstraints);
+
+        jLabel_MOTOR_BLOCK_ERPS.setText("Motor blocked error - threshold ERPS");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 28;
+        gridBagConstraints.gridwidth = 7;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        subPanelDataOther.add(jLabel_MOTOR_BLOCK_ERPS, gridBagConstraints);
+
+        TF_MOTOR_BLOCK_ERPS.setText("20");
+        TF_MOTOR_BLOCK_ERPS.setToolTipText("Value 10 to 30 (ERPS)");
+        TF_MOTOR_BLOCK_ERPS.setMinimumSize(new java.awt.Dimension(45, 23));
+        TF_MOTOR_BLOCK_ERPS.setPreferredSize(new java.awt.Dimension(45, 23));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 8;
+        gridBagConstraints.gridy = 28;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        subPanelDataOther.add(TF_MOTOR_BLOCK_ERPS, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
@@ -4514,12 +4514,15 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     private javax.swing.ButtonGroup groupStartupDisplay;
     private javax.swing.ButtonGroup groupStartupSoc;
     private javax.swing.ButtonGroup groupUnits;
+    private javax.swing.JLabel headerBatteryCells;
     private javax.swing.JLabel headerBatterySettings;
     private javax.swing.JLabel headerBikeSettings;
     private javax.swing.JLabel headerCadenceAssist;
     private javax.swing.JLabel headerCruiseMode;
+    private javax.swing.JLabel headerDisplayAdvanced;
     private javax.swing.JLabel headerDisplaySettings;
     private javax.swing.JLabel headerEmtbAssist;
+    private javax.swing.JLabel headerFunctionSettings;
     private javax.swing.JLabel headerHybridAssist;
     private javax.swing.JLabel headerLights;
     private javax.swing.JLabel headerOtherSettings;
@@ -4528,41 +4531,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     private javax.swing.JLabel headerTorqueAssist;
     private javax.swing.JLabel headerWalkAssist;
     private javax.swing.JLabel headingMotorSettings;
-    private javax.swing.JLabel jLabel100;
-    private javax.swing.JLabel jLabel102;
-    private javax.swing.JLabel jLabel103;
-    private javax.swing.JLabel jLabel104;
-    private javax.swing.JLabel jLabel105;
-    private javax.swing.JLabel jLabel106;
-    private javax.swing.JLabel jLabel107;
-    private javax.swing.JLabel jLabel108;
-    private javax.swing.JLabel jLabel109;
-    private javax.swing.JLabel jLabel110;
-    private javax.swing.JLabel jLabel35;
-    private javax.swing.JLabel jLabel36;
-    private javax.swing.JLabel jLabel37;
-    private javax.swing.JLabel jLabel38;
-    private javax.swing.JLabel jLabel39;
-    private javax.swing.JLabel jLabel40;
-    private javax.swing.JLabel jLabel41;
-    private javax.swing.JLabel jLabel42;
-    private javax.swing.JLabel jLabel75;
-    private javax.swing.JLabel jLabel81;
-    private javax.swing.JLabel jLabel82;
-    private javax.swing.JLabel jLabel83;
-    private javax.swing.JLabel jLabel84;
-    private javax.swing.JLabel jLabel85;
-    private javax.swing.JLabel jLabel86;
-    private javax.swing.JLabel jLabel87;
-    private javax.swing.JLabel jLabel89;
-    private javax.swing.JLabel jLabel90;
-    private javax.swing.JLabel jLabel91;
-    private javax.swing.JLabel jLabel94;
-    private javax.swing.JLabel jLabel96;
-    private javax.swing.JLabel jLabel97;
-    private javax.swing.JLabel jLabel98;
-    private javax.swing.JLabel jLabel99;
-    private javax.swing.JLabel jLabelCoasterBrakeThreshld;
     private javax.swing.JLabel jLabelCruiseSpeedUnits;
     private javax.swing.JLabel jLabelData1;
     private javax.swing.JLabel jLabelData2;
@@ -4573,18 +4541,36 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelDisplayMode;
     private javax.swing.JLabel jLabelDisplayType;
     private javax.swing.JLabel jLabelExpSettings;
-    private javax.swing.JLabel jLabelMOTOR_BLOCK_CURR;
-    private javax.swing.JLabel jLabelMOTOR_BLOCK_ERPS;
     private javax.swing.JLabel jLabelOptADC;
     private javax.swing.JLabel jLabelProvenSettings;
+    private javax.swing.JLabel jLabelSocCalc;
+    private javax.swing.JLabel jLabelStartupData;
     private javax.swing.JLabel jLabelVersion;
     private javax.swing.JLabel jLabelWalkSpeedUnits;
+    private javax.swing.JLabel jLabel_ADC_THROTTLE;
+    private javax.swing.JLabel jLabel_ADC_THROTTLE_MAX;
+    private javax.swing.JLabel jLabel_ADC_THROTTLE_MIN;
+    private javax.swing.JLabel jLabel_ASSIST_THROTTLE;
+    private javax.swing.JLabel jLabel_ASSIST_THROTTLE_MAX;
+    private javax.swing.JLabel jLabel_ASSIST_THROTTLE_MIN;
     private javax.swing.JLabel jLabel_BATT_CAPACITY;
     private javax.swing.JLabel jLabel_BATT_CAPACITY_CAL;
     private javax.swing.JLabel jLabel_BATT_NUM_CELLS;
     private javax.swing.JLabel jLabel_BATT_POW_MAX;
     private javax.swing.JLabel jLabel_BATT_VOLT_CAL;
     private javax.swing.JLabel jLabel_BATT_VOLT_CUT_OFF;
+    private javax.swing.JLabel jLabel_BAT_CELL_1_4;
+    private javax.swing.JLabel jLabel_BAT_CELL_1_6;
+    private javax.swing.JLabel jLabel_BAT_CELL_2_4;
+    private javax.swing.JLabel jLabel_BAT_CELL_2_6;
+    private javax.swing.JLabel jLabel_BAT_CELL_3_4;
+    private javax.swing.JLabel jLabel_BAT_CELL_3_6;
+    private javax.swing.JLabel jLabel_BAT_CELL_4_6;
+    private javax.swing.JLabel jLabel_BAT_CELL_5_6;
+    private javax.swing.JLabel jLabel_BAT_CELL_EMPTY;
+    private javax.swing.JLabel jLabel_BAT_CELL_FULL;
+    private javax.swing.JLabel jLabel_BAT_CELL_OVER;
+    private javax.swing.JLabel jLabel_BAT_CELL_SOC;
     private javax.swing.JLabel jLabel_BAT_CUR_MAX;
     private javax.swing.JLabel jLabel_BOOST_AT_ZERO;
     private javax.swing.JLabel jLabel_BOOST_CADENCE_STEP;
@@ -4593,11 +4579,19 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel_CADENCE_ASS_2;
     private javax.swing.JLabel jLabel_CADENCE_ASS_3;
     private javax.swing.JLabel jLabel_CADENCE_ASS_4;
+    private javax.swing.JLabel jLabel_COASTER_BRAKE_THRESHOLD;
     private javax.swing.JLabel jLabel_CRUISE_ASS_1;
     private javax.swing.JLabel jLabel_CRUISE_ASS_2;
     private javax.swing.JLabel jLabel_CRUISE_ASS_3;
     private javax.swing.JLabel jLabel_CRUISE_ASS_4;
     private javax.swing.JLabel jLabel_CRUISE_SPEED_ENA;
+    private javax.swing.JLabel jLabel_DELAY_DATA_1;
+    private javax.swing.JLabel jLabel_DELAY_DATA_2;
+    private javax.swing.JLabel jLabel_DELAY_DATA_3;
+    private javax.swing.JLabel jLabel_DELAY_DATA_4;
+    private javax.swing.JLabel jLabel_DELAY_DATA_5;
+    private javax.swing.JLabel jLabel_DELAY_DATA_6;
+    private javax.swing.JLabel jLabel_DELAY_MENU;
     private javax.swing.JLabel jLabel_EMTB_ASS_1;
     private javax.swing.JLabel jLabel_EMTB_ASS_2;
     private javax.swing.JLabel jLabel_EMTB_ASS_3;
@@ -4608,11 +4602,17 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel_LIGHT_MODE_ON_START;
     private javax.swing.JLabel jLabel_MAX_SPEED;
     private javax.swing.JLabel jLabel_MOTOR_ACC;
+    private javax.swing.JLabel jLabel_MOTOR_BLOCK_CURR;
+    private javax.swing.JLabel jLabel_MOTOR_BLOCK_ERPS;
+    private javax.swing.JLabel jLabel_MOTOR_BLOCK_TIME;
     private javax.swing.JLabel jLabel_MOTOR_FAST_STOP;
     private javax.swing.JLabel jLabel_MOTOR_V;
+    private javax.swing.JLabel jLabel_NUM_DATA_AUTO_DISPLAY;
     private javax.swing.JLabel jLabel_POWER_ASS_4;
     private javax.swing.JLabel jLabel_STREET_POWER_LIM;
     private javax.swing.JLabel jLabel_STREET_SPEED_LIM;
+    private javax.swing.JLabel jLabel_TEMP_MAX_LIM;
+    private javax.swing.JLabel jLabel_TEMP_MIN_LIM;
     private javax.swing.JLabel jLabel_TF_POWER_ASS_1;
     private javax.swing.JLabel jLabel_TF_POWER_ASS_2;
     private javax.swing.JLabel jLabel_TF_POWER_ASS_3;
@@ -4634,8 +4634,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel_WALK_ASS_SPEED_LIMIT;
     private javax.swing.JLabel jLabel_WALK_ASS_TIME;
     private javax.swing.JLabel jLabel_WHEEL_CIRCUMF;
-    private javax.swing.JPanel jPanel11;
-    private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel_BOOST_AT_ZERO;
     private javax.swing.JPanel jPanel_MOTOR_V;
@@ -4657,10 +4655,12 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     private javax.swing.JScrollPane scrollCompileOutput;
     private javax.swing.JScrollPane scrollExpSettings;
     private javax.swing.JScrollPane scrollProvenSettings;
+    private javax.swing.JPanel subPanelBatteryCells;
     private javax.swing.JPanel subPanelBatterySettings;
     private javax.swing.JPanel subPanelCadenceAssist;
     private javax.swing.JPanel subPanelCruiseMode;
     private javax.swing.JPanel subPanelDataOther;
+    private javax.swing.JPanel subPanelDisplayAdvanced;
     private javax.swing.JPanel subPanelEmtbAssist;
     private javax.swing.JPanel subPanelFunctionSettings;
     private javax.swing.JPanel subPanelLightsHybrid;
