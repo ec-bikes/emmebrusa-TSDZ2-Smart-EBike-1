@@ -2909,7 +2909,7 @@
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="components.FloatField" name="TF_BAT_CUR_MAX">
+                <Component class="components.IntField" name="TF_BAT_CUR_MAX">
                   <Properties>
                     <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Max value&lt;br&gt;&#xa;17 A for 36 V&lt;br&gt;&#xa;12 A for 48 V&#xa;&lt;/html&gt;"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -3613,7 +3613,7 @@
                   </StatementProvider>
                   <Parameters>
                     <CodeExpression id="185_TF_BAT_CUR_MAX">
-                      <CodeVariable name="TF_BAT_CUR_MAX" type="8194" declaredType="components.FloatField"/>
+                      <CodeVariable name="TF_BAT_CUR_MAX" type="8194" declaredType="components.IntField"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
                           <ComponentRef name="TF_BAT_CUR_MAX"/>
