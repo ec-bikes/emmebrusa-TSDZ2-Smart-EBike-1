@@ -24,11 +24,11 @@ import java.io.*;
 import javax.swing.ListSelectionModel;
 
 import components.IntField;
+import components.NumberField;
 
 import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.JList;
 
 import javax.swing.DefaultListModel;
@@ -40,6 +40,7 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Arrays;
+import java.util.List;
 
 public class TSDZ2_Configurator extends javax.swing.JFrame {
     public static void main(String args[]) {
@@ -73,15 +74,9 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
     public class FileContainer {
         public final File file;
-
-        public FileContainer(File file) {
-            this.file = file;
-        }
-
+        public FileContainer(File file) { this.file = file; }
         @Override
-        public String toString() {
-            return file.getName();
-        }
+        public String toString() { return file.getName(); }
     }
 
     private enum DisplayType {
@@ -92,10 +87,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         @Override
         public String toString() { return displayName; }
     }
-
-    private OsfFiles files;
-
-    private CompileWorker compileWorker;
 
     private static final String[] displayDataArray = {
         "motor temperature",
@@ -127,22 +118,38 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
     private static final int[] intAdcPedalTorqueAngleAdjArray = {160, 138, 120, 107, 96, 88, 80, 74, 70, 66, 63, 59, 56, 52, 50, 47, 44, 42, 39, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16};
 
+    private final OsfFiles files;
+    private CompileWorker compileWorker;
+
     /** 0 is the street speed, 1 is the off-road max */
-    public int[] intMaxSpeed = new int[2];
+    private final int[] intMaxSpeedKm = new int[2];
     /** 0 is the limit, 1-4 are values */
-    public int[] intWalkSpeed = new int[5];
+    private final int[] intWalkSpeedKm = new int[5];
     /** 0 is the threshold, 1-4 are values */
-    public int[] intCruiseSpeed = new int[5];
-    public int intTorqueOffsetAdj;
-    public int intTorqueRangeAdj;
-    public int intTorqueAngleAdj;
-    String strTorqueOffsetAdj;
-    String strTorqueRangeAdj;
-    String strTorqueAngleAdj;
+    private final int[] intCruiseSpeedKm = new int[5];
+    private int intTorqueOffsetAdj;
+    private int intTorqueRangeAdj;
+    private int intTorqueAngleAdj;
+    private boolean isUpdating = true;
+
+    /** TF_DATA_* fields. Index 0 is null. */
+    private List<IntField> dataFields;
+    /** Labels for TF_DATA_* fields. Index 0 is null. */
+    private JLabel[] dataFieldLabels;
+
+    /** TF_LIGHT_MODE_* fields. Index 0 is TF_LIGHT_MODE_ON_START. */
+    private List<IntField> lightsFields;
+    /** Labels for TF_LIGHT_MODE_* fields. */
+    private JLabel[] lightsFieldLabels;
+
+    /** TF_CRUISE_ASS_* fields. Index 0 is TF_CRUISE_SPEED_ENA. */
+    private List<IntField> cruiseFields;
+
+    /** TF_WALK_ASS_SPEED_* fields. Index 0 is TF_WALK_ASS_SPEED_LIMIT. */
+    private List<IntField> walkFields;
 
     private static final int WEIGHT_ON_PEDAL = 25; // kg
     private static final int MIDDLE_OFFSET_ADJ = 20;
-    private static final int OFFSET_MAX_VALUE = 34; // MIDDLE_OFFSET_ADJ * 2 - 6 (ADC_TORQUE_SENSOR_CALIBRATION_OFFSET)
     private static final int MIDDLE_RANGE_ADJ = 20;
     private static final int MIDDLE_ANGLE_ADJ = 20;
 
@@ -153,6 +160,13 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         initComponents();
 
         this.setLocationRelativeTo(null);
+
+        dataFields = Arrays.asList(new IntField[] {null, TF_DATA_1, TF_DATA_2, TF_DATA_3, TF_DATA_4, TF_DATA_5, TF_DATA_6});
+        dataFieldLabels = new JLabel[] {null, jLabelData1, jLabelData2, jLabelData3, jLabelData4, jLabelData5, jLabelData6};
+        lightsFields = Arrays.asList(new IntField[] {TF_LIGHT_MODE_ON_START, TF_LIGHT_MODE_1, TF_LIGHT_MODE_2, TF_LIGHT_MODE_3});
+        lightsFieldLabels = new JLabel[] {jLabel_LIGHT_MODE_ON_START, jLabel_LIGHT_MODE_1, jLabel_LIGHT_MODE_2, jLabel_LIGHT_MODE_3};
+        cruiseFields = Arrays.asList(new IntField[] {TF_CRUISE_SPEED_ENA, TF_CRUISE_ASS_1, TF_CRUISE_ASS_2, TF_CRUISE_ASS_3, TF_CRUISE_ASS_4});
+        walkFields = Arrays.asList(new IntField[] {TF_WALK_ASS_SPEED_LIMIT, TF_WALK_ASS_SPEED_1, TF_WALK_ASS_SPEED_2, TF_WALK_ASS_SPEED_3, TF_WALK_ASS_SPEED_4});
 
         // Update the latest commit
         String latestCommit = files.readLatestCommit();
@@ -179,6 +193,18 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
             }
         }
 
+        List<IntField> otherFields = Arrays.asList(new IntField[] {
+            TF_MAX_SPEED, TF_STREET_SPEED_LIM, TF_TORQ_ADC_OFFSET_ADJ, TF_TORQ_ADC_RANGE_ADJ, TF_TORQ_ADC_OFFSET, TF_TORQUE_ADC_MAX, TF_TORQ_ADC_ANGLE_ADJ
+        });
+        @SuppressWarnings("unchecked")
+        List<IntField>[] allFields = new List[] { dataFields, lightsFields, cruiseFields, walkFields, otherFields };
+        for (List<IntField> fields : allFields) {
+            for (IntField f : fields) {
+                if (f != null) // a couple arrays have null placeholders
+                    f.addPropertyChangeListener(NumberField.USER_VALUE_PROPERTY, userValueListener);
+            }
+        }
+
         BTN_COMPILE.addActionListener((ActionEvent arg0) -> {
             File newFile = startCompileAndFlash();
             if (newFile != null) {
@@ -190,6 +216,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
     private boolean tryLoadSettings(FileContainer f, JList<FileContainer> list, DefaultListModel<FileContainer> model) {
         try {
+            isUpdating = true;
             loadSettings(f.file);
             return true;
         } catch (IOException ex) {
@@ -202,6 +229,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
             model.removeElement(f);
             list.clearSelection();
             return false;
+        } finally {
+            isUpdating = false;
         }
     }
 
@@ -213,38 +242,38 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
             RB_MOTOR_36V.setSelected(Boolean.parseBoolean(in.readLine()));
             RB_MOTOR_48V.setSelected(Boolean.parseBoolean(in.readLine()));
             CB_TORQUE_CALIBRATION.setSelected(Boolean.parseBoolean(in.readLine()));
-            TF_MOTOR_ACC.setIntStringValue(in.readLine());
+            TF_MOTOR_ACC.setValueFromString(in.readLine());
             CB_ASS_WITHOUT_PED.setSelected(Boolean.parseBoolean(in.readLine()));
-            TF_ASS_WITHOUT_PED_THRES.setIntStringValue(in.readLine());
-            TF_TORQ_PER_ADC_STEP.setIntStringValue(in.readLine());
-            TF_TORQUE_ADC_MAX.setIntStringValue(in.readLine());
-            TF_BOOST_TORQUE_FACTOR.setIntStringValue(in.readLine());
-            TF_MOTOR_BLOCK_TIME.setIntStringValue(in.readLine());
-            TF_MOTOR_BLOCK_CURR.setIntStringValue(in.readLine());
-            TF_MOTOR_BLOCK_ERPS.setIntStringValue(in.readLine());
-            TF_BOOST_CADENCE_STEP.setIntStringValue(in.readLine());
-            TF_BAT_CUR_MAX.setIntStringValue(in.readLine());
-            TF_BATT_POW_MAX.setIntStringValue(in.readLine());
-            TF_BATT_CAPACITY.setIntStringValue(in.readLine());
-            TF_BATT_NUM_CELLS.setIntStringValue(in.readLine());
-            TF_MOTOR_DEC.setIntStringValue(in.readLine());
-            TF_BATT_VOLT_CUT_OFF.setIntStringValue(in.readLine());
-            TF_BATT_VOLT_CAL.setIntStringValue(in.readLine());
-            TF_BATT_CAPACITY_CAL.setIntStringValue(in.readLine());
-            TF_BAT_CELL_OVER.setFloatStringValue(in.readLine());
-            TF_BAT_CELL_SOC.setFloatStringValue(in.readLine());
-            TF_BAT_CELL_FULL.setFloatStringValue(in.readLine());
-            TF_BAT_CELL_3_4.setFloatStringValue(in.readLine());
-            TF_BAT_CELL_2_4.setFloatStringValue(in.readLine());
-            TF_BAT_CELL_1_4.setFloatStringValue(in.readLine());
-            TF_BAT_CELL_5_6.setFloatStringValue(in.readLine());
-            TF_BAT_CELL_4_6.setFloatStringValue(in.readLine());
-            TF_BAT_CELL_3_6.setFloatStringValue(in.readLine());
-            TF_BAT_CELL_2_6.setFloatStringValue(in.readLine());
-            TF_BAT_CELL_1_6.setFloatStringValue(in.readLine());
-            TF_BAT_CELL_EMPTY.setFloatStringValue(in.readLine());
-            TF_WHEEL_CIRCUMF.setIntStringValue(in.readLine());
-            intMaxSpeed[0] = Integer.parseInt(in.readLine());
+            TF_ASS_WITHOUT_PED_THRES.setValueFromString(in.readLine());
+            TF_TORQ_PER_ADC_STEP.setValueFromString(in.readLine());
+            TF_TORQUE_ADC_MAX.setValueFromString(in.readLine());
+            TF_BOOST_TORQUE_FACTOR.setValueFromString(in.readLine());
+            TF_MOTOR_BLOCK_TIME.setValueFromString(in.readLine());
+            TF_MOTOR_BLOCK_CURR.setValueFromString(in.readLine());
+            TF_MOTOR_BLOCK_ERPS.setValueFromString(in.readLine());
+            TF_BOOST_CADENCE_STEP.setValueFromString(in.readLine());
+            TF_BAT_CUR_MAX.setValueFromString(in.readLine());
+            TF_BATT_POW_MAX.setValueFromString(in.readLine());
+            TF_BATT_CAPACITY.setValueFromString(in.readLine());
+            TF_BATT_NUM_CELLS.setValueFromString(in.readLine());
+            TF_MOTOR_DEC.setValueFromString(in.readLine());
+            TF_BATT_VOLT_CUT_OFF.setValueFromString(in.readLine());
+            TF_BATT_VOLT_CAL.setValueFromString(in.readLine());
+            TF_BATT_CAPACITY_CAL.setValueFromString(in.readLine());
+            TF_BAT_CELL_OVER.setValueFromString(in.readLine());
+            TF_BAT_CELL_SOC.setValueFromString(in.readLine());
+            TF_BAT_CELL_FULL.setValueFromString(in.readLine());
+            TF_BAT_CELL_3_4.setValueFromString(in.readLine());
+            TF_BAT_CELL_2_4.setValueFromString(in.readLine());
+            TF_BAT_CELL_1_4.setValueFromString(in.readLine());
+            TF_BAT_CELL_5_6.setValueFromString(in.readLine());
+            TF_BAT_CELL_4_6.setValueFromString(in.readLine());
+            TF_BAT_CELL_3_6.setValueFromString(in.readLine());
+            TF_BAT_CELL_2_6.setValueFromString(in.readLine());
+            TF_BAT_CELL_1_6.setValueFromString(in.readLine());
+            TF_BAT_CELL_EMPTY.setValueFromString(in.readLine());
+            TF_WHEEL_CIRCUMF.setValueFromString(in.readLine());
+            intMaxSpeedKm[0] = Integer.parseInt(in.readLine());
             CB_LIGHTS.setSelected(Boolean.parseBoolean(in.readLine()));
             CB_WALK_ASSIST.setSelected(Boolean.parseBoolean(in.readLine()));
             CB_BRAKE_SENSOR.setSelected(Boolean.parseBoolean(in.readLine()));
@@ -256,23 +285,23 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
             CB_ODO_COMPENSATION.setSelected(Boolean.parseBoolean(in.readLine()));
             CB_STARTUP_BOOST_ON_START.setSelected(Boolean.parseBoolean(in.readLine()));
             CB_TOR_SENSOR_ADV.setSelected(Boolean.parseBoolean(in.readLine()));
-            TF_LIGHT_MODE_ON_START.setIntStringValue(in.readLine());
+            TF_LIGHT_MODE_ON_START.setValueFromString(in.readLine());
             RB_POWER_ON_START.setSelected(Boolean.parseBoolean(in.readLine()));
             RB_TORQUE_ON_START.setSelected(Boolean.parseBoolean(in.readLine()));
             RB_CADENCE_ON_START.setSelected(Boolean.parseBoolean(in.readLine()));
             RB_EMTB_ON_START.setSelected(Boolean.parseBoolean(in.readLine()));
-            TF_LIGHT_MODE_1.setIntStringValue(in.readLine());
-            TF_LIGHT_MODE_2.setIntStringValue(in.readLine());
-            TF_LIGHT_MODE_3.setIntStringValue(in.readLine());
+            TF_LIGHT_MODE_1.setValueFromString(in.readLine());
+            TF_LIGHT_MODE_2.setValueFromString(in.readLine());
+            TF_LIGHT_MODE_3.setValueFromString(in.readLine());
             CB_STREET_POWER_LIM.setSelected(Boolean.parseBoolean(in.readLine()));
-            TF_STREET_POWER_LIM.setIntStringValue(in.readLine());
-            intMaxSpeed[1] = Integer.parseInt(in.readLine());
+            TF_STREET_POWER_LIM.setValueFromString(in.readLine());
+            intMaxSpeedKm[1] = Integer.parseInt(in.readLine());
             CB_STREET_THROTTLE.setSelected(Boolean.parseBoolean(in.readLine()));
             CB_STREET_CRUISE.setSelected(Boolean.parseBoolean(in.readLine()));
-            TF_ADC_THROTTLE_MIN.setIntStringValue(in.readLine());
-            TF_ADC_THROTTLE_MAX.setIntStringValue(in.readLine());
-            TF_TEMP_MIN_LIM.setIntStringValue(in.readLine());
-            TF_TEMP_MAX_LIM.setIntStringValue(in.readLine());
+            TF_ADC_THROTTLE_MIN.setValueFromString(in.readLine());
+            TF_ADC_THROTTLE_MAX.setValueFromString(in.readLine());
+            TF_TEMP_MIN_LIM.setValueFromString(in.readLine());
+            TF_TEMP_MAX_LIM.setValueFromString(in.readLine());
             CB_TEMP_ERR_MIN_LIM.setSelected(Boolean.parseBoolean(in.readLine()));
             displayType = Boolean.parseBoolean(in.readLine()) ? DisplayType.VLCD6 : displayType;
             displayType = Boolean.parseBoolean(in.readLine()) ? DisplayType.VLCD5 : displayType;
@@ -280,68 +309,68 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
             RB_DISPLAY_WORK_ON.setSelected(Boolean.parseBoolean(in.readLine()));
             RB_DISPLAY_ALWAY_ON.setSelected(Boolean.parseBoolean(in.readLine()));
             CB_MAX_SPEED_DISPLAY.setSelected(Boolean.parseBoolean(in.readLine()));
-            TF_DELAY_MENU.setIntStringValue(in.readLine());
+            TF_DELAY_MENU.setValueFromString(in.readLine());
             CB_COASTER_BRAKE.setSelected(Boolean.parseBoolean(in.readLine()));
-            TF_COASTER_BRAKE_THRESHOLD.setIntStringValue(in.readLine());
+            TF_COASTER_BRAKE_THRESHOLD.setValueFromString(in.readLine());
             CB_AUTO_DISPLAY_DATA.setSelected(Boolean.parseBoolean(in.readLine()));
             CB_STARTUP_ASSIST_ENABLED.setSelected(Boolean.parseBoolean(in.readLine()));
-            TF_DELAY_DATA_1.setIntStringValue(in.readLine());
-            TF_DELAY_DATA_2.setIntStringValue(in.readLine());
-            TF_DELAY_DATA_3.setIntStringValue(in.readLine());
-            TF_DELAY_DATA_4.setIntStringValue(in.readLine());
-            TF_DELAY_DATA_5.setIntStringValue(in.readLine());
-            TF_DELAY_DATA_6.setIntStringValue(in.readLine());
-            TF_DATA_1.setIntStringValue(in.readLine());
-            TF_DATA_2.setIntStringValue(in.readLine());
-            TF_DATA_3.setIntStringValue(in.readLine());
-            TF_DATA_4.setIntStringValue(in.readLine());
-            TF_DATA_5.setIntStringValue(in.readLine());
-            TF_DATA_6.setIntStringValue(in.readLine());
-            TF_POWER_ASS_1.setIntStringValue(in.readLine());
-            TF_POWER_ASS_2.setIntStringValue(in.readLine());
-            TF_POWER_ASS_3.setIntStringValue(in.readLine());
-            TF_POWER_ASS_4.setIntStringValue(in.readLine());
-            TF_TORQUE_ASS_1.setIntStringValue(in.readLine());
-            TF_TORQUE_ASS_2.setIntStringValue(in.readLine());
-            TF_TORQUE_ASS_3.setIntStringValue(in.readLine());
-            TF_TORQUE_ASS_4.setIntStringValue(in.readLine());
-            TF_CADENCE_ASS_1.setIntStringValue(in.readLine());
-            TF_CADENCE_ASS_2.setIntStringValue(in.readLine());
-            TF_CADENCE_ASS_3.setIntStringValue(in.readLine());
-            TF_CADENCE_ASS_4.setIntStringValue(in.readLine());
-            TF_EMTB_ASS_1.setIntStringValue(in.readLine());
-            TF_EMTB_ASS_2.setIntStringValue(in.readLine());
-            TF_EMTB_ASS_3.setIntStringValue(in.readLine());
-            TF_EMTB_ASS_4.setIntStringValue(in.readLine());
-            intWalkSpeed[1] = Integer.parseInt(in.readLine());
-            intWalkSpeed[2] = Integer.parseInt(in.readLine());
-            intWalkSpeed[3] = Integer.parseInt(in.readLine());
-            intWalkSpeed[4] = Integer.parseInt(in.readLine());
-            intWalkSpeed[0] = Integer.parseInt(in.readLine());
+            TF_DELAY_DATA_1.setValueFromString(in.readLine());
+            TF_DELAY_DATA_2.setValueFromString(in.readLine());
+            TF_DELAY_DATA_3.setValueFromString(in.readLine());
+            TF_DELAY_DATA_4.setValueFromString(in.readLine());
+            TF_DELAY_DATA_5.setValueFromString(in.readLine());
+            TF_DELAY_DATA_6.setValueFromString(in.readLine());
+            TF_DATA_1.setValueFromString(in.readLine());
+            TF_DATA_2.setValueFromString(in.readLine());
+            TF_DATA_3.setValueFromString(in.readLine());
+            TF_DATA_4.setValueFromString(in.readLine());
+            TF_DATA_5.setValueFromString(in.readLine());
+            TF_DATA_6.setValueFromString(in.readLine());
+            TF_POWER_ASS_1.setValueFromString(in.readLine());
+            TF_POWER_ASS_2.setValueFromString(in.readLine());
+            TF_POWER_ASS_3.setValueFromString(in.readLine());
+            TF_POWER_ASS_4.setValueFromString(in.readLine());
+            TF_TORQUE_ASS_1.setValueFromString(in.readLine());
+            TF_TORQUE_ASS_2.setValueFromString(in.readLine());
+            TF_TORQUE_ASS_3.setValueFromString(in.readLine());
+            TF_TORQUE_ASS_4.setValueFromString(in.readLine());
+            TF_CADENCE_ASS_1.setValueFromString(in.readLine());
+            TF_CADENCE_ASS_2.setValueFromString(in.readLine());
+            TF_CADENCE_ASS_3.setValueFromString(in.readLine());
+            TF_CADENCE_ASS_4.setValueFromString(in.readLine());
+            TF_EMTB_ASS_1.setValueFromString(in.readLine());
+            TF_EMTB_ASS_2.setValueFromString(in.readLine());
+            TF_EMTB_ASS_3.setValueFromString(in.readLine());
+            TF_EMTB_ASS_4.setValueFromString(in.readLine());
+            intWalkSpeedKm[1] = Integer.parseInt(in.readLine());
+            intWalkSpeedKm[2] = Integer.parseInt(in.readLine());
+            intWalkSpeedKm[3] = Integer.parseInt(in.readLine());
+            intWalkSpeedKm[4] = Integer.parseInt(in.readLine());
+            intWalkSpeedKm[0] = Integer.parseInt(in.readLine());
             CB_WALK_TIME_ENA.setSelected(Boolean.parseBoolean(in.readLine()));
-            TF_WALK_ASS_TIME.setIntStringValue(in.readLine());
-            intCruiseSpeed[1] = Integer.parseInt(in.readLine());
-            intCruiseSpeed[2] = Integer.parseInt(in.readLine());
-            intCruiseSpeed[3] = Integer.parseInt(in.readLine());
-            intCruiseSpeed[4] = Integer.parseInt(in.readLine());
+            TF_WALK_ASS_TIME.setValueFromString(in.readLine());
+            intCruiseSpeedKm[1] = Integer.parseInt(in.readLine());
+            intCruiseSpeedKm[2] = Integer.parseInt(in.readLine());
+            intCruiseSpeedKm[3] = Integer.parseInt(in.readLine());
+            intCruiseSpeedKm[4] = Integer.parseInt(in.readLine());
             CB_CRUISE_WHITOUT_PED.setSelected(Boolean.parseBoolean(in.readLine()));
-            intCruiseSpeed[0] = Integer.parseInt(in.readLine());
-            TF_TORQ_ADC_OFFSET.setIntStringValue(in.readLine());
-            TF_NUM_DATA_AUTO_DISPLAY.setIntStringValue(in.readLine());
+            intCruiseSpeedKm[0] = Integer.parseInt(in.readLine());
+            TF_TORQ_ADC_OFFSET.setValueFromString(in.readLine());
+            TF_NUM_DATA_AUTO_DISPLAY.setValueFromString(in.readLine());
             RB_UNIT_KILOMETERS.setSelected(Boolean.parseBoolean(in.readLine()));
             RB_UNIT_MILES.setSelected(Boolean.parseBoolean(in.readLine()));
-            TF_ASSIST_THROTTLE_MIN.setIntStringValue(in.readLine());
-            TF_ASSIST_THROTTLE_MAX.setIntStringValue(in.readLine());
+            TF_ASSIST_THROTTLE_MIN.setValueFromString(in.readLine());
+            TF_ASSIST_THROTTLE_MAX.setValueFromString(in.readLine());
             CB_STREET_WALK.setSelected(Boolean.parseBoolean(in.readLine()));
             RB_HYBRID_ON_START.setSelected(Boolean.parseBoolean(in.readLine()));
             RB_STARTUP_NONE.setSelected(Boolean.parseBoolean(in.readLine()));
             RB_STARTUP_SOC.setSelected(Boolean.parseBoolean(in.readLine()));
             RB_STARTUP_VOLTS.setSelected(Boolean.parseBoolean(in.readLine()));
             CB_FIELD_WEAKENING_ENABLED.setSelected(Boolean.parseBoolean(in.readLine()));
-            strTorqueOffsetAdj = in.readLine();
-            strTorqueRangeAdj = in.readLine();
-            strTorqueAngleAdj = in.readLine();
-            TF_TORQ_PER_ADC_STEP_ADV.setIntStringValue(in.readLine());
+            intTorqueOffsetAdj = Integer.parseInt(in.readLine());
+            intTorqueRangeAdj = Integer.parseInt(in.readLine());
+            intTorqueAngleAdj = Integer.parseInt(in.readLine());
+            TF_TORQ_PER_ADC_STEP_ADV.setValueFromString(in.readLine());
             RB_SOC_AUTO.setSelected(Boolean.parseBoolean(in.readLine()));
             RB_SOC_WH.setSelected(Boolean.parseBoolean(in.readLine()));
             RB_SOC_VOLTS.setSelected(Boolean.parseBoolean(in.readLine()));
@@ -365,33 +394,24 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         updateTorqueCalibrationValues();
 
-        intTorqueOffsetAdj = strTorqueOffsetAdj == null ? MIDDLE_OFFSET_ADJ : Integer.parseInt(strTorqueOffsetAdj);
-        TF_TORQ_ADC_OFFSET_ADJ.setValue(intTorqueOffsetAdj - MIDDLE_OFFSET_ADJ);
-
-        intTorqueRangeAdj = strTorqueRangeAdj == null ? MIDDLE_RANGE_ADJ : Integer.parseInt(strTorqueRangeAdj);
-        TF_TORQ_ADC_RANGE_ADJ.setValue(intTorqueRangeAdj - MIDDLE_RANGE_ADJ);
-
-        intTorqueAngleAdj = strTorqueAngleAdj == null ? MIDDLE_ANGLE_ADJ : Integer.parseInt(strTorqueAngleAdj);
-        TF_TORQ_ADC_ANGLE_ADJ.setValue(intTorqueAngleAdj - MIDDLE_ANGLE_ADJ);
+        TF_TORQ_ADC_OFFSET_ADJ.setValueManual(intTorqueOffsetAdj - MIDDLE_OFFSET_ADJ);
+        TF_TORQ_ADC_RANGE_ADJ.setValueManual(intTorqueRangeAdj - MIDDLE_RANGE_ADJ);
+        TF_TORQ_ADC_ANGLE_ADJ.setValueManual(intTorqueAngleAdj - MIDDLE_ANGLE_ADJ);
 
         jLabel_MOTOR_BLOCK_CURR.setVisible(false);
         jLabel_MOTOR_BLOCK_ERPS.setVisible(false);
         TF_MOTOR_BLOCK_CURR.setVisible(false);
         TF_MOTOR_BLOCK_ERPS.setVisible(false);
 
-        updateDataLabel(TF_DATA_1, jLabelData1, 1);
-        updateDataLabel(TF_DATA_2, jLabelData2, 2);
-        updateDataLabel(TF_DATA_3, jLabelData3, 3);
-        updateDataLabel(TF_DATA_4, jLabelData4, 4);
-        updateDataLabel(TF_DATA_5, jLabelData5, 5);
-        updateDataLabel(TF_DATA_6, jLabelData6, 6);
+        for (IntField field : dataFields) {
+            if (field != null) updateDataLabel(field);
+        }
+        for (IntField field : lightsFields) {
+            updateLightsFieldLabel(field);
+        }
 
-        updateLightsFieldLabel(TF_LIGHT_MODE_ON_START, jLabel_LIGHT_MODE_ON_START, 0);
-        updateLightsFieldLabel(TF_LIGHT_MODE_1, jLabel_LIGHT_MODE_1, 1);
-        updateLightsFieldLabel(TF_LIGHT_MODE_2, jLabel_LIGHT_MODE_2, 2);
-        updateLightsFieldLabel(TF_LIGHT_MODE_3, jLabel_LIGHT_MODE_3, 3);
-
-        updateUnits();
+        updateUnitsAndWalkAssist();
+        updateMotorVoltage();
     }
 
     private ConfigSerializer serializeConfig() {
@@ -441,7 +461,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         s.saveAndDefine("LI_ION_CELL_VOLTS_1_OF_6", TF_BAT_CELL_1_6);
         s.saveAndDefine("LI_ION_CELL_VOLTS_EMPTY", TF_BAT_CELL_EMPTY);
         s.saveAndDefine("WHEEL_PERIMETER", TF_WHEEL_CIRCUMF);
-        s.saveAndDefine("WHEEL_MAX_SPEED", intMaxSpeed[0]);
+        s.saveAndDefine("WHEEL_MAX_SPEED", intMaxSpeedKm[0]);
         s.saveAndDefine("ENABLE_LIGHTS", CB_LIGHTS);
         s.saveAndDefine("ENABLE_WALK_ASSIST", CB_WALK_ASSIST);
         s.saveAndDefine("ENABLE_BRAKE_SENSOR", CB_BRAKE_SENSOR);
@@ -466,7 +486,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         s.saveAndDefine("LIGHTS_CONFIGURATION_3", TF_LIGHT_MODE_3);
         s.saveAndDefine("STREET_MODE_POWER_LIMIT_ENABLED", CB_STREET_POWER_LIM);
         s.saveAndDefine("STREET_MODE_POWER_LIMIT", TF_STREET_POWER_LIM);
-        s.saveAndDefine("STREET_MODE_SPEED_LIMIT", intMaxSpeed[1]);
+        s.saveAndDefine("STREET_MODE_SPEED_LIMIT", intMaxSpeedKm[1]);
         s.saveAndDefine("STREET_MODE_THROTTLE_ENABLED", CB_STREET_THROTTLE);
         s.saveAndDefine("STREET_MODE_CRUISE_ENABLED", CB_STREET_CRUISE);
         s.saveAndDefine("ADC_THROTTLE_MIN_VALUE", TF_ADC_THROTTLE_MIN);
@@ -516,19 +536,19 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         s.saveAndDefine("EMTB_ASSIST_LEVEL_2", TF_EMTB_ASS_2);
         s.saveAndDefine("EMTB_ASSIST_LEVEL_3", TF_EMTB_ASS_3);
         s.saveAndDefine("EMTB_ASSIST_LEVEL_4", TF_EMTB_ASS_4);
-        s.saveAndDefine("WALK_ASSIST_LEVEL_1", intWalkSpeed[1]);
-        s.saveAndDefine("WALK_ASSIST_LEVEL_2", intWalkSpeed[2]);
-        s.saveAndDefine("WALK_ASSIST_LEVEL_3", intWalkSpeed[3]);
-        s.saveAndDefine("WALK_ASSIST_LEVEL_4", intWalkSpeed[4]);
-        s.saveAndDefine("WALK_ASSIST_THRESHOLD_SPEED", intWalkSpeed[0]);
+        s.saveAndDefine("WALK_ASSIST_LEVEL_1", intWalkSpeedKm[1]);
+        s.saveAndDefine("WALK_ASSIST_LEVEL_2", intWalkSpeedKm[2]);
+        s.saveAndDefine("WALK_ASSIST_LEVEL_3", intWalkSpeedKm[3]);
+        s.saveAndDefine("WALK_ASSIST_LEVEL_4", intWalkSpeedKm[4]);
+        s.saveAndDefine("WALK_ASSIST_THRESHOLD_SPEED", intWalkSpeedKm[0]);
         s.saveAndDefine("WALK_ASSIST_DEBOUNCE_ENABLED", CB_WALK_TIME_ENA);
         s.saveAndDefine("WALK_ASSIST_DEBOUNCE_TIME", TF_WALK_ASS_TIME);
-        s.saveAndDefine("CRUISE_TARGET_SPEED_LEVEL_1", intCruiseSpeed[1]);
-        s.saveAndDefine("CRUISE_TARGET_SPEED_LEVEL_2", intCruiseSpeed[2]);
-        s.saveAndDefine("CRUISE_TARGET_SPEED_LEVEL_3", intCruiseSpeed[3]);
-        s.saveAndDefine("CRUISE_TARGET_SPEED_LEVEL_4", intCruiseSpeed[4]);
+        s.saveAndDefine("CRUISE_TARGET_SPEED_LEVEL_1", intCruiseSpeedKm[1]);
+        s.saveAndDefine("CRUISE_TARGET_SPEED_LEVEL_2", intCruiseSpeedKm[2]);
+        s.saveAndDefine("CRUISE_TARGET_SPEED_LEVEL_3", intCruiseSpeedKm[3]);
+        s.saveAndDefine("CRUISE_TARGET_SPEED_LEVEL_4", intCruiseSpeedKm[4]);
         s.saveAndDefine("CRUISE_MODE_WALK_ENABLED", CB_CRUISE_WHITOUT_PED);
-        s.saveAndDefine("CRUISE_THRESHOLD_SPEED", intCruiseSpeed[0]);
+        s.saveAndDefine("CRUISE_THRESHOLD_SPEED", intCruiseSpeedKm[0]);
         s.saveAndDefine("PEDAL_TORQUE_ADC_OFFSET", TF_TORQ_ADC_OFFSET);
         s.saveAndDefine("AUTO_DATA_NUMBER_DISPLAY", TF_NUM_DATA_AUTO_DISPLAY);
         s.saveMaybeDefine("UNITS_TYPE", RB_UNIT_KILOMETERS, 0);
@@ -661,87 +681,48 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     }
 
     private void saveFieldInKm(IntField field, int[] values, int index) {
-        values[index] = valueInUnits(field.getIntValue(), isKm());
-    }
-
-    private int handleFieldValueWithAdjustment(IntField field, int adjust) {
-        String strValue = field.getText();
-        Integer intObj = safeParseInt(strValue);
-        int value = intObj != null ? intObj.intValue() : 0;
-        if (intObj != null && value >= 0 && value <= adjust) {
-            return value + adjust;
-        }
-        field.setValue(0);
-        return adjust;
-    }
-
-    // TODO use min/max
-    /** Update a field if its value is outside the min or max. */
-    private void ensureFieldInRange(IntField field, int min, int max) {
-        Integer intObj = safeParseInt(field.getText());
-        if (intObj == null) {
-        } else {
-            int value = intObj.intValue();
-            if (value < min) {
-                field.setValue(min);
-            } else if (value > max) {
-                field.setValue(max);
-            }
-        }
-    }
-
-    private Integer safeParseInt(String str) {
-        try {
-            return Integer.valueOf(str);
-        } catch (NumberFormatException e) {
-            return null;
-        }
+        values[index] = valueInUnits(field.getNumberValue(), isKm());
     }
 
     private void updateTorqueCalibrationValues() {
-        boolean selected = CB_TORQUE_CALIBRATION.isSelected();
-        TF_TORQ_ADC_OFFSET.setEnabled(selected);
-        TF_TORQ_ADC_RANGE_ADJ.setEnabled(selected);
-        TF_TORQ_ADC_ANGLE_ADJ.setEnabled(selected);
-        TF_TORQUE_ADC_MAX.setEnabled(selected);
-        CB_ADC_STEP_ESTIM.setEnabled(selected);
-        TF_TORQ_PER_ADC_STEP_ADV.setEnabled(selected);
-        TF_TORQ_PER_ADC_STEP.setEnabled(!selected);
+        boolean isCalibrated = CB_TORQUE_CALIBRATION.isSelected();
+        TF_TORQ_ADC_OFFSET.setEnabled(isCalibrated);
+        TF_TORQ_ADC_RANGE_ADJ.setEnabled(isCalibrated);
+        TF_TORQ_ADC_ANGLE_ADJ.setEnabled(isCalibrated);
+        TF_TORQUE_ADC_MAX.setEnabled(isCalibrated);
+        CB_ADC_STEP_ESTIM.setEnabled(isCalibrated);
+        TF_TORQ_PER_ADC_STEP_ADV.setEnabled(isCalibrated);
+        TF_TORQ_PER_ADC_STEP.setEnabled(!isCalibrated);
 
-        if (selected) {
-            int intTorqueAdcOffset = Integer.parseInt(TF_TORQ_ADC_OFFSET.getText());
-            int intTorqueAdcMax = Integer.parseInt(TF_TORQUE_ADC_MAX.getText());
+        if (isCalibrated) {
+            int intTorqueAdcOffset = TF_TORQ_ADC_OFFSET.getNumberValue();
+            int intTorqueAdcMax = TF_TORQUE_ADC_MAX.getNumberValue();
             int intTorqueAdcOnWeight = intTorqueAdcOffset + ((intTorqueAdcMax - intTorqueAdcOffset) * 75) / 100;
             int intTorqueAdcStepCalc = (WEIGHT_ON_PEDAL * 167) / (intTorqueAdcOnWeight - intTorqueAdcOffset);
-            TF_TORQ_PER_ADC_STEP.setValue(intTorqueAdcStepCalc);
+            TF_TORQ_PER_ADC_STEP.setValueManual(intTorqueAdcStepCalc);
         }
     }
 
-    private void updateDataLabel(JTextField field, JLabel label, int dataNum) {
-        try {
-            int value = Integer.parseInt(field.getText());
-            if (dataNum >= 0 && dataNum <= 10) {
-                label.setText(String.format("Data %d - %s", dataNum, displayDataArray[value]));
-            } else {
-                label.setText("Data " + dataNum);
-            }
-        } catch (NumberFormatException ex) {
-            label.setText("Data " + dataNum);
-        }
+    // TODO switch to dropdowns and/or set tooltips in code
+    private void updateDataLabel(IntField field) {
+        int dataNum = dataFields.indexOf(field);
+        JLabel label = dataFieldLabels[dataNum];
+        int value = field.getNumberValue();
+        label.setText(String.format("Data %d - %s", dataNum, displayDataArray[value]));
     }
 
-    private void updateLightsFieldLabel(JTextField field, JLabel label, int modeNum) {
-        int max = modeNum == 2 ? 9 : 8; // not sure why this was different
-        int extra = modeNum == 3 ? 10 : Integer.MAX_VALUE;
-        String name = modeNum == 0 ? "Light mode on start" : "Light mode " + modeNum;
-        try {
-            int index = Integer.parseInt(field.getText());
-            if ((index >= 0 && index <= max) || index == extra) {
-                label.setText(String.format("<html>%s - %s</html>", name, lightModeArray[index]));
-            } else {
-                label.setText(name);
-            }
-        } catch (NumberFormatException ex) {
+    // TODO switch to dropdowns and/or set tooltips in code
+    private void updateLightsFieldLabel(IntField field) {
+        int modeNum = lightsFields.indexOf(field);
+        JLabel label = lightsFieldLabels[modeNum];
+        // modeNum 3 allows 1-8 and 10, so its field max is 10
+        int max = modeNum == 3 ? 8 : field.getMax();
+        String name = "Light mode " + (modeNum == 0 ? "on start" : modeNum);
+
+        int index = field.getNumberValue();
+        if (index <= max || (modeNum == 3 && index == 10)) {
+            label.setText(String.format("<html>%s - %s</html>", name, lightModeArray[index]));
+        } else {
             label.setText(name);
         }
     }
@@ -791,25 +772,59 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         TF_BAT_CELL_1_4.setEnabled(!isSixBars);
     }
 
-    private void updateUnits() {
+    private void updateUnitsAndWalkAssist() {
         boolean isKm = this.isKm();
         String unitsStr = isKm ? "km/h" : "mph";
         jLabel_MAX_SPEED.setText("Max speed offroad mode (" + unitsStr + ")");
         jLabel_STREET_SPEED_LIM.setText("Street speed limit (" + unitsStr + ")");
         jLabelCruiseSpeedUnits.setText(unitsStr);
-        jLabelWalkSpeedUnits.setText(unitsStr + "x10");
-        TF_MAX_SPEED.setValue(valueInUnits(intMaxSpeed[0], isKm));
-        TF_STREET_SPEED_LIM.setValue(valueInUnits(intMaxSpeed[1], isKm));
-        TF_WALK_ASS_SPEED_1.setValue(valueInUnits(intWalkSpeed[1], isKm));
-        TF_WALK_ASS_SPEED_2.setValue(valueInUnits(intWalkSpeed[2], isKm));
-        TF_WALK_ASS_SPEED_3.setValue(valueInUnits(intWalkSpeed[3], isKm));
-        TF_WALK_ASS_SPEED_4.setValue(valueInUnits(intWalkSpeed[4], isKm));
-        TF_WALK_ASS_SPEED_LIMIT.setValue(valueInUnits(intWalkSpeed[0], isKm));
-        TF_CRUISE_SPEED_ENA.setValue(valueInUnits(intCruiseSpeed[0], isKm));
-        TF_CRUISE_ASS_1.setValue(valueInUnits(intCruiseSpeed[1], isKm));
-        TF_CRUISE_ASS_2.setValue(valueInUnits(intCruiseSpeed[2], isKm));
-        TF_CRUISE_ASS_3.setValue(valueInUnits(intCruiseSpeed[3], isKm));
-        TF_CRUISE_ASS_4.setValue(valueInUnits(intCruiseSpeed[4], isKm));
+        jLabelWalkSpeedUnits.setText(unitsStr + " x10");
+        TF_MAX_SPEED.setValueManual(valueInUnits(intMaxSpeedKm[0], isKm));
+        TF_STREET_SPEED_LIM.setValueManual(valueInUnits(intMaxSpeedKm[1], isKm));
+        TF_CRUISE_SPEED_ENA.setValueManual(valueInUnits(intCruiseSpeedKm[0], isKm));
+        TF_CRUISE_ASS_1.setValueManual(valueInUnits(intCruiseSpeedKm[1], isKm));
+        TF_CRUISE_ASS_2.setValueManual(valueInUnits(intCruiseSpeedKm[2], isKm));
+        TF_CRUISE_ASS_3.setValueManual(valueInUnits(intCruiseSpeedKm[3], isKm));
+        TF_CRUISE_ASS_4.setValueManual(valueInUnits(intCruiseSpeedKm[4], isKm));
+
+        updateWalkAssist();
+    }
+
+    private void updateWalkAssist() {
+        boolean isKm = this.isKm();
+        String unitsStr = isKm ? "km/h" : "mph";
+
+        int walkAssistMin = valueInUnits(25, isKm);
+        int walkAssistAbsMax = valueInUnits(60, isKm);
+        int walkAssistMax = Math.min(walkAssistAbsMax, valueInUnits(intWalkSpeedKm[0], isKm));
+        TF_WALK_ASS_SPEED_LIMIT.setMax(walkAssistAbsMax);
+        TF_WALK_ASS_SPEED_LIMIT.setValueManual(walkAssistMax);
+        TF_WALK_ASS_SPEED_LIMIT.setToolTipText(String.format("<html>%s x10<br>Max value %.1f (in EU 6 km/h)</html>",
+                unitsStr, walkAssistAbsMax / 10.0));
+
+        String walkText = String.format("<html>%s x10<br>Value %d to %d (%.1f to %.1f %1$s)", unitsStr,
+                walkAssistMin, walkAssistMax,
+                walkAssistMin / 10.0, walkAssistMax / 10.0);
+        // IntField[] walkFields = { TF_WALK_ASS_SPEED_1, TF_WALK_ASS_SPEED_2, TF_WALK_ASS_SPEED_3, TF_WALK_ASS_SPEED_4 };
+        for (int i = 1; i < walkFields.size(); i++) {
+            intWalkSpeedKm[i] = Math.min(intWalkSpeedKm[i], intWalkSpeedKm[0]);
+            IntField field = walkFields.get(i);
+            field.setMinMax(walkAssistMin, walkAssistMax);
+            field.setValueManual(Math.min(valueInUnits(intWalkSpeedKm[i], isKm), walkAssistMax));
+            field.setToolTipText(walkText);
+        }
+    }
+
+    private void updateMotorVoltage() {
+        boolean is36V = RB_MOTOR_36V.isSelected();
+
+        String accText = is36V
+            ? "<br> 36 volt battery = 35<br> 48 volt battery = 5<br> 52 volt battery = 0"
+            : "<br> 36 volt battery = 45<br> 48 volt battery = 35<br> 52 volt battery = 30";
+        TF_MOTOR_ACC.setToolTipText("<html>MAX VALUE" + accText + "</html>");
+        TF_MOTOR_ACC.setMax(is36V ? 35 : 45);
+
+        TF_BAT_CUR_MAX.setMax(is36V ? 17 : 12);
     }
 
     private void setWalkAssistFieldsEnabled() {
@@ -848,11 +863,51 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         TF_NUM_DATA_AUTO_DISPLAY.setEnabled(CB_AUTO_DISPLAY_DATA.isSelected());
     }
 
+    /** Listen for changes to the user-entered value in a field (not manually updated values). */
+    private PropertyChangeListener userValueListener = (PropertyChangeEvent evt) -> {
+        if (evt.getPropertyName() != NumberField.USER_VALUE_PROPERTY) return;
+        Object objSource = evt.getSource();
+        if (!(objSource instanceof IntField)) {
+            throw new UnsupportedOperationException("This listener only works for IntFields");
+        }
+
+        IntField source = (IntField) objSource;
+        if (source.getValue() == null) return;
+        int value = source.getNumberValue();
+
+        if (dataFields.contains(source)) {
+            updateDataLabel(source);
+        } else if (lightsFields.contains(source)) {
+            updateLightsFieldLabel(source);
+        } else if (cruiseFields.contains(source)) {
+            int index = cruiseFields.indexOf(source);
+            saveFieldInKm(source, intCruiseSpeedKm, index);
+        } else if (walkFields.contains(source)) {
+            int index = walkFields.indexOf(source);
+            saveFieldInKm(source, intWalkSpeedKm, index);
+        } else if (source == this.TF_MAX_SPEED) {
+            saveFieldInKm(source, intMaxSpeedKm, 0);
+        } else if (source == this.TF_STREET_SPEED_LIM) {
+            saveFieldInKm(source, intMaxSpeedKm, 1);
+        } else if (source == this.TF_TORQ_ADC_OFFSET_ADJ) {
+            intTorqueOffsetAdj = value + MIDDLE_OFFSET_ADJ;
+        } else if (source == this.TF_TORQ_ADC_RANGE_ADJ) {
+            intTorqueRangeAdj = value + MIDDLE_RANGE_ADJ;
+        } else if (source == this.TF_TORQ_ADC_ANGLE_ADJ) {
+            intTorqueAngleAdj = value + MIDDLE_ANGLE_ADJ;
+        } else if (source == this.TF_TORQ_ADC_OFFSET || source == this.TF_TORQUE_ADC_MAX) {
+            updateTorqueCalibrationValues();
+        } else {
+            throw new UnsupportedOperationException("Unknown field");
+        }
+    };
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
+    @SuppressWarnings("removal")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
@@ -1224,7 +1279,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelMotorSettings.add(jLabel_MOTOR_ACC, gridBagConstraints);
 
-        TF_MOTOR_ACC.setToolTipText("<html>MAX VALUE<br>\n36 volt motor, 36 volt battery = 35<br>\n36 volt motor, 48 volt battery = 5<br>\n36 volt motor, 52 volt battery = 0<br>\n48 volt motor, 36 volt battery = 45<br>\n48 volt motor, 48 volt battery = 35<br>\n48 volt motor, 52 volt battery = 30\n</html>");
+        TF_MOTOR_ACC.setMax(new java.lang.Integer(45));
         TF_MOTOR_ACC.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
@@ -1242,8 +1297,10 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelMotorSettings.add(jLabel_MOTOR_FAST_STOP, gridBagConstraints);
 
-        TF_MOTOR_DEC.setToolTipText("<html>Max value 100<br>\nRecommended range 0 to 50\n</html>");
+        TF_MOTOR_DEC.setMax(new java.lang.Integer(100));
         TF_MOTOR_DEC.setPreferredSize(new java.awt.Dimension(45, 23));
+        TF_MOTOR_DEC.setToolTipRecommendedMax(new java.lang.Integer(50));
+        TF_MOTOR_DEC.setToolTipRecommendedMin(new java.lang.Integer(0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 6;
@@ -1263,16 +1320,19 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelMotorSettings.add(CB_ASS_WITHOUT_PED, gridBagConstraints);
 
-        TF_ASS_WITHOUT_PED_THRES.setToolTipText("<html>Max value 100<br>\nRecommended range 10 to 30\n</html>");
+        TF_ASS_WITHOUT_PED_THRES.setMax(new java.lang.Integer(100));
         TF_ASS_WITHOUT_PED_THRES.setPreferredSize(new java.awt.Dimension(45, 23));
+        TF_ASS_WITHOUT_PED_THRES.setToolTipRecommendedMax(new java.lang.Integer(30));
+        TF_ASS_WITHOUT_PED_THRES.setToolTipRecommendedMin(new java.lang.Integer(10));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 8;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelMotorSettings.add(TF_ASS_WITHOUT_PED_THRES, gridBagConstraints);
 
-        TF_TORQ_PER_ADC_STEP.setToolTipText("<html>\nDefault value 67<br>\nOptional calibration\n</html>");
         TF_TORQ_PER_ADC_STEP.setPreferredSize(new java.awt.Dimension(45, 23));
+        TF_TORQ_PER_ADC_STEP.setToolTipDefaultValue(new java.lang.Integer(67));
+        TF_TORQ_PER_ADC_STEP.setToolTipExtra("Optional calibration");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 10;
@@ -1287,8 +1347,9 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelMotorSettings.add(jLabel_TORQ_PER_ADC_STEP_ADV, gridBagConstraints);
 
-        TF_TORQ_PER_ADC_STEP_ADV.setToolTipText("<html>\nDefault value 34<br>\nOptional calibration\n</html>");
         TF_TORQ_PER_ADC_STEP_ADV.setPreferredSize(new java.awt.Dimension(45, 23));
+        TF_TORQ_PER_ADC_STEP_ADV.setToolTipDefaultValue(new java.lang.Integer(34));
+        TF_TORQ_PER_ADC_STEP_ADV.setToolTipExtra("Optional calibration");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 12;
@@ -1303,13 +1364,10 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelMotorSettings.add(jLabel_TORQ_ADC_OFFSET_ADJ, gridBagConstraints);
 
-        TF_TORQ_ADC_OFFSET_ADJ.setToolTipText("<html>\nValue -20 to 14<br>\nDefault 0\n</html>");
+        TF_TORQ_ADC_OFFSET_ADJ.setMax(new java.lang.Integer(14));
+        TF_TORQ_ADC_OFFSET_ADJ.setMin(new java.lang.Integer(-20));
         TF_TORQ_ADC_OFFSET_ADJ.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_TORQ_ADC_OFFSET_ADJ.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_TORQ_ADC_OFFSET_ADJKeyReleased(evt);
-            }
-        });
+        TF_TORQ_ADC_OFFSET_ADJ.setToolTipDefaultValue(new java.lang.Integer(0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 14;
@@ -1324,13 +1382,10 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelMotorSettings.add(jLabel_TORQ_ADC_RANGE_ADJ, gridBagConstraints);
 
-        TF_TORQ_ADC_RANGE_ADJ.setToolTipText("<html>\nValue -20 to 20<br>\nDefault 0\n</html>");
+        TF_TORQ_ADC_RANGE_ADJ.setMax(new java.lang.Integer(20));
+        TF_TORQ_ADC_RANGE_ADJ.setMin(new java.lang.Integer(-20));
         TF_TORQ_ADC_RANGE_ADJ.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_TORQ_ADC_RANGE_ADJ.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_TORQ_ADC_RANGE_ADJKeyReleased(evt);
-            }
-        });
+        TF_TORQ_ADC_RANGE_ADJ.setToolTipDefaultValue(new java.lang.Integer(0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 16;
@@ -1345,13 +1400,10 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelMotorSettings.add(jLabel_TORQ_ADC_ANGLE_ADJ, gridBagConstraints);
 
-        TF_TORQ_ADC_ANGLE_ADJ.setToolTipText("<html>\nValue -20 to 20<br>\nDefault 0\n</html>");
+        TF_TORQ_ADC_ANGLE_ADJ.setMax(new java.lang.Integer(20));
+        TF_TORQ_ADC_ANGLE_ADJ.setMin(new java.lang.Integer(-20));
         TF_TORQ_ADC_ANGLE_ADJ.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_TORQ_ADC_ANGLE_ADJ.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_TORQ_ADC_ANGLE_ADJKeyReleased(evt);
-            }
-        });
+        TF_TORQ_ADC_ANGLE_ADJ.setToolTipDefaultValue(new java.lang.Integer(0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 18;
@@ -1366,13 +1418,9 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelMotorSettings.add(jLabel_TORQ_ADC_OFFSET, gridBagConstraints);
 
-        TF_TORQ_ADC_OFFSET.setToolTipText("<html>\nInsert value read on calibration<br>\nMax 250\n</html>");
+        TF_TORQ_ADC_OFFSET.setMax(new java.lang.Integer(250));
         TF_TORQ_ADC_OFFSET.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_TORQ_ADC_OFFSET.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_TORQ_ADC_OFFSETKeyReleased(evt);
-            }
-        });
+        TF_TORQ_ADC_OFFSET.setToolTipExtra("Insert value read on calibration");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 20;
@@ -1387,13 +1435,9 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelMotorSettings.add(jLabel_TORQ_ADC_MAX, gridBagConstraints);
 
-        TF_TORQUE_ADC_MAX.setToolTipText("<html>\nInsert value read on calibration<br>\nMax 500\n</html>");
+        TF_TORQUE_ADC_MAX.setMax(new java.lang.Integer(500));
         TF_TORQUE_ADC_MAX.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_TORQUE_ADC_MAX.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_TORQUE_ADC_MAXKeyReleased(evt);
-            }
-        });
+        TF_TORQUE_ADC_MAX.setToolTipExtra("Insert value read on calibration");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 22;
@@ -1408,8 +1452,11 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelMotorSettings.add(jLabel_BOOST_TORQUE_FACTOR, gridBagConstraints);
 
-        TF_BOOST_TORQUE_FACTOR.setToolTipText("<html>Max value 500<br>\nRecommended range 200 to 300\n</html>");
+        TF_BOOST_TORQUE_FACTOR.setMax(new java.lang.Integer(500));
         TF_BOOST_TORQUE_FACTOR.setPreferredSize(new java.awt.Dimension(45, 23));
+        TF_BOOST_TORQUE_FACTOR.setToolTipExtra("High values short effect");
+        TF_BOOST_TORQUE_FACTOR.setToolTipRecommendedMax(new java.lang.Integer(300));
+        TF_BOOST_TORQUE_FACTOR.setToolTipRecommendedMin(new java.lang.Integer(200));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 24;
@@ -1424,8 +1471,10 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelMotorSettings.add(jLabel_BOOST_CADENCE_STEP, gridBagConstraints);
 
-        TF_BOOST_CADENCE_STEP.setToolTipText("<html>Max value 50<br>\nRecommended range 20 to 30<br>\n(high values short effect)\n</html>");
+        TF_BOOST_CADENCE_STEP.setMax(new java.lang.Integer(50));
         TF_BOOST_CADENCE_STEP.setPreferredSize(new java.awt.Dimension(45, 23));
+        TF_BOOST_CADENCE_STEP.setToolTipRecommendedMax(new java.lang.Integer(30));
+        TF_BOOST_CADENCE_STEP.setToolTipRecommendedMin(new java.lang.Integer(20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 26;
@@ -1462,6 +1511,11 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
 
         groupMotorV.add(RB_MOTOR_36V);
         RB_MOTOR_36V.setText("36V");
+        RB_MOTOR_36V.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                RB_MOTOR_36VStateChanged(evt);
+            }
+        });
         jPanel_MOTOR_V.add(RB_MOTOR_36V);
         jPanel_MOTOR_V.add(filler1);
 
@@ -1530,7 +1584,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelBatterySettings.add(jLabel_BAT_CUR_MAX, gridBagConstraints);
 
-        TF_BAT_CUR_MAX.setToolTipText("<html>Max value<br>\n17 A for 36 V<br>\n12 A for 48 V\n</html>");
+        TF_BAT_CUR_MAX.setMax(new java.lang.Integer(17));
         TF_BAT_CUR_MAX.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
@@ -1566,7 +1620,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelBatterySettings.add(jLabel_BATT_CAPACITY, gridBagConstraints);
 
-        TF_BATT_CAPACITY.setToolTipText("<html>To calculate<br>\nBattery Volt x Ah\n</html>\n");
+        TF_BATT_CAPACITY.setToolTipText("<html>To calculate:<br> Battery Volt x Ah </html> ");
         TF_BATT_CAPACITY.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
@@ -1600,7 +1654,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelBatterySettings.add(jLabel_BATT_VOLT_CAL, gridBagConstraints);
 
-        TF_BATT_VOLT_CAL.setToolTipText("<html>For calibrate voltage displayed<br>\nIndicative value 95 to 105\n</html>");
+        TF_BATT_VOLT_CAL.setToolTipText("<html>To correct the displayed voltage.<br> Likely value 95 to 105 </html>");
         TF_BATT_VOLT_CAL.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
@@ -1616,7 +1670,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelBatterySettings.add(jLabel_BATT_CAPACITY_CAL, gridBagConstraints);
 
-        TF_BATT_CAPACITY_CAL.setToolTipText("<html>Starting to 100%<br>\nwith the% remaining when battery is low<br>\ncalculate the actual%\n</html>");
+        TF_BATT_CAPACITY_CAL.setToolTipText("<html>Starting at 100%<br> use the % remaining when battery is low<br> to calculate the actual % </html> ");
         TF_BATT_CAPACITY_CAL.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
@@ -1634,7 +1688,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelBatterySettings.add(jLabel_BATT_VOLT_CUT_OFF, gridBagConstraints);
 
-        TF_BATT_VOLT_CUT_OFF.setToolTipText("<html>Indicative value 29 for 36 V<br>\n38 for 48 V, It depends on the<br>\ncharacteristics of the battery\n</html>");
+        TF_BATT_VOLT_CUT_OFF.setToolTipText("<html>Likely value 29 for 36 V, 38 for 48 V.<br>It depends on the characteristics of the battery.</html> ");
         TF_BATT_VOLT_CUT_OFF.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
@@ -1744,7 +1798,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelBatterySettings.add(headerBikeSettings, gridBagConstraints);
 
-        TF_WHEEL_CIRCUMF.setToolTipText("<html>Indicative values:<br>\n26-inch wheel = 2050 mm<br>\n27-inch wheel = 2150 mm<br>\n27.5 inch wheel = 2215 mm<br>\n28-inch wheel = 2250 mm<br>\n29-inch wheel = 2300 mmV\n</html>");
+        TF_WHEEL_CIRCUMF.setToolTipText("<html>Common values:<br> 26-inch wheel = 2050 mm<br> 27-inch wheel = 2150 mm<br> 27.5 inch wheel = 2215 mm<br> 28-inch wheel = 2250 mm<br> 29-inch wheel = 2300 mm </html>");
         TF_WHEEL_CIRCUMF.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
@@ -1752,13 +1806,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelBatterySettings.add(TF_WHEEL_CIRCUMF, gridBagConstraints);
 
-        TF_MAX_SPEED.setToolTipText("<html>km/h or mph<br>\nMax value in EU 25 km/h\n</html>");
+        TF_MAX_SPEED.setToolTipText("Max value in EU 25 km/h");
         TF_MAX_SPEED.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_MAX_SPEED.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_MAX_SPEEDKeyReleased(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 28;
@@ -1933,11 +1982,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelFunctionSettings.add(rowTorSensorAdv, gridBagConstraints);
 
         CB_FIELD_WEAKENING_ENABLED.setText("Field weakening enabled");
-        CB_FIELD_WEAKENING_ENABLED.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                CB_FIELD_WEAKENING_ENABLEDStateChanged(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 20;
@@ -2030,9 +2074,10 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelPowerAssist.add(jLabel_TF_POWER_ASS_1, gridBagConstraints);
 
-        TF_POWER_ASS_1.setToolTipText("<html>% Human power<br>\nMax value 500\n</html>");
+        TF_POWER_ASS_1.setMax(new java.lang.Integer(500));
         TF_POWER_ASS_1.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_POWER_ASS_1.setPreferredSize(new java.awt.Dimension(45, 23));
+        TF_POWER_ASS_1.setToolTipExtra("% human power");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -2047,9 +2092,10 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelPowerAssist.add(jLabel_TF_POWER_ASS_2, gridBagConstraints);
 
-        TF_POWER_ASS_2.setToolTipText("<html>% Human power<br>\nMax value 500\n</html>");
+        TF_POWER_ASS_2.setMax(new java.lang.Integer(500));
         TF_POWER_ASS_2.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_POWER_ASS_2.setPreferredSize(new java.awt.Dimension(45, 23));
+        TF_POWER_ASS_2.setToolTipExtra("% human power");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
@@ -2064,9 +2110,10 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelPowerAssist.add(jLabel_TF_POWER_ASS_3, gridBagConstraints);
 
-        TF_POWER_ASS_3.setToolTipText("<html>% Human power<br>\nMax value 500\n</html>");
+        TF_POWER_ASS_3.setMax(new java.lang.Integer(500));
         TF_POWER_ASS_3.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_POWER_ASS_3.setPreferredSize(new java.awt.Dimension(45, 23));
+        TF_POWER_ASS_3.setToolTipExtra("% human power");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 6;
@@ -2081,9 +2128,10 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelPowerAssist.add(jLabel_POWER_ASS_4, gridBagConstraints);
 
-        TF_POWER_ASS_4.setToolTipText("<html>% Human power<br>\nMax value 500\n</html>");
+        TF_POWER_ASS_4.setMax(new java.lang.Integer(500));
         TF_POWER_ASS_4.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_POWER_ASS_4.setPreferredSize(new java.awt.Dimension(45, 23));
+        TF_POWER_ASS_4.setToolTipExtra("% human power");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 8;
@@ -2134,7 +2182,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelTorqueAssist.add(jLabel_TORQUE_ASS_1, gridBagConstraints);
 
-        TF_TORQUE_ASS_1.setToolTipText("Max value 254");
+        TF_TORQUE_ASS_1.setMax(new java.lang.Integer(254));
         TF_TORQUE_ASS_1.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_TORQUE_ASS_1.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2151,7 +2199,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelTorqueAssist.add(jLabel_TORQUE_ASS_2, gridBagConstraints);
 
-        TF_TORQUE_ASS_2.setToolTipText("Max value 254");
+        TF_TORQUE_ASS_2.setMax(new java.lang.Integer(254));
         TF_TORQUE_ASS_2.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_TORQUE_ASS_2.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2168,7 +2216,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelTorqueAssist.add(jLabel_TORQUE_ASS_3, gridBagConstraints);
 
-        TF_TORQUE_ASS_3.setToolTipText("Max value 254");
+        TF_TORQUE_ASS_3.setMax(new java.lang.Integer(254));
         TF_TORQUE_ASS_3.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_TORQUE_ASS_3.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2185,7 +2233,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelTorqueAssist.add(jLabel_TORQUE_ASS_4, gridBagConstraints);
 
-        TF_TORQUE_ASS_4.setToolTipText("Max value 254");
+        TF_TORQUE_ASS_4.setMax(new java.lang.Integer(254));
         TF_TORQUE_ASS_4.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_TORQUE_ASS_4.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2237,7 +2285,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelCadenceAssist.add(jLabel_CADENCE_ASS_1, gridBagConstraints);
 
-        TF_CADENCE_ASS_1.setToolTipText("Max value 254");
+        TF_CADENCE_ASS_1.setMax(new java.lang.Integer(254));
         TF_CADENCE_ASS_1.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_CADENCE_ASS_1.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2254,7 +2302,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelCadenceAssist.add(jLabel_CADENCE_ASS_2, gridBagConstraints);
 
-        TF_CADENCE_ASS_2.setToolTipText("Max value 254");
+        TF_CADENCE_ASS_2.setMax(new java.lang.Integer(254));
         TF_CADENCE_ASS_2.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_CADENCE_ASS_2.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2271,7 +2319,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelCadenceAssist.add(jLabel_CADENCE_ASS_3, gridBagConstraints);
 
-        TF_CADENCE_ASS_3.setToolTipText("Max value 254");
+        TF_CADENCE_ASS_3.setMax(new java.lang.Integer(254));
         TF_CADENCE_ASS_3.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_CADENCE_ASS_3.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2288,7 +2336,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelCadenceAssist.add(jLabel_CADENCE_ASS_4, gridBagConstraints);
 
-        TF_CADENCE_ASS_4.setToolTipText("Max value 254");
+        TF_CADENCE_ASS_4.setMax(new java.lang.Integer(254));
         TF_CADENCE_ASS_4.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_CADENCE_ASS_4.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2340,9 +2388,10 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelEmtbAssist.add(jLabel_EMTB_ASS_1, gridBagConstraints);
 
-        TF_EMTB_ASS_1.setToolTipText("<html>Sensitivity<br>\nbetween 0 to 20\n</html>");
+        TF_EMTB_ASS_1.setMax(new java.lang.Integer(20));
         TF_EMTB_ASS_1.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_EMTB_ASS_1.setPreferredSize(new java.awt.Dimension(45, 23));
+        TF_EMTB_ASS_1.setToolTipExtra("Sensitivity");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -2449,14 +2498,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelWalkAssist.add(jLabel_WALK_ASS_SPEED_1, gridBagConstraints);
 
-        TF_WALK_ASS_SPEED_1.setToolTipText("<html>km/h x10 or mph x10<br>\nValue 35 to 50 (3.5 to 5.0 km/h)\n</html>");
         TF_WALK_ASS_SPEED_1.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_1.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_WALK_ASS_SPEED_1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_WALK_ASS_SPEED_1KeyReleased(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 2;
@@ -2471,14 +2514,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelWalkAssist.add(jLabel_WALK_ASS_SPEED_2, gridBagConstraints);
 
-        TF_WALK_ASS_SPEED_2.setToolTipText("<html>km/h x10 or mph x10<br>\nValue 35 to 50 (3.5 to 5.0 km/h)\n</html>");
         TF_WALK_ASS_SPEED_2.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_2.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_WALK_ASS_SPEED_2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_WALK_ASS_SPEED_2KeyReleased(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 4;
@@ -2493,14 +2530,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelWalkAssist.add(jLabel_WALK_ASS_SPEED_3, gridBagConstraints);
 
-        TF_WALK_ASS_SPEED_3.setToolTipText("<html>km/h x10 or mph x10<br>\nValue 35 to 50 (3.5 to 5.0 km/h)\n</html>");
         TF_WALK_ASS_SPEED_3.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_3.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_WALK_ASS_SPEED_3.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_WALK_ASS_SPEED_3KeyReleased(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 6;
@@ -2515,14 +2546,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelWalkAssist.add(jLabel_WALK_ASS_SPEED_4, gridBagConstraints);
 
-        TF_WALK_ASS_SPEED_4.setToolTipText("<html>km/h x10 or mph x10<br>\nValue 35 to 50 (3.5 to 5.0 km/h)\n</html>");
         TF_WALK_ASS_SPEED_4.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_4.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_WALK_ASS_SPEED_4.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_WALK_ASS_SPEED_4KeyReleased(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 8;
@@ -2537,14 +2562,9 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelWalkAssist.add(jLabel_WALK_ASS_SPEED_LIMIT, gridBagConstraints);
 
-        TF_WALK_ASS_SPEED_LIMIT.setToolTipText("<html>km/h x10 or mph x10<br>\nMax value 60 (in EU 6 km/h)\n</html>");
+        TF_WALK_ASS_SPEED_LIMIT.setMax(new java.lang.Integer(60));
         TF_WALK_ASS_SPEED_LIMIT.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_SPEED_LIMIT.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_WALK_ASS_SPEED_LIMIT.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_WALK_ASS_SPEED_LIMITKeyReleased(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 10;
@@ -2559,9 +2579,10 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         subPanelWalkAssist.add(jLabel_WALK_ASS_TIME, gridBagConstraints);
 
-        TF_WALK_ASS_TIME.setToolTipText("Max value 255 (0.1 s)\n\n");
+        TF_WALK_ASS_TIME.setMax(new java.lang.Integer(255));
         TF_WALK_ASS_TIME.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_WALK_ASS_TIME.setPreferredSize(new java.awt.Dimension(45, 23));
+        TF_WALK_ASS_TIME.setToolTipExtra("x 0.1s");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 12;
@@ -2615,14 +2636,9 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelStreetMode.add(jLabel_STREET_SPEED_LIM, gridBagConstraints);
 
-        TF_STREET_SPEED_LIM.setToolTipText("<html>km/h or mph<br>\nMax value in EU 25 km/h\n</html>");
         TF_STREET_SPEED_LIM.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_STREET_SPEED_LIM.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_STREET_SPEED_LIM.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_STREET_SPEED_LIMKeyReleased(evt);
-            }
-        });
+        TF_STREET_SPEED_LIM.setToolTipExtra("<html>km/h Max value in EU 25 km/h");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 2;
@@ -2731,14 +2747,9 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelCruiseMode.add(jLabel_CRUISE_ASS_1, gridBagConstraints);
 
-        TF_CRUISE_ASS_1.setToolTipText("<html>km/h or mph<br>\nMax value in EU 25 km/h\n</html>");
+        TF_CRUISE_ASS_1.setToolTipText("Max value in EU 25 km/h");
         TF_CRUISE_ASS_1.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_CRUISE_ASS_1.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_CRUISE_ASS_1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_CRUISE_ASS_1KeyReleased(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -2753,14 +2764,9 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelCruiseMode.add(jLabel_CRUISE_ASS_2, gridBagConstraints);
 
-        TF_CRUISE_ASS_2.setToolTipText("<html>km/h or mph<br>\nMax value in EU 25 km/h\n</html>");
+        TF_CRUISE_ASS_2.setToolTipText("Max value in EU 25 km/h");
         TF_CRUISE_ASS_2.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_CRUISE_ASS_2.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_CRUISE_ASS_2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_CRUISE_ASS_2KeyReleased(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
@@ -2775,14 +2781,9 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelCruiseMode.add(jLabel_CRUISE_ASS_3, gridBagConstraints);
 
-        TF_CRUISE_ASS_3.setToolTipText("<html>km/h or mph<br>\nMax value in EU 25 km/h\n</html>");
+        TF_CRUISE_ASS_3.setToolTipText("Max value in EU 25 km/h");
         TF_CRUISE_ASS_3.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_CRUISE_ASS_3.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_CRUISE_ASS_3.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_CRUISE_ASS_3KeyReleased(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 6;
@@ -2797,14 +2798,9 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelCruiseMode.add(jLabel_CRUISE_ASS_4, gridBagConstraints);
 
-        TF_CRUISE_ASS_4.setToolTipText("<html>km/h or mph<br>\nMax value in EU 25 km/h\n</html>");
+        TF_CRUISE_ASS_4.setToolTipText("Max value in EU 25 km/h");
         TF_CRUISE_ASS_4.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_CRUISE_ASS_4.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_CRUISE_ASS_4.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_CRUISE_ASS_4KeyReleased(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 8;
@@ -2822,11 +2818,6 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         TF_CRUISE_SPEED_ENA.setToolTipText("Min speed to enable cruise (km/h or mph)");
         TF_CRUISE_SPEED_ENA.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_CRUISE_SPEED_ENA.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_CRUISE_SPEED_ENA.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_CRUISE_SPEED_ENAKeyReleased(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 10;
@@ -2879,13 +2870,9 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelLightsHybrid.add(jLabel_LIGHT_MODE_ON_START, gridBagConstraints);
 
         TF_LIGHT_MODE_ON_START.setToolTipText("<html>With lights button ON<br>\n0 - lights ON<br>\n1 - lights FLASHING<br>\n2 - lights ON and BRAKE-FLASHING when braking<br>\n3 - lights FLASHING and ON when braking<br>\n4 - lights FLASHING and BRAKE-FLASHING when braking<br>\n5 - lights ON and ON when braking, even with the light button OFF<br>\n6 - lights ON and BRAKE-FLASHING when braking, even with the light button OFF<br>\n7 - lights FLASHING and ON when braking, even with the light button OFF<br>\n8 - lights FLASHING and BRAKE-FLASHING when braking, even with the light button OFF\n</html>");
+        TF_LIGHT_MODE_ON_START.setMax(new java.lang.Integer(8));
         TF_LIGHT_MODE_ON_START.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_LIGHT_MODE_ON_START.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_LIGHT_MODE_ON_START.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_LIGHT_MODE_ON_STARTKeyReleased(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -2905,13 +2892,9 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelLightsHybrid.add(jLabel_LIGHT_MODE_1, gridBagConstraints);
 
         TF_LIGHT_MODE_1.setToolTipText("<html>With lights button ON<br>\n0 - lights ON<br>\n1 - lights FLASHING<br>\n2 - lights ON and BRAKE-FLASHING when braking<br>\n3 - lights FLASHING and ON when braking<br>\n4 - lights FLASHING and BRAKE-FLASHING when braking<br>\n5 - lights ON and ON when braking, even with the light button OFF<br>\n6 - lights ON and BRAKE-FLASHING when braking, even with the light button OFF<br>\n7 - lights FLASHING and ON when braking, even with the light button OFF<br>\n8 - lights FLASHING and BRAKE-FLASHING when braking, even with the light button OFF\n</html>");
+        TF_LIGHT_MODE_1.setMax(new java.lang.Integer(8));
         TF_LIGHT_MODE_1.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_LIGHT_MODE_1.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_LIGHT_MODE_1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_LIGHT_MODE_1KeyReleased(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
@@ -2931,13 +2914,9 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelLightsHybrid.add(jLabel_LIGHT_MODE_2, gridBagConstraints);
 
         TF_LIGHT_MODE_2.setToolTipText("<html>With lights button ON<br>\n0 - lights ON<br>\n1 - lights FLASHING<br>\n2 - lights ON and BRAKE-FLASHING when braking<br>\n3 - lights FLASHING and ON when braking<br>\n4 - lights FLASHING and BRAKE-FLASHING when braking<br>\n5 - lights ON and ON when braking, even with the light button OFF<br>\n6 - lights ON and BRAKE-FLASHING when braking, even with the light button OFF<br>\n7 - lights FLASHING and ON when braking, even with the light button OFF<br>\n8 - lights FLASHING and BRAKE-FLASHING when braking, even with the light button OFF<br>\nor alternative option settings<br>\n9 - assistance without pedal rotation\n</html>");
+        TF_LIGHT_MODE_2.setMax(new java.lang.Integer(9));
         TF_LIGHT_MODE_2.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_LIGHT_MODE_2.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_LIGHT_MODE_2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_LIGHT_MODE_2KeyReleased(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 6;
@@ -2957,13 +2936,9 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelLightsHybrid.add(jLabel_LIGHT_MODE_3, gridBagConstraints);
 
         TF_LIGHT_MODE_3.setToolTipText("<html>With lights button ON<br>\n0 - lights ON<br>\n1 - lights FLASHING<br>\n2 - lights ON and BRAKE-FLASHING when braking<br>\n3 - lights FLASHING and ON when braking<br>\n4 - lights FLASHING and BRAKE-FLASHING when braking<br>\n5 - lights ON and ON when braking, even with the light button OFF<br>\n6 - lights ON and BRAKE-FLASHING when braking, even with the light button OFF<br>\n7 - lights FLASHING and ON when braking, even with the light button OFF<br>\n8 - lights FLASHING and BRAKE-FLASHING when braking, even with the light button OFF<br>\nor alternative option settings<br>\n10 - assistance with sensors error\n</html>");
+        TF_LIGHT_MODE_3.setMax(new java.lang.Integer(10));
         TF_LIGHT_MODE_3.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_LIGHT_MODE_3.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_LIGHT_MODE_3.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_LIGHT_MODE_3KeyReleased(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 8;
@@ -3034,7 +3009,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelBatteryCells.add(jLabel_BAT_CELL_OVER, gridBagConstraints);
 
-        TF_BAT_CELL_OVER.setToolTipText("Value 4.25 to 4.35");
+        TF_BAT_CELL_OVER.setMax(new java.lang.Float(4.35F));
+        TF_BAT_CELL_OVER.setMin(new java.lang.Float(4.25F));
         TF_BAT_CELL_OVER.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -3050,7 +3026,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelBatteryCells.add(jLabel_BAT_CELL_SOC, gridBagConstraints);
 
-        TF_BAT_CELL_SOC.setToolTipText("Value 4.00 to 4.10");
+        TF_BAT_CELL_SOC.setMax(new java.lang.Float(4.15F));
+        TF_BAT_CELL_SOC.setMin(new java.lang.Float(4.0F));
         TF_BAT_CELL_SOC.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -3066,7 +3043,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelBatteryCells.add(jLabel_BAT_CELL_FULL, gridBagConstraints);
 
-        TF_BAT_CELL_FULL.setToolTipText("Value 3.90 to 4.00");
+        TF_BAT_CELL_FULL.setMax(new java.lang.Float(4.15F));
+        TF_BAT_CELL_FULL.setMin(new java.lang.Float(3.9F));
         TF_BAT_CELL_FULL.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -3083,6 +3061,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelBatteryCells.add(jLabel_BAT_CELL_3_4, gridBagConstraints);
 
         TF_BAT_CELL_3_4.setToolTipText("Value empty to full");
+        TF_BAT_CELL_3_4.setMax(new java.lang.Float(4.15F));
+        TF_BAT_CELL_3_4.setMin(new java.lang.Float(2.0F));
         TF_BAT_CELL_3_4.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -3099,6 +3079,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelBatteryCells.add(jLabel_BAT_CELL_2_4, gridBagConstraints);
 
         TF_BAT_CELL_2_4.setToolTipText("Value empty to full");
+        TF_BAT_CELL_2_4.setMax(new java.lang.Float(4.15F));
+        TF_BAT_CELL_2_4.setMin(new java.lang.Float(2.0F));
         TF_BAT_CELL_2_4.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -3115,6 +3097,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelBatteryCells.add(jLabel_BAT_CELL_1_4, gridBagConstraints);
 
         TF_BAT_CELL_1_4.setToolTipText("Value empty to full");
+        TF_BAT_CELL_1_4.setMax(new java.lang.Float(4.15F));
+        TF_BAT_CELL_1_4.setMin(new java.lang.Float(2.0F));
         TF_BAT_CELL_1_4.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -3131,6 +3115,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelBatteryCells.add(jLabel_BAT_CELL_5_6, gridBagConstraints);
 
         TF_BAT_CELL_5_6.setToolTipText("Value empty to full");
+        TF_BAT_CELL_5_6.setMax(new java.lang.Float(4.15F));
+        TF_BAT_CELL_5_6.setMin(new java.lang.Float(2.0F));
         TF_BAT_CELL_5_6.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -3147,6 +3133,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelBatteryCells.add(jLabel_BAT_CELL_4_6, gridBagConstraints);
 
         TF_BAT_CELL_4_6.setToolTipText("Value empty to full");
+        TF_BAT_CELL_4_6.setMax(new java.lang.Float(4.15F));
+        TF_BAT_CELL_4_6.setMin(new java.lang.Float(2.0F));
         TF_BAT_CELL_4_6.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -3163,6 +3151,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelBatteryCells.add(jLabel_BAT_CELL_3_6, gridBagConstraints);
 
         TF_BAT_CELL_3_6.setToolTipText("Value empty to full");
+        TF_BAT_CELL_3_6.setMax(new java.lang.Float(4.15F));
+        TF_BAT_CELL_3_6.setMin(new java.lang.Float(2.0F));
         TF_BAT_CELL_3_6.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -3179,6 +3169,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelBatteryCells.add(jLabel_BAT_CELL_2_6, gridBagConstraints);
 
         TF_BAT_CELL_2_6.setToolTipText("Value empty to full");
+        TF_BAT_CELL_2_6.setMax(new java.lang.Float(4.15F));
+        TF_BAT_CELL_2_6.setMin(new java.lang.Float(2.0F));
         TF_BAT_CELL_2_6.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -3195,6 +3187,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelBatteryCells.add(jLabel_BAT_CELL_1_6, gridBagConstraints);
 
         TF_BAT_CELL_1_6.setToolTipText("Value empty to full");
+        TF_BAT_CELL_1_6.setMax(new java.lang.Float(4.15F));
+        TF_BAT_CELL_1_6.setMin(new java.lang.Float(2.0F));
         TF_BAT_CELL_1_6.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -3210,7 +3204,9 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelBatteryCells.add(jLabel_BAT_CELL_EMPTY, gridBagConstraints);
 
-        TF_BAT_CELL_EMPTY.setToolTipText("<html>Indicative value 2.90<br>\nIt depends on the<br>\ncharacteristics of the cells\n</html>");
+        TF_BAT_CELL_EMPTY.setToolTipText("<html>Common value 2.90<br> It depends on the characteristics of the cells </html>");
+        TF_BAT_CELL_EMPTY.setMax(new java.lang.Float(4.0F));
+        TF_BAT_CELL_EMPTY.setMin(new java.lang.Float(2.0F));
         TF_BAT_CELL_EMPTY.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -3251,12 +3247,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelDisplayAdvanced.add(jLabelData1, gridBagConstraints);
 
         TF_DATA_1.setToolTipText("<html>0 - motor temperature (°C)<br>\n  1 - battery SOC remaining (%)<br>\n  2 - battery voltage (V)<br>\n  3 - battery current (A)<br>\n  4 - motor power (Watt/10)<br>\n  5 - adc throttle (8 bit)<br>\n  6 - adc torque sensor (10 bit)<br>\n  7 - pedal cadence (rpm)<br>\n  8 - human power(W/10)<br>\n  9 - pedal torque adc delta<br>\n10 - consumed Wh/10\n</html>");
+        TF_DATA_1.setMax(new java.lang.Integer(10));
         TF_DATA_1.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_DATA_1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_DATA_1KeyReleased(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -3272,12 +3264,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelDisplayAdvanced.add(jLabelData2, gridBagConstraints);
 
         TF_DATA_2.setToolTipText("<html>0 - motor temperature (°C)<br>\n  1 - battery SOC remaining (%)<br>\n  2 - battery voltage (V)<br>\n  3 - battery current (A)<br>\n  4 - motor power (Watt/10)<br>\n  5 - adc throttle (8 bit)<br>\n  6 - adc torque sensor (10 bit)<br>\n  7 - pedal cadence (rpm)<br>\n  8 - human power(W/10)<br>\n  9 - pedal torque adc delta<br>\n10 - consumed Wh/10\n</html>");
+        TF_DATA_2.setMax(new java.lang.Integer(10));
         TF_DATA_2.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_DATA_2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_DATA_2KeyReleased(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
@@ -3293,12 +3281,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelDisplayAdvanced.add(jLabelData3, gridBagConstraints);
 
         TF_DATA_3.setToolTipText("<html>0 - motor temperature (°C)<br>\n  1 - battery SOC remaining (%)<br>\n  2 - battery voltage (V)<br>\n  3 - battery current (A)<br>\n  4 - motor power (Watt/10)<br>\n  5 - adc throttle (8 bit)<br>\n  6 - adc torque sensor (10 bit)<br>\n  7 - pedal cadence (rpm)<br>\n  8 - human power(W/10)<br>\n  9 - pedal torque adc delta<br>\n10 - consumed Wh/10\n</html>");
+        TF_DATA_3.setMax(new java.lang.Integer(10));
         TF_DATA_3.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_DATA_3.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_DATA_3KeyReleased(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 6;
@@ -3314,12 +3298,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelDisplayAdvanced.add(jLabelData4, gridBagConstraints);
 
         TF_DATA_4.setToolTipText("<html>0 - motor temperature (°C)<br>\n  1 - battery SOC remaining (%)<br>\n  2 - battery voltage (V)<br>\n  3 - battery current (A)<br>\n  4 - motor power (Watt/10)<br>\n  5 - adc throttle (8 bit)<br>\n  6 - adc torque sensor (10 bit)<br>\n  7 - pedal cadence (rpm)<br>\n  8 - human power(W/10)<br>\n  9 - pedal torque adc delta<br>\n10 - consumed Wh/10\n</html>");
+        TF_DATA_4.setMax(new java.lang.Integer(10));
         TF_DATA_4.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_DATA_4.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_DATA_4KeyReleased(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 8;
@@ -3335,12 +3315,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelDisplayAdvanced.add(jLabelData5, gridBagConstraints);
 
         TF_DATA_5.setToolTipText("<html>0 - motor temperature (°C)<br>\n  1 - battery SOC remaining (%)<br>\n  2 - battery voltage (V)<br>\n  3 - battery current (A)<br>\n  4 - motor power (Watt/10)<br>\n  5 - adc throttle (8 bit)<br>\n  6 - adc torque sensor (10 bit)<br>\n  7 - pedal cadence (rpm)<br>\n  8 - human power(W/10)<br>\n  9 - pedal torque adc delta<br>\n10 - consumed Wh/10\n</html>");
+        TF_DATA_5.setMax(new java.lang.Integer(10));
         TF_DATA_5.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_DATA_5.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_DATA_5KeyReleased(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 10;
@@ -3356,19 +3332,15 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         subPanelDisplayAdvanced.add(jLabelData6, gridBagConstraints);
 
         TF_DATA_6.setToolTipText("<html>0 - motor temperature (°C)<br>\n  1 - battery SOC remaining (%)<br>\n  2 - battery voltage (V)<br>\n  3 - battery current (A)<br>\n  4 - motor power (Watt/10)<br>\n  5 - adc throttle (8 bit)<br>\n  6 - adc torque sensor (10 bit)<br>\n  7 - pedal cadence (rpm)<br>\n  8 - human power(W/10)<br>\n  9 - pedal torque adc delta<br>\n10 - consumed Wh/10\n</html>");
+        TF_DATA_6.setMax(new java.lang.Integer(10));
         TF_DATA_6.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_DATA_6.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_DATA_6KeyReleased(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 12;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelDisplayAdvanced.add(TF_DATA_6, gridBagConstraints);
 
-        jLabel_DELAY_DATA_1.setText("Time to displayed data 1 (0.1 s)");
+        jLabel_DELAY_DATA_1.setText("Time to display data 1 (0.1 s)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 14;
@@ -3376,15 +3348,16 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelDisplayAdvanced.add(jLabel_DELAY_DATA_1, gridBagConstraints);
 
-        TF_DELAY_DATA_1.setToolTipText("<html>Max value 255 (0.1 sec)<br>\ncontinuous display at zero value\n</html>");
+        TF_DELAY_DATA_1.setMax(new java.lang.Integer(255));
         TF_DELAY_DATA_1.setPreferredSize(new java.awt.Dimension(45, 23));
+        TF_DELAY_DATA_1.setToolTipExtra("Time to display value<br>0 for continuous display");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 14;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelDisplayAdvanced.add(TF_DELAY_DATA_1, gridBagConstraints);
 
-        jLabel_DELAY_DATA_2.setText("Time to displayed data 2 (0.1 s)");
+        jLabel_DELAY_DATA_2.setText("Time to display data 2 (0.1 s)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 16;
@@ -3392,15 +3365,16 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelDisplayAdvanced.add(jLabel_DELAY_DATA_2, gridBagConstraints);
 
-        TF_DELAY_DATA_2.setToolTipText("<html>Max value 255 (0.1 sec)<br>\ncontinuous display at zero value\n</html>");
+        TF_DELAY_DATA_2.setMax(new java.lang.Integer(255));
         TF_DELAY_DATA_2.setPreferredSize(new java.awt.Dimension(45, 23));
+        TF_DELAY_DATA_2.setToolTipExtra("Time to display value<br>0 for continuous display");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 16;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelDisplayAdvanced.add(TF_DELAY_DATA_2, gridBagConstraints);
 
-        jLabel_DELAY_DATA_3.setText("Time to displayed data 3 (0.1 s)");
+        jLabel_DELAY_DATA_3.setText("Time to display data 3 (0.1 s)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 18;
@@ -3408,15 +3382,16 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelDisplayAdvanced.add(jLabel_DELAY_DATA_3, gridBagConstraints);
 
-        TF_DELAY_DATA_3.setToolTipText("<html>Max value 255 (0.1 sec)<br>\ncontinuous display at zero value\n</html>");
+        TF_DELAY_DATA_3.setMax(new java.lang.Integer(255));
         TF_DELAY_DATA_3.setPreferredSize(new java.awt.Dimension(45, 23));
+        TF_DELAY_DATA_3.setToolTipExtra("Time to display value<br>0 for continuous display");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 18;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelDisplayAdvanced.add(TF_DELAY_DATA_3, gridBagConstraints);
 
-        jLabel_DELAY_DATA_4.setText("Time to displayed data 4 (0.1 s)");
+        jLabel_DELAY_DATA_4.setText("Time to display data 4 (0.1 s)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 20;
@@ -3424,15 +3399,16 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelDisplayAdvanced.add(jLabel_DELAY_DATA_4, gridBagConstraints);
 
-        TF_DELAY_DATA_4.setToolTipText("<html>Max value 255 (0.1 sec)<br>\ncontinuous display at zero value\n</html>");
+        TF_DELAY_DATA_4.setMax(new java.lang.Integer(255));
         TF_DELAY_DATA_4.setPreferredSize(new java.awt.Dimension(45, 23));
+        TF_DELAY_DATA_4.setToolTipExtra("Time to display value<br>0 for continuous display");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 20;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelDisplayAdvanced.add(TF_DELAY_DATA_4, gridBagConstraints);
 
-        jLabel_DELAY_DATA_5.setText("Time to displayed data 5 (0.1 s)");
+        jLabel_DELAY_DATA_5.setText("Time to display data 5 (0.1 s)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 22;
@@ -3440,15 +3416,16 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelDisplayAdvanced.add(jLabel_DELAY_DATA_5, gridBagConstraints);
 
-        TF_DELAY_DATA_5.setToolTipText("<html>Max value 255 (0.1 sec)<br>\ncontinuous display at zero value\n</html>");
+        TF_DELAY_DATA_5.setMax(new java.lang.Integer(255));
         TF_DELAY_DATA_5.setPreferredSize(new java.awt.Dimension(45, 23));
+        TF_DELAY_DATA_5.setToolTipExtra("Time to display value<br>0 for continuous display");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 22;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelDisplayAdvanced.add(TF_DELAY_DATA_5, gridBagConstraints);
 
-        jLabel_DELAY_DATA_6.setText("Time to displayed data 6 (0.1 s)");
+        jLabel_DELAY_DATA_6.setText("Time to display data 6 (0.1 s)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 24;
@@ -3456,8 +3433,9 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelDisplayAdvanced.add(jLabel_DELAY_DATA_6, gridBagConstraints);
 
-        TF_DELAY_DATA_6.setToolTipText("<html>Max value 255 (0.1 sec)<br>\ncontinuous display at zero value\n</html>");
+        TF_DELAY_DATA_6.setMax(new java.lang.Integer(255));
         TF_DELAY_DATA_6.setPreferredSize(new java.awt.Dimension(45, 23));
+        TF_DELAY_DATA_6.setToolTipExtra("Time to display value<br>0 for continuous display");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 24;
@@ -3487,14 +3465,10 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelDataOther.add(jLabel_NUM_DATA_AUTO_DISPLAY, gridBagConstraints);
 
-        TF_NUM_DATA_AUTO_DISPLAY.setToolTipText("Value 1 to 6");
+        TF_NUM_DATA_AUTO_DISPLAY.setMax(new java.lang.Integer(6));
+        TF_NUM_DATA_AUTO_DISPLAY.setMin(new java.lang.Integer(1));
         TF_NUM_DATA_AUTO_DISPLAY.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_NUM_DATA_AUTO_DISPLAY.setPreferredSize(new java.awt.Dimension(45, 23));
-        TF_NUM_DATA_AUTO_DISPLAY.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TF_NUM_DATA_AUTO_DISPLAYKeyReleased(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 8;
         gridBagConstraints.gridy = 0;
@@ -3510,7 +3484,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelDataOther.add(jLabel_DELAY_MENU, gridBagConstraints);
 
-        TF_DELAY_MENU.setToolTipText("Max value 60 (0.1 s)");
+        TF_DELAY_MENU.setActionCommand("<Not Set>");
+        TF_DELAY_MENU.setMax(new java.lang.Integer(60));
         TF_DELAY_MENU.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_DELAY_MENU.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -3612,7 +3587,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelDataOther.add(jLabel_COASTER_BRAKE_THRESHOLD, gridBagConstraints);
 
-        TF_COASTER_BRAKE_THRESHOLD.setToolTipText("Max value 255 (s)");
+        TF_COASTER_BRAKE_THRESHOLD.setMax(new java.lang.Integer(255));
         TF_COASTER_BRAKE_THRESHOLD.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_COASTER_BRAKE_THRESHOLD.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -3636,7 +3611,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelDataOther.add(jLabel_ADC_THROTTLE_MIN, gridBagConstraints);
 
-        TF_ADC_THROTTLE_MIN.setToolTipText("Value 40 to 50");
+        TF_ADC_THROTTLE_MIN.setMax(new java.lang.Integer(50));
+        TF_ADC_THROTTLE_MIN.setMin(new java.lang.Integer(40));
         TF_ADC_THROTTLE_MIN.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_ADC_THROTTLE_MIN.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -3652,7 +3628,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelDataOther.add(jLabel_ADC_THROTTLE_MAX, gridBagConstraints);
 
-        TF_ADC_THROTTLE_MAX.setToolTipText("Value 170 to 180");
+        TF_ADC_THROTTLE_MAX.setMax(new java.lang.Integer(180));
+        TF_ADC_THROTTLE_MAX.setMin(new java.lang.Integer(170));
         TF_ADC_THROTTLE_MAX.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_ADC_THROTTLE_MAX.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -3676,7 +3653,7 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         subPanelDataOther.add(jLabel_ASSIST_THROTTLE_MIN, gridBagConstraints);
 
-        TF_ASSIST_THROTTLE_MIN.setToolTipText("Value 0 to 100");
+        TF_ASSIST_THROTTLE_MIN.setMax(new java.lang.Integer(100));
         TF_ASSIST_THROTTLE_MIN.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_ASSIST_THROTTLE_MIN.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -3773,9 +3750,11 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelDataOther.add(jLabel_MOTOR_BLOCK_CURR, gridBagConstraints);
 
-        TF_MOTOR_BLOCK_CURR.setToolTipText("Value 1 to 5 (0.1 A)");
+        TF_MOTOR_BLOCK_CURR.setMax(new java.lang.Integer(5));
+        TF_MOTOR_BLOCK_CURR.setMin(new java.lang.Integer(1));
         TF_MOTOR_BLOCK_CURR.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_MOTOR_BLOCK_CURR.setPreferredSize(new java.awt.Dimension(45, 23));
+        TF_MOTOR_BLOCK_CURR.setToolTipExtra("0.1 A");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 8;
         gridBagConstraints.gridy = 26;
@@ -3791,7 +3770,8 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         subPanelDataOther.add(jLabel_MOTOR_BLOCK_ERPS, gridBagConstraints);
 
-        TF_MOTOR_BLOCK_ERPS.setToolTipText("Value 10 to 30 (ERPS)");
+        TF_MOTOR_BLOCK_ERPS.setMax(new java.lang.Integer(30));
+        TF_MOTOR_BLOCK_ERPS.setMin(new java.lang.Integer(10));
         TF_MOTOR_BLOCK_ERPS.setMinimumSize(new java.awt.Dimension(45, 23));
         TF_MOTOR_BLOCK_ERPS.setPreferredSize(new java.awt.Dimension(45, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -3957,187 +3937,63 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void CB_COASTER_BRAKEStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CB_COASTER_BRAKEStateChanged
-        setBrakeSensorFieldsEnabled();
+        if (!isUpdating) setBrakeSensorFieldsEnabled();
     }//GEN-LAST:event_CB_COASTER_BRAKEStateChanged
 
     private void CB_WALK_TIME_ENAStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CB_WALK_TIME_ENAStateChanged
-        setBrakeSensorFieldsEnabled();
+        if (!isUpdating) setBrakeSensorFieldsEnabled();
     }//GEN-LAST:event_CB_WALK_TIME_ENAStateChanged
 
     private void CB_BRAKE_SENSORStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CB_BRAKE_SENSORStateChanged
-        setBrakeSensorFieldsEnabled();
+        if (!isUpdating) setBrakeSensorFieldsEnabled();
     }//GEN-LAST:event_CB_BRAKE_SENSORStateChanged
 
     private void RB_THROTTLEStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_RB_THROTTLEStateChanged
-        setAdcOptionFieldsEnabled();
+        if (!isUpdating) setAdcOptionFieldsEnabled();
     }//GEN-LAST:event_RB_THROTTLEStateChanged
 
     private void RB_TEMP_LIMITStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_RB_TEMP_LIMITStateChanged
-        setAdcOptionFieldsEnabled();
+        if (!isUpdating) setAdcOptionFieldsEnabled();
     }//GEN-LAST:event_RB_TEMP_LIMITStateChanged
 
     private void RB_ADC_OPTION_DISStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_RB_ADC_OPTION_DISStateChanged
-        setAdcOptionFieldsEnabled();
+        if (!isUpdating) setAdcOptionFieldsEnabled();
     }//GEN-LAST:event_RB_ADC_OPTION_DISStateChanged
 
-    private void TF_DATA_1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_DATA_1KeyReleased
-        updateDataLabel(TF_DATA_1, jLabelData1, 1);
-    }//GEN-LAST:event_TF_DATA_1KeyReleased
-
-    private void TF_DATA_2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_DATA_2KeyReleased
-        updateDataLabel(TF_DATA_2, jLabelData2, 2);
-    }//GEN-LAST:event_TF_DATA_2KeyReleased
-
-    private void TF_DATA_3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_DATA_3KeyReleased
-        updateDataLabel(TF_DATA_3, jLabelData3, 3);
-    }//GEN-LAST:event_TF_DATA_3KeyReleased
-
-    private void TF_DATA_4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_DATA_4KeyReleased
-        updateDataLabel(TF_DATA_4, jLabelData4, 4);
-    }//GEN-LAST:event_TF_DATA_4KeyReleased
-
-    private void TF_DATA_5KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_DATA_5KeyReleased
-        updateDataLabel(TF_DATA_5, jLabelData5, 5);
-    }//GEN-LAST:event_TF_DATA_5KeyReleased
-
-    private void TF_DATA_6KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_DATA_6KeyReleased
-        updateDataLabel(TF_DATA_6, jLabelData6, 6);
-    }//GEN-LAST:event_TF_DATA_6KeyReleased
-
-    private void TF_LIGHT_MODE_ON_STARTKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_LIGHT_MODE_ON_STARTKeyReleased
-        updateLightsFieldLabel(TF_LIGHT_MODE_ON_START, jLabel_LIGHT_MODE_ON_START, 0);
-    }//GEN-LAST:event_TF_LIGHT_MODE_ON_STARTKeyReleased
-
-    private void TF_LIGHT_MODE_1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_LIGHT_MODE_1KeyReleased
-        updateLightsFieldLabel(TF_LIGHT_MODE_1, jLabel_LIGHT_MODE_1, 1);
-    }//GEN-LAST:event_TF_LIGHT_MODE_1KeyReleased
-
-    private void TF_LIGHT_MODE_2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_LIGHT_MODE_2KeyReleased
-        updateLightsFieldLabel(TF_LIGHT_MODE_1, jLabel_LIGHT_MODE_2, 2);
-    }//GEN-LAST:event_TF_LIGHT_MODE_2KeyReleased
-
-    private void TF_LIGHT_MODE_3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_LIGHT_MODE_3KeyReleased
-        updateLightsFieldLabel(TF_LIGHT_MODE_1, jLabel_LIGHT_MODE_3, 3);
-    }//GEN-LAST:event_TF_LIGHT_MODE_3KeyReleased
-
     private void CB_STREET_POWER_LIMStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CB_STREET_POWER_LIMStateChanged
-       setStreetPowerLimitEnabled();
+       if (!isUpdating) setStreetPowerLimitEnabled();
     }//GEN-LAST:event_CB_STREET_POWER_LIMStateChanged
 
     private void CB_ASS_WITHOUT_PEDStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CB_ASS_WITHOUT_PEDStateChanged
-        setAssistWithoutPedThresholdEnabled();
+        if (!isUpdating) setAssistWithoutPedThresholdEnabled();
     }//GEN-LAST:event_CB_ASS_WITHOUT_PEDStateChanged
 
     private void CB_MAX_SPEED_DISPLAYStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CB_MAX_SPEED_DISPLAYStateChanged
-        setMaxSpeedOffroadEnabled();
+        if (!isUpdating) setMaxSpeedOffroadEnabled();
     }//GEN-LAST:event_CB_MAX_SPEED_DISPLAYStateChanged
 
     private void CB_LIGHTSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CB_LIGHTSStateChanged
-        setLightsFieldsEnabled();
+        if (!isUpdating) setLightsFieldsEnabled();
     }//GEN-LAST:event_CB_LIGHTSStateChanged
 
     private void CB_WALK_ASSISTStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CB_WALK_ASSISTStateChanged
-        setWalkAssistFieldsEnabled();
+        if (!isUpdating) setWalkAssistFieldsEnabled();
     }//GEN-LAST:event_CB_WALK_ASSISTStateChanged
 
     private void CB_AUTO_DISPLAY_DATAStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CB_AUTO_DISPLAY_DATAStateChanged
-        setNumDataAutoDisplayEnabled();
+        if (!isUpdating) setNumDataAutoDisplayEnabled();
     }//GEN-LAST:event_CB_AUTO_DISPLAY_DATAStateChanged
 
-    private void TF_MAX_SPEEDKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_MAX_SPEEDKeyReleased
-        saveFieldInKm(TF_MAX_SPEED, intMaxSpeed, 0);
-    }//GEN-LAST:event_TF_MAX_SPEEDKeyReleased
-
-    private void TF_STREET_SPEED_LIMKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_STREET_SPEED_LIMKeyReleased
-        saveFieldInKm(TF_STREET_SPEED_LIM, intMaxSpeed, 1);
-    }//GEN-LAST:event_TF_STREET_SPEED_LIMKeyReleased
-
-    private void TF_NUM_DATA_AUTO_DISPLAYKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_NUM_DATA_AUTO_DISPLAYKeyReleased
-        ensureFieldInRange(TF_NUM_DATA_AUTO_DISPLAY, 1, 6);
-    }//GEN-LAST:event_TF_NUM_DATA_AUTO_DISPLAYKeyReleased
-
     private void CB_TORQUE_CALIBRATIONStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CB_TORQUE_CALIBRATIONStateChanged
-        updateTorqueCalibrationValues();
+        if (!isUpdating) updateTorqueCalibrationValues();
     }//GEN-LAST:event_CB_TORQUE_CALIBRATIONStateChanged
 
-    private void TF_WALK_ASS_SPEED_LIMITKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_WALK_ASS_SPEED_LIMITKeyReleased
-        saveFieldInKm(TF_WALK_ASS_SPEED_LIMIT, intWalkSpeed, 0);
-    }//GEN-LAST:event_TF_WALK_ASS_SPEED_LIMITKeyReleased
-
-    private void TF_CRUISE_ASS_1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_CRUISE_ASS_1KeyReleased
-        saveFieldInKm(TF_CRUISE_ASS_1, intCruiseSpeed, 1);
-    }//GEN-LAST:event_TF_CRUISE_ASS_1KeyReleased
-
-    private void TF_CRUISE_ASS_2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_CRUISE_ASS_2KeyReleased
-        saveFieldInKm(TF_CRUISE_ASS_2, intCruiseSpeed, 2);
-    }//GEN-LAST:event_TF_CRUISE_ASS_2KeyReleased
-
-    private void TF_CRUISE_ASS_3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_CRUISE_ASS_3KeyReleased
-        saveFieldInKm(TF_CRUISE_ASS_3, intCruiseSpeed, 3);
-    }//GEN-LAST:event_TF_CRUISE_ASS_3KeyReleased
-
-    private void TF_CRUISE_ASS_4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_CRUISE_ASS_4KeyReleased
-        saveFieldInKm(TF_CRUISE_ASS_4, intCruiseSpeed, 4);
-    }//GEN-LAST:event_TF_CRUISE_ASS_4KeyReleased
-
-    private void TF_CRUISE_SPEED_ENAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_CRUISE_SPEED_ENAKeyReleased
-        saveFieldInKm(TF_CRUISE_SPEED_ENA, intCruiseSpeed, 0);
-    }//GEN-LAST:event_TF_CRUISE_SPEED_ENAKeyReleased
-
-    private void TF_TORQ_ADC_OFFSET_ADJKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_TORQ_ADC_OFFSET_ADJKeyReleased
-        intTorqueOffsetAdj = handleFieldValueWithAdjustment(TF_TORQ_ADC_OFFSET_ADJ, MIDDLE_OFFSET_ADJ);
-        if (intTorqueOffsetAdj > OFFSET_MAX_VALUE) {
-            intTorqueOffsetAdj = OFFSET_MAX_VALUE;
-            TF_TORQ_ADC_OFFSET_ADJ.setText(String.valueOf(OFFSET_MAX_VALUE - MIDDLE_OFFSET_ADJ));
-        }
-    }//GEN-LAST:event_TF_TORQ_ADC_OFFSET_ADJKeyReleased
-
-    private void CB_FIELD_WEAKENING_ENABLEDStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CB_FIELD_WEAKENING_ENABLEDStateChanged
-        /*    if (CB_FIELD_WEAKENING_ENABLED.isSelected()) {
-            CB_FIELD_WEAKENING_ENABLED.setText("Field weakening enabled - PWM 18.0 kHz"); }
-        else {
-            CB_FIELD_WEAKENING_ENABLED.setText("Field weakening disabled - PWM 15.6 kHz"); }
-         */
-    }//GEN-LAST:event_CB_FIELD_WEAKENING_ENABLEDStateChanged
-
-    private void TF_WALK_ASS_SPEED_1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_WALK_ASS_SPEED_1KeyReleased
-        saveFieldInKm(TF_WALK_ASS_SPEED_1, intWalkSpeed, 1);
-    }//GEN-LAST:event_TF_WALK_ASS_SPEED_1KeyReleased
-
-    private void TF_WALK_ASS_SPEED_2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_WALK_ASS_SPEED_2KeyReleased
-        saveFieldInKm(TF_WALK_ASS_SPEED_2, intWalkSpeed, 2);
-    }//GEN-LAST:event_TF_WALK_ASS_SPEED_2KeyReleased
-
-    private void TF_WALK_ASS_SPEED_3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_WALK_ASS_SPEED_3KeyReleased
-        saveFieldInKm(TF_WALK_ASS_SPEED_3, intWalkSpeed, 3);
-    }//GEN-LAST:event_TF_WALK_ASS_SPEED_3KeyReleased
-
-    private void TF_WALK_ASS_SPEED_4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_WALK_ASS_SPEED_4KeyReleased
-        saveFieldInKm(TF_WALK_ASS_SPEED_4, intWalkSpeed, 4);
-    }//GEN-LAST:event_TF_WALK_ASS_SPEED_4KeyReleased
-
     private void RB_UNIT_MILESStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_RB_UNIT_MILESStateChanged
-        updateUnits();
+        if (!isUpdating) updateUnitsAndWalkAssist();
     }//GEN-LAST:event_RB_UNIT_MILESStateChanged
 
-    private void TF_TORQ_ADC_RANGE_ADJKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_TORQ_ADC_RANGE_ADJKeyReleased
-        intTorqueRangeAdj = handleFieldValueWithAdjustment(TF_TORQ_ADC_RANGE_ADJ, MIDDLE_RANGE_ADJ);
-    }//GEN-LAST:event_TF_TORQ_ADC_RANGE_ADJKeyReleased
-
-    private void TF_TORQ_ADC_OFFSETKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_TORQ_ADC_OFFSETKeyReleased
-        updateTorqueCalibrationValues();
-    }//GEN-LAST:event_TF_TORQ_ADC_OFFSETKeyReleased
-
-    private void TF_TORQUE_ADC_MAXKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_TORQUE_ADC_MAXKeyReleased
-        updateTorqueCalibrationValues();
-    }//GEN-LAST:event_TF_TORQUE_ADC_MAXKeyReleased
-
-    private void TF_TORQ_ADC_ANGLE_ADJKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_TORQ_ADC_ANGLE_ADJKeyReleased
-        intTorqueAngleAdj = handleFieldValueWithAdjustment(TF_TORQ_ADC_ANGLE_ADJ, MIDDLE_ANGLE_ADJ);
-    }//GEN-LAST:event_TF_TORQ_ADC_ANGLE_ADJKeyReleased
-
     private void RB_UNIT_KILOMETERSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_RB_UNIT_KILOMETERSStateChanged
-        updateUnits();
+        if (!isUpdating) updateUnitsAndWalkAssist();
     }//GEN-LAST:event_RB_UNIT_KILOMETERSStateChanged
 
     private void BTN_CANCELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_CANCELActionPerformed
@@ -4148,12 +4004,16 @@ public class TSDZ2_Configurator extends javax.swing.JFrame {
     }//GEN-LAST:event_BTN_CANCELActionPerformed
 
     private void CB_ADC_STEP_ESTIMStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_CB_ADC_STEP_ESTIMStateChanged
-        updateTorqueCalibrationValues();
+        if (!isUpdating) updateTorqueCalibrationValues();
     }//GEN-LAST:event_CB_ADC_STEP_ESTIMStateChanged
 
     private void CMB_DISPLAY_TYPEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CMB_DISPLAY_TYPEActionPerformed
         setBatteryFieldsEnabled((DisplayType) CMB_DISPLAY_TYPE.getSelectedItem());
     }//GEN-LAST:event_CMB_DISPLAY_TYPEActionPerformed
+
+    private void RB_MOTOR_36VStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_RB_MOTOR_36VStateChanged
+        if (!isUpdating) updateMotorVoltage();
+    }//GEN-LAST:event_RB_MOTOR_36VStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BTN_CANCEL;

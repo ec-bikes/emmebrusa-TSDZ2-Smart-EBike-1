@@ -41,6 +41,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Locale;
 
+@SuppressWarnings("all")
 public class OrigTSDZ2_Configurator extends javax.swing.JFrame {
 
     /**
